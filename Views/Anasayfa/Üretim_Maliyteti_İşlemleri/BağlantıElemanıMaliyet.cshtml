@@ -1,0 +1,189 @@
+<script>
+    $(document).ready(function () {
+        $('#Yeni_Bağlantı_Elemanı_Ekle').click(function () {
+            if ($(this).attr('basıldımı') == 0) {
+                $(this).attr('basıldımı', "1")
+                $(this).attr('readonly', "true")
+
+                $(this).attr('style', 'background-color:#6c757d3b;border-color:#6c757d3b')
+                var Bağlantı_Elemanı_Satır = '' +
+                    '<div class="row" id="Bağlantı_Elemanı_Row">' +
+                    '                        <div class="col-md-12">' +
+                    '                            <div class="card card-secondary border border-secondary">' +
+                    '                                <div class="card-header">' +
+                    '                                    <label for="">Bağlantı Elemanı Maliyeti</label>' +
+                    '                                </div>' +
+                    '                                <div class="card-body">' +
+                    '                                    <div class="row">' +
+                    '                                        <div class="col-md-10">' +
+                    '                                            <label>Lütfen Bağlantı Elemanı Türü Seçiniz: </label>' +
+                    '                                        </div>' +
+                    '                                    </div>' +
+                    '                                    <div class="row">' +
+                    '                                        <div class="col-md-12">' +
+                    '                                            <select id="Bağlantı_Elemanı_Select"' +
+                    '                                               son_eklenen_satır="-1"   style="width: 100% ; padding-bottom: 25px;"></select>' +
+                    '                                        </div>' +
+
+                    '                                    </div>' +
+                    '                                    <div class="row" style="padding-top: 25px;">' +
+                    '                                        <div class="col-md-12">' +
+                    '                                            <div class="card">' +
+                    '                                                <div class="card-body">' +
+                    '                                                    <div id="Bağlantı_Elemanları">' +
+                    '                                                      ' +
+                    '                                                    </div>' +
+                    '                                                </div>' +
+                    '                                            </div>' +
+                    '                                        </div>' +
+                    '                                    </div>' +
+                    '' +
+                    '                                </div>' +
+                    '                            </div>' +
+                    '                        </div>' +
+                    '                    </div>' +
+                    '';
+
+                $('#Bağlantı_Elemanı_Sırası').append(Bağlantı_Elemanı_Satır)
+
+
+
+                $("#Bağlantı_Elemanı_Select").select2({
+                    ajax: {
+                        url: '/api/Baglantı_Elemanları/baglantıElemanları_Get_By_Text',
+                        dataType: 'json',
+                        type: 'POST',
+                        delay: 250,
+                        global: false,
+                        contentType: "application/json; charset=utf-8",
+                        data: function (params) {
+                            var x = {
+                                Bağlantı_Elemanı_Text: params.term
+                            }
+                            return JSON.stringify(x)
+                        },
+                        processResults: function (data, params) {
+
+
+                            return {
+                                results: $.map(data, function (item) {
+                                    return {
+                                        text: item.bağlantı_Elemanı_Text,
+                                        id: item.id
+                                    }
+                                })
+                            };
+                        },
+                        cache: true
+                    },
+                    minimumInputLength: 2
+                })
+
+
+
+                $("#Bağlantı_Elemanı_Select").change(function () {
+                    $(this).attr('son_eklenen_satır', parseInt($(this).attr('son_eklenen_satır')) + 1)
+                    var row_İndex = $(this).attr('son_eklenen_satır')
+                    var x = {
+                        Id: $('#Bağlantı_Elemanı_Select').find(':selected').val()
+                    }
+
+                    var Gelen_Data;
+
+                    $.ajax({
+                        url: 'api/Baglantı_Elemanları/baglantıElemanları_Get_By_Id',
+                        type: 'POST',
+                        async: false,
+                        dataType: "json",
+                        data: JSON.stringify(x),
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            console.log(data)
+                            Gelen_Data = data;
+
+
+
+                        },
+                        error: function (xhr, status, error) {
+                            if (xhr.status == 200) {
+
+                            }
+                            else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Talep Esnasında Bir Hata Oluştur',
+                                    text: '' + xhr.status + '   ' + error.Message,
+                                })
+                            }
+
+                        }
+                    })
+                    var Kaynak_Satır = '' +
+                        ' <div class="row" name="Bağlantı_Row" style="padding-top: 25px;" row_Id="' + row_İndex + '" >' +
+                        '                                                            <div class="col-md-3">' +
+                        '                                                                <input type="text" class="form-control" Data_Id="' + Gelen_Data.id + '" id="Bağlantı_Elemanı_Adı_' + row_İndex + '"' +
+                        '                                                                    placeholder="Bağlantı Elemanı" value="' + Gelen_Data.bağlantı_Elemanı_Text + '" disabled>' +
+                        '                                                            </div>' +
+                        '                                                            <div class="col-md-2">' +
+                        '                                                                <input type="text" class="form-control"' +
+                        '                                                                    placeholder="Birim Fiyatı" value="' + Gelen_Data.birim_Fiyat.toFixed(2) + '"  data-thousands="." data-decimal="," data-suffix=" ₺" id="Bağlantı_Elemanı_Birim_Fiyatı_' + row_İndex + '">' +
+                        '                                                            </div>' +
+                        '                                                            <div class="col-md-3">' +
+                        '                                                                <input type="text" class="form-control"' +
+                        '                                                                    placeholder="Birim Adeti"   data-thousands="" data-decimal="." data-suffix="" id="Bağlantı_Elemanı_Birim_Adeti' + row_İndex + '">' +
+                        '                                                            </div>' +
+                        '                                                            <div class="col-md-3">' +
+                        '                                                                <input type="text" class="form-control"' +
+                        '                                                                  data-thousands="." disabled data-decimal="," data-suffix=" ₺"   placeholder="Toplam Fiyat" id="Bağlantı_Elemanı_Satır_Toplamı_' + row_İndex + '">' +
+                        '                                                            </div>' +
+                        '                                                            <div class="col-md-1">' +
+                        '                                                                <button type="button" id="Bağlantı_Elemanı_Satır_Sİl' + row_İndex + '"' +
+                        '                                                                    class="btn btn-danger btn-block">' +
+                        '                                                                    <i class="fas fa-trash"></i>' +
+                        '                                                                    Sil' +
+                        '                                                                </button>' +
+                        '                                                            </div>' +
+                        '                                                        </div>' +
+                        '';
+                    $('#Bağlantı_Elemanları').append(Kaynak_Satır)
+
+                    $('#Bağlantı_Elemanı_Birim_Fiyatı_' + row_İndex).maskMoney()
+                    $('#Bağlantı_Elemanı_Birim_Fiyatı_' + row_İndex).trigger('mask.maskMoney')
+
+
+                    $('#Bağlantı_Elemanı_Birim_Adeti' + row_İndex).maskMoney()
+                    $('#Bağlantı_Elemanı_Birim_Adeti' + row_İndex).trigger('mask.maskMoney')
+
+
+                    $('#Bağlantı_Elemanı_Birim_Adeti' + row_İndex + ',#Bağlantı_Elemanı_Birim_Fiyatı_' + row_İndex).on('keyup keypress blur change', function () {
+
+
+                        var rv = parseFloat($('#Bağlantı_Elemanı_Birim_Adeti' + row_İndex).maskMoney('unmasked')[0].toFixed(2)) * parseFloat($('#Bağlantı_Elemanı_Birim_Fiyatı_' + row_İndex).maskMoney('unmasked')[0].toFixed(2))
+
+                        $('#Bağlantı_Elemanı_Satır_Toplamı_' + row_İndex).val(rv.toFixed(2))
+                        $('#Bağlantı_Elemanı_Satır_Toplamı_' + row_İndex).maskMoney()
+                        $('#Bağlantı_Elemanı_Satır_Toplamı_' + row_İndex).trigger('mask.maskMoney')
+                    })
+
+
+
+                })
+
+
+
+
+            }
+            else {
+                $(this).attr('basıldımı', "0")
+                $(this).attr('readonly', "false")
+                 $(this).attr('style', 'background-color:#6c757d;border-color:#6c757d')
+                $('#Bağlantı_Elemanı_Row').remove()
+            }
+
+
+        })
+
+    })
+
+
+</script>

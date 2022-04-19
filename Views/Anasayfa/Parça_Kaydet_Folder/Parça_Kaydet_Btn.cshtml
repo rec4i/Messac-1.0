@@ -1,0 +1,234 @@
+<script>
+    $(document).ready(function () {
+
+        $('#Takım_Ekle').click(function () {
+
+            if ($(this).attr('Basıldımı') == 0) {
+                $('#Takım_Adı_Div').removeAttr('hidden')
+                $(this).attr('Basıldımı', '1')
+            }
+            else {
+                $('#Takım_Adı_Div').attr('hidden', 'hidden')
+                $(this).attr('Basıldımı', '0')
+            }
+        })
+        $('#İş_Ekle_Ekle').click(function () {
+
+            if ($(this).attr('Basıldımı') == 0) {
+                $('#İş_Adı_Div').removeAttr('hidden')
+                $(this).attr('Basıldımı', '1')
+            }
+            else {
+                $('#İş_Adı_Div').attr('hidden', 'hidden')
+                $(this).attr('Basıldımı', '0')
+            }
+        })
+    })
+</script>
+<script>
+    $(document).ready(function () {
+
+        //İşin_Adı_İnput
+        //Yeni_İş_Adı_Ekle
+
+        $("#İşin_Adı_Select").select2({
+            ajax: {
+                url: '/api/İş/İş_Get_By_Text',
+                dataType: 'json',
+                type: 'POST',
+                delay: 250,
+                global: false,
+                contentType: "application/json; charset=utf-8",
+                data: function (params) {
+                    var x = {
+                        İşin_Adı: params.term
+                    }
+                    return JSON.stringify(x)
+                },
+                processResults: function (data, params) {
+
+
+                    return {
+                        results: $.map(data, function (item) {
+                            return {
+                                text: item.İşin_Adı,
+                                id: item.id
+                            }
+                        })
+                    };
+                },
+                cache: true
+            },
+            minimumInputLength: 2
+        })
+
+        $("#Parça_Takım_Adı").select2({
+            ajax: {
+                url: '/api/Takım/Takım_Get_By_Text',
+                dataType: 'json',
+                type: 'POST',
+                delay: 250,
+                global: false,
+                contentType: "application/json; charset=utf-8",
+                data: function (params) {
+                    var x = {
+                        Takım_Adı: params.term
+                    }
+                    return JSON.stringify(x)
+                },
+                processResults: function (data, params) {
+
+
+                    return {
+                        results: $.map(data, function (item) {
+                            return {
+                                text: item.takım_Adı,
+                                id: item.id
+                            }
+                        })
+                    };
+                },
+                cache: true
+            },
+            minimumInputLength: 2
+        })
+
+        $('#Yeni_İş_Adı_Ekle').click(function () {
+            var x = {
+                İşin_Adı: $('#İşin_Adı_İnput').val(),
+            }
+
+            var Gönderilsinmi = 1;
+            if (x.İşin_Adı == "") {
+                Gönderilsinmi = 0;
+                $('#İşin_Adı_İnput').attr('class', 'form-control is-invalid')
+            }
+            else {
+                Gönderilsinmi = 1;
+                $('#İşin_Adı_İnput').attr('class', 'form-control')
+            }
+
+
+            if (Gönderilsinmi == 1) {
+
+                $.ajax({
+                    url: 'api/İş/iş_Add',
+                    type: 'POST',
+                    async: false,
+                    dataType: "json",
+                    data: JSON.stringify(x),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        $('#İş_Adı_Div').attr('hidden', 'hidden')
+                        Swal.fire(
+                            'İşlem Başarı İle Veri Tabanına İşlendi',
+                            'İşlem Başarılı',
+                            'success'
+                        )
+
+                    },
+                    error: function () {
+                        alert('Talep esnasında sorun oluştu.Yeniden deneyin');
+                    }
+                });
+
+            }
+
+        })
+
+        $('#Yeni_Takım_Ekle').click(function () {
+            try {
+                var x = {
+                    Takım_Adı: $('#Takım_Adı_İnput').val(),
+                    İş_Id: $('#İşin_Adı_Select').select2('data')[0].id
+                }
+
+            }
+            catch (err) {
+                Swal.fire(
+                    'Lütfen Tüm Alanları Doldurunuz !',
+                    'error'
+                )
+            }
+
+
+            var Gönderilsinmi = 1;
+            if (x.Takım_Adı == "") {
+                Gönderilsinmi = 0;
+                $('#Takım_Adı_İnput').attr('class', 'form-control is-invalid')
+            }
+            else {
+                Gönderilsinmi = 1;
+                $('#Takım_Adı_İnput').attr('class', 'form-control')
+            }
+
+
+
+            if (Gönderilsinmi == 1) {
+
+                $.ajax({
+                    url: 'api/Takım/Takım_Add',
+                    type: 'POST',
+                    async: false,
+                    dataType: "json",
+                    data: JSON.stringify(x),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        $('#Takım_Adı_Div').attr('hidden', 'hidden')
+                        Swal.fire(
+                            'İşlem Başarı İle Veri Tabanına İşlendi',
+                            'İşlem Başarılı',
+                            'success'
+                        )
+
+                    },
+                    error: function () {
+                        alert('Talep esnasında sorun oluştu.Yeniden deneyin');
+                    }
+                });
+
+            }
+
+        })
+
+
+
+
+
+    })
+</script>
+
+
+
+
+<div class="modal fade" id="Parça_Kaydet_Btn_Modal" tabindex="-100" role="dialog"
+    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="Parça_Kaydet_Btn_Modal_Header">Parça Kaydet</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+         
+
+                @Html.Partial("Parça_Kaydet_Folder/Parça_Kaydetme_Durum")
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+                <button type="button" id="Parça_Modal_Yazdır_Btn" class="btn btn-warning">
+                    <i class="fa fa-fw fa-print"></i>
+                    Yazdır
+                </button>
+                <button type="button" id="Parça_Kaydet_Btn_Modal_Kaydet_Btn" class="btn btn-primary">
+                    <i class="fa fa-fw fa-save"></i>
+                    Kaydet
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

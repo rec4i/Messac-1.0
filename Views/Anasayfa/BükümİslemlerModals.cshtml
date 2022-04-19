@@ -1,0 +1,870 @@
+<script>
+    $(document).ready(function () {
+
+        console.log("asd")
+        $('#BükümYeni_Kilo_İle_Ağırlık_Bas').maskMoney();
+        $('#BükümYeni_Kilo_İle_Ağırlık_Son').maskMoney();
+        $('#BükümYeni_Kilo_İle_Katsayı').maskMoney();
+
+        $('#BükümYeni_Kilo_İle_Ağırlık_Bas_Düzenle').maskMoney();
+        $('#BükümYeni_Kilo_İle_Ağırlık_Son_Düzenle').maskMoney();
+        $('#BükümYeni_Kilo_İle_Katsayı_Düzenle').maskMoney();
+
+
+
+
+
+        $('#BükümYeni_KiloBüküm_Ekle_Modal_Kaydet').click(function () {
+            var is_sendable = 1;
+            var x = {
+                Kilo_Bas: $('#BükümYeni_Kilo_İle_Ağırlık_Bas').maskMoney('unmasked')[0].toFixed(2),
+                Kilo_Son: $('#BükümYeni_Kilo_İle_Ağırlık_Son').maskMoney('unmasked')[0].toFixed(2),
+                KatSayı: $('#BükümYeni_Kilo_İle_Katsayı').maskMoney('unmasked')[0].toFixed(2)
+            }
+
+            if (x.Kilo_Bas == "") {
+                $('#BükümYeni_Kilo_İle_Ağırlık_Bas').attr('class', 'form-control is-invalid');
+                is_sendable = 0;
+            }
+            else {
+                $('#BükümYeni_Kilo_İle_Ağırlık_Bas').attr('class', 'form-control');
+                is_sendable = 1;
+            }
+
+            if (x.Kilo_Son == "") {
+                $('#BükümYeni_Kilo_İle_Ağırlık_Son').attr('class', 'form-control is-invalid');
+                is_sendable = 0;
+            }
+            else {
+                $('#BükümYeni_Kilo_İle_Ağırlık_Son').attr('class', 'form-control');
+                is_sendable = 1;
+            }
+
+
+            if (x.KatSayı == "") {
+                $('#BükümYeni_Kilo_İle_Katsayı').attr('class', 'form-control is-invalid');
+                is_sendable = 0;
+            }
+            else {
+                $('#BükümYeni_Kilo_İle_Katsayı').attr('class', 'form-control');
+                is_sendable = 1;
+            }
+
+
+            if (is_sendable == 1) {
+
+                $.ajax({
+                    url: 'api/BükümYeni/Büküm_KiloHesabı_Add',
+                    type: 'POST',
+                    async: false,
+                    dataType: "json",
+                    data: JSON.stringify(x),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+
+                        var $table = $('#Kilo_İle_Büküm_Hesaplama_Table')
+                        Büküm_Yeni_Build_Table_Kilo($table, 0, 0)
+
+                        Swal.fire(
+                            'Başarılı!',
+                            'İşlem Başarılı',
+                            'success'
+                        )
+                        $('#BükümYeni_KiloBüküm_Ekle_Modal').modal('hide')
+                    },
+                    error: function (xhr, status, error) {
+                        if (xhr.status == 200) {
+
+                        }
+                        else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Talep Esnasında Bir Hata Oluştur',
+                                text: '' + xhr.status + '   ' + error.Message,
+                            })
+                        }
+
+                    }
+                })
+
+
+
+            }
+
+        })
+
+        $('#BükümYeni_KiloBüküm_Ekle_Modal_Kaydet_Düzenle').click(function () {
+
+            var is_sendable = 1;
+            var x = {
+                Id: $(this).attr('Operasyon_ıd'),
+                Kilo_Bas: $('#BükümYeni_Kilo_İle_Ağırlık_Bas_Düzenle').maskMoney('unmasked')[0].toFixed(2),
+                Kilo_Son: $('#BükümYeni_Kilo_İle_Ağırlık_Son_Düzenle').maskMoney('unmasked')[0].toFixed(2),
+                KatSayı: $('#BükümYeni_Kilo_İle_Katsayı_Düzenle').maskMoney('unmasked')[0].toFixed(2)
+            }
+
+            if (x.Kilo_Bas == "") {
+                $('#BükümYeni_Kilo_İle_Ağırlık_Bas_Düzenle').attr('class', 'form-control is-invalid');
+                is_sendable = 0;
+            }
+            else {
+                $('#BükümYeni_Kilo_İle_Ağırlık_Bas_Düzenle').attr('class', 'form-control');
+                is_sendable = 1;
+            }
+
+            if (x.Kilo_Son == "") {
+                $('#BükümYeni_Kilo_İle_Ağırlık_Son_Düzenle').attr('class', 'form-control is-invalid');
+                is_sendable = 0;
+            }
+            else {
+                $('#BükümYeni_Kilo_İle_Ağırlık_Son_Düzenle').attr('class', 'form-control');
+                is_sendable = 1;
+            }
+
+
+            if (x.KatSayı == "") {
+                $('#BükümYeni_Kilo_İle_Katsayı_Düzenle').attr('class', 'form-control is-invalid');
+                is_sendable = 0;
+            }
+            else {
+                $('#BükümYeni_Kilo_İle_Katsayı_Düzenle').attr('class', 'form-control');
+                is_sendable = 1;
+            }
+
+
+            if (is_sendable == 1) {
+
+                $.ajax({
+                    url: 'api/BükümYeni/Büküm_KiloHesabı_Edit',
+                    type: 'POST',
+                    async: false,
+                    dataType: "json",
+                    data: JSON.stringify(x),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+
+                        var $table = $('#Kilo_İle_Büküm_Hesaplama_Table')
+                        Büküm_Yeni_Build_Table_Kilo($table, 0, 0)
+
+                        Swal.fire(
+                            'Başarılı',
+                            'İşlem Başarılı',
+                            'success'
+                        )
+                        $('#BükümYeni_KiloBüküm_Ekle_Modal_Düzenle').modal('hide')
+                    },
+                    error: function (xhr, status, error) {
+                        if (xhr.status == 200) {
+
+                        }
+                        else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Talep Esnasında Bir Hata Oluştur',
+                                text: '' + xhr.status + '   ' + error.Message,
+                            })
+                        }
+
+                    }
+                })
+
+
+
+            }
+
+        })
+
+
+
+
+
+        $('#BükümYeni_AdetİleBüküm_Kaysayı').maskMoney();
+        $('#BükümYeni_AdetİleBüküm_Kaysayı_Düzenle').maskMoney();
+
+        //BükümYeni_AdetİleBüküm_Kaysayı_Düzenle
+
+        $('#BükümYeni_AdetBüküm_Ekle_Modal_Kaydet').click(function () {
+
+            var is_sendable = 1
+            var x = {
+                Zorluk_Adı: $('#BükümYeni_AdetİleBüküm_Zorluk_Adı').val(),
+                Zorluk_Katsayısı: $('#BükümYeni_AdetİleBüküm_Kaysayı').maskMoney('unmasked')[0].toFixed(2)
+            }
+
+
+            if (x.Zorluk_Adı == "") {
+                $('#BükümYeni_AdetİleBüküm_Zorluk_Adı').attr('class', 'form-control is-invalid');
+                is_sendable = 0;
+            }
+            else {
+                $('#BükümYeni_AdetİleBüküm_Zorluk_Adı').attr('class', 'form-control');
+                is_sendable = 1;
+            }
+
+            if (x.Zorluk_Katsayısı == "") {
+                $('#BükümYeni_AdetİleBüküm_Kaysayı').attr('class', 'form-control is-invalid');
+                is_sendable = 0;
+            }
+            else {
+                $('#BükümYeni_AdetİleBüküm_Kaysayı').attr('class', 'form-control');
+                is_sendable = 1;
+            }
+
+
+            if (is_sendable == 1) {
+
+                $.ajax({
+                    url: 'api/BükümYeni/Büküm_AdetHesabı_Add',
+                    type: 'POST',
+                    async: false,
+                    dataType: "json",
+                    data: JSON.stringify(x),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+
+                        var $table = $('#Adet_İle_Büküm_Hesaplama_Table')
+                        Adet_İle_Büküm_Hesapla_Build_Table($table, 0, 0)
+
+                        Swal.fire(
+                            'Başarılı',
+                            'İşlem Başarılı',
+                            'success'
+                        )
+                        $('#BükümYeni_AdetİleBüküm_Modal').modal('hide')
+                    },
+                    error: function (xhr, status, error) {
+                        if (xhr.status == 200) {
+
+                        }
+                        else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Talep Esnasında Bir Hata Oluştur',
+                                text: '' + xhr.status + '   ' + error.Message,
+                            })
+                        }
+
+                    }
+                })
+
+
+            }
+
+
+
+        })
+
+        $('#BükümYeni_AdetBüküm_Ekle_Modal_Kaydet_Düzenle').click(function () {
+            console.log("asd098890as809d90890asd098")
+            var is_sendable = 1
+            var x = {
+                id: $(this).attr('Operasyon_ıd'),
+                Zorluk_Adı: $('#BükümYeni_AdetİleBüküm_Zorluk_Adı_Düzenle').val(),
+                Zorluk_Katsayısı: $('#BükümYeni_AdetİleBüküm_Kaysayı_Düzenle').maskMoney('unmasked')[0].toFixed(2)
+            }
+
+
+            if (x.Zorluk_Adı == "") {
+                $('#BükümYeni_AdetİleBüküm_Zorluk_Adı').attr('class', 'form-control is-invalid');
+                is_sendable = 0;
+            }
+            else {
+                $('#BükümYeni_AdetİleBüküm_Zorluk_Adı').attr('class', 'form-control');
+                is_sendable = 1;
+            }
+
+            if (x.Zorluk_Katsayısı == "") {
+                $('#BükümYeni_AdetİleBüküm_Kaysayı').attr('class', 'form-control is-invalid');
+                is_sendable = 0;
+            }
+            else {
+                $('#BükümYeni_AdetİleBüküm_Kaysayı').attr('class', 'form-control');
+                is_sendable = 1;
+            }
+
+
+            if (is_sendable == 1) {
+
+                $.ajax({
+                    url: 'api/BükümYeni/Büküm_AdetHesabı_Edit',
+                    type: 'POST',
+                    async: false,
+                    dataType: "json",
+                    data: JSON.stringify(x),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+
+
+                        var $table = $('#Adet_İle_Büküm_Hesaplama_Table')
+                        Adet_İle_Büküm_Hesapla_Build_Table($table, 0, 0)
+
+
+                        Swal.fire(
+                            'Başarılı',
+                            'İşlem Başarılı',
+                            'success'
+                        )
+                        $('#BükümYeni_AdetİleBüküm_Modal_Düzenle').modal('hide')
+                    },
+                    error: function (xhr, status, error) {
+                        if (xhr.status == 200) {
+
+                        }
+                        else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Talep Esnasında Bir Hata Oluştur',
+                                text: '' + xhr.status + '   ' + error.Message,
+                            })
+                        }
+
+                    }
+                })
+
+
+            }
+
+
+        })
+
+
+        $('#BükümYeni_Uzunluk_İle_Uzunluk_Bas_Düzenle').maskMoney();
+        $('#BükümYeni_Uzunluk_İle_Uzunluk_Son_Düzenle').maskMoney();
+        $('#BükümYeni_Uzunluk_İle_Uzunluk_Kaysayı_Düzenle').maskMoney();
+
+
+        $('#Uzunluk_Ve_Genişlik_Düzenle_Modal').on('hidden.bs.modal', function () {
+
+            $('#Parametre_Modal').modal('show')
+
+        })
+
+
+        $('#Uzunluk_Ve_Genişlik_Düzenle_Modal_Kaydet').click(function () {
+            var is_sendable = 1;
+            var x = {
+                id: $(this).attr('Uzunluk_Ve_Genişlik_Id'),
+                Uzunluk_Bas: $('#BükümYeni_Uzunluk_İle_Uzunluk_Bas_Düzenle').maskMoney('unmasked')[0].toFixed(2),
+                Uzunluk_Son: $('#BükümYeni_Uzunluk_İle_Uzunluk_Son_Düzenle').maskMoney('unmasked')[0].toFixed(2),
+                Zorluk_Katsayısı: $('#BükümYeni_Uzunluk_İle_Uzunluk_Kaysayı_Düzenle').maskMoney('unmasked')[0].toFixed(2)
+            }
+
+            if (x.Uzunluk_Bas == 0) {
+                $('#BükümYeni_Uzunluk_İle_Uzunluk_Bas_Düzenle').attr('class', 'form-control is-invalid');
+                is_sendable = 0;
+            }
+            else {
+                $('#BükümYeni_Uzunluk_İle_Uzunluk_Bas_Düzenle').attr('class', 'form-control');
+                is_sendable = 1;
+            }
+
+
+            if (x.Uzunluk_Son == 0) {
+                $('#BükümYeni_Uzunluk_İle_Uzunluk_Son_Düzenle').attr('class', 'form-control is-invalid');
+                is_sendable = 0;
+            }
+            else {
+                $('#BükümYeni_Uzunluk_İle_Uzunluk_Son_Düzenle').attr('class', 'form-control');
+                is_sendable = 1;
+            }
+
+
+            if (x.Zorluk_Katsayısı == 0) {
+                $('#BükümYeni_Uzunluk_İle_Uzunluk_Kaysayı_Düzenle').attr('class', 'form-control is-invalid');
+                is_sendable = 0;
+            }
+            else {
+                $('#BükümYeni_Uzunluk_İle_Uzunluk_Kaysayı_Düzenle').attr('class', 'form-control');
+                is_sendable = 1;
+            }
+
+
+            if (is_sendable == 1) {
+
+                $.ajax({
+                    url: 'api/BükümYeni/Büküm_Uzunluk_Hesabı_Edit',
+                    type: 'POST',
+                    async: false,
+                    dataType: "json",
+                    data: JSON.stringify(x),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+
+                        Swal.fire(
+                            'Başarılı!',
+                            'İşlem Başarılı',
+                            'success'
+                        )
+                        $('#Uzunluk_Ve_Genişlik_Düzenle_Modal').modal('hide')
+                        Uzunluk_Ve_Genişlik_Doldur_All()
+                    },
+                    error: function (xhr, status, error) {
+                        if (xhr.status == 200) {
+
+                        }
+                        else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Talep Esnasında Bir Hata Oluştur',
+                                text: '' + xhr.status + '   ' + error.Message,
+                            })
+                        }
+
+                    }
+                })
+
+
+
+            }
+
+
+        })
+
+        $('#Uzunluk_Ve_Genişlik_Zorluk_Katsayı_Düzenle').maskMoney();
+
+        $('#Uzunluk_Ve_Genişlik_Zorluk_Düzenle_Kaydet').click(function () {
+            var is_sendable = 1;
+            var x = {
+                id: $(this).attr('Operasyon_ıd'),
+                Zorluk_Adı: $('#Uzunluk_Ve_Genişlik_Zorluk_Adı_Düzenle').val(),
+                Zorluk_Katsayısı: $('#Uzunluk_Ve_Genişlik_Zorluk_Katsayı_Düzenle').maskMoney('unmasked')[0].toFixed(2),
+                Büküm_Uzunluk_Hesabı_Id: $(this).attr('Genel_Id')
+            }
+
+            if (x.Zorluk_Adı == 0) {
+                $('#Uzunluk_Ve_Genişlik_Zorluk_Adı_Düzenle').attr('class', 'form-control is-invalid');
+                is_sendable = 0;
+            }
+            else {
+                $('#Uzunluk_Ve_Genişlik_Zorluk_Adı_Düzenle').attr('class', 'form-control');
+                is_sendable = 1;
+            }
+
+
+            if (x.Zorluk_Katsayısı == 0) {
+                $('#Uzunluk_Ve_Genişlik_Zorluk_Katsayı_Düzenle').attr('class', 'form-control is-invalid');
+                is_sendable = 0;
+            }
+            else {
+                $('#Uzunluk_Ve_Genişlik_Zorluk_Katsayı_Düzenle').attr('class', 'form-control');
+                is_sendable = 1;
+            }
+
+
+
+            if (is_sendable == 1) {
+
+                $.ajax({
+                    url: 'api/BükümYeni/Büküm_Uzunluk_Hesabı_Zorluk_Edit',
+                    type: 'POST',
+                    async: false,
+                    dataType: "json",
+                    data: JSON.stringify(x),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+
+                        Swal.fire(
+                            'Başarılı!',
+                            'İşlem Başarılı',
+                            'success'
+                        )
+                        Büküm_Yeni_Build_Table($('#BükümYeni_Uzunluk_Zorluk_Table_' + data.büküm_Uzunluk_Hesabı_Id)
+                            , 0
+                            , 0
+                            , data.büküm_Uzunluk_Hesabı_Id)
+
+                        $('#Uzunul_Ve_Genişlik_Zorluk_Düzenle_Modal').modal('hide')
+
+                    },
+                    error: function (xhr, status, error) {
+                        if (xhr.status == 200) {
+
+                        }
+                        else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Talep Esnasında Bir Hata Oluştur',
+                                text: '' + xhr.status + '   ' + error.Message,
+                            })
+                        }
+
+                    }
+                })
+
+
+
+            }
+
+
+
+
+
+        })
+
+
+
+        $('#Uzunluk_Ve_Genişlik_Zorluk_Katsayı_Ekle_İnput_Modal').maskMoney()
+        $('#Uzunluk_Ve_Genişlik_Zorluk_Ekle_Kaydet_Modal_Kaydet').click(function () {
+
+            var is_sendable = 1;
+            var x = {
+                Büküm_Uzunluk_Hesabı_Id: $(this).attr('Data_Id'),
+                Zorluk_Adı: $('#Uzunluk_Ve_Genişlik_Zorluk_Adı_Ekle_İnput_Modal').val(),
+                Zorluk_Katsayısı: $('#Uzunluk_Ve_Genişlik_Zorluk_Katsayı_Ekle_İnput_Modal').maskMoney('unmasked')[0].toFixed(2)
+            }
+
+            if (x.Zorluk_Adı == "") {
+                $('#Uzunluk_Ve_Genişlik_Zorluk_Adı_Ekle_İnput_Modal').attr('class', 'form-control is-invalid')
+                is_sendable = 0
+            }
+            else {
+                $('#Uzunluk_Ve_Genişlik_Zorluk_Adı_Ekle_İnput_Modal').attr('class', 'form-control')
+                is_sendable = 1
+            }
+
+
+            if (x.Zorluk_Katsayısı == 0) {
+                $('#Uzunluk_Ve_Genişlik_Zorluk_Katsayı_Ekle_İnput_Modal').attr('class', 'form-control is-invalid')
+                is_sendable = 0
+            }
+            else {
+                $('#Uzunluk_Ve_Genişlik_Zorluk_Katsayı_Ekle_İnput_Modal').attr('class', 'form-control')
+                is_sendable = 1
+            }
+
+            if (is_sendable == 1) {
+                $.ajax({
+                    url: 'api/BükümYeni/Büküm_Uzunluk_Hesabı_Zorluk_Add',
+                    type: 'POST',
+                    async: false,
+                    dataType: "json",
+                    data: JSON.stringify(x),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+
+                        Swal.fire(
+                            'İşlem Başarılı',
+                        )
+                        $('#Uzunul_Ve_Genişlik_Zorluk_Ekle_Modal').modal('hide')
+                        $('#Parametre_Modal').modal('show')
+                        Büküm_Yeni_Build_Table($('#BükümYeni_Uzunluk_Zorluk_Table_' + data.büküm_Uzunluk_Hesabı_Id)
+                            , 0
+                            , 0
+                            , data.büküm_Uzunluk_Hesabı_Id)
+
+
+                    },
+                    error: function (xhr, status, error) {
+                        if (xhr.status == 200) {
+
+                        }
+                        else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Talep Esnasında Bir Hata Oluştur',
+                                text: '' + xhr.status + '   ' + error.Message,
+                            })
+                        }
+
+                    }
+                })
+
+            }
+
+
+
+        })
+
+
+
+
+
+
+    })
+</script>
+
+
+<div class="modal fade" id="Uzunluk_Ve_Genişlik_Düzenle_Modal" tabindex="-100" role="dialog"
+    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="Uzunluk_Ve_Genişlik_Düzenle_Modal_Header">Adet İle Büküm</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <input id="BükümYeni_Uzunluk_İle_Uzunluk_Bas_Düzenle" data-thousands="" data-decimal=","
+                            data-suffix=" mm" class="form-control form-control" type="text" placeholder="Uzunluk Baş">
+                    </div>
+                    <div class="col-md-4">
+                        <input id="BükümYeni_Uzunluk_İle_Uzunluk_Son_Düzenle" data-thousands="" data-decimal=","
+                            data-suffix=" mm" class="form-control form-control" type="text" placeholder="Uzunluk Son">
+                    </div>
+                    <div class="col-md-4">
+                        <input id="BükümYeni_Uzunluk_İle_Uzunluk_Kaysayı_Düzenle" data-thousands="" data-decimal=","
+                            data-suffix="" class="form-control form-control" type="text" placeholder="Katsayı">
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+                <button type="button" id="Uzunluk_Ve_Genişlik_Düzenle_Modal_Kaydet" class="btn btn-primary">
+                    Kaydet
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="Uzunul_Ve_Genişlik_Zorluk_Düzenle_Modal" tabindex="-100" role="dialog"
+    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="Uzunul_Ve_Genişlik_Zorluk_Düzenle_Modal_Header">Düzenle</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="Malzeme_Cinsi_Ekle_Div_Düzenle" style="padding-top: 25px;">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="">Zorluk Adı:</label>
+                            <input id="Uzunluk_Ve_Genişlik_Zorluk_Adı_Düzenle" class="form-control form-control"
+                                type="text" placeholder="Zorluk Adı">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="">Katsayı:</label>
+                            <input id="Uzunluk_Ve_Genişlik_Zorluk_Katsayı_Düzenle" data-thousands="" data-decimal=","
+                                data-suffix="" class="form-control form-control" type="text" placeholder="Katsayı">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+                <button type="button" id="Uzunluk_Ve_Genişlik_Zorluk_Düzenle_Kaydet" class="btn btn-primary">
+                    Kaydet
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="Uzunul_Ve_Genişlik_Zorluk_Ekle_Modal" tabindex="-100" role="dialog"
+    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="Uzunul_Ve_Genişlik_Zorluk_Ekle_Modal_Header">Düzenle</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="Malzeme_Cinsi_Ekle_Div_Düzenle" style="padding-top: 25px;">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="">Zorluk Adı:</label>
+                            <input id="Uzunluk_Ve_Genişlik_Zorluk_Adı_Ekle_İnput_Modal"
+                                class="form-control form-control" type="text" placeholder="Zorluk Adı">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="">Katsayı:</label>
+                            <input id="Uzunluk_Ve_Genişlik_Zorluk_Katsayı_Ekle_İnput_Modal" data-thousands=""
+                                data-decimal="," data-suffix="" class="form-control form-control" type="text"
+                                placeholder="Katsayı">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+                <button type="button" id="Uzunluk_Ve_Genişlik_Zorluk_Ekle_Kaydet_Modal_Kaydet" class="btn btn-primary">
+                    Kaydet
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="modal fade" id="BükümYeni_AdetİleBüküm_Modal_Düzenle" tabindex="-100" role="dialog"
+    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="BükümYeni_AdetİleBüküm_Modal_Header_Düzenle">Adet İle Büküm</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="Malzeme_Cinsi_Ekle_Div_Düzenle" style="padding-top: 25px;">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="">Zorluk Adı:</label>
+                            <input id="BükümYeni_AdetİleBüküm_Zorluk_Adı_Düzenle" class="form-control form-control"
+                                type="text" placeholder="Zorluk Adı">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="">Katsayı:</label>
+                            <input id="BükümYeni_AdetİleBüküm_Kaysayı_Düzenle" data-thousands="" data-decimal=","
+                                data-suffix="" class="form-control form-control" type="text" placeholder="Katsayı">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+                <button type="button" id="BükümYeni_AdetBüküm_Ekle_Modal_Kaydet_Düzenle" class="btn btn-primary">
+                    Kaydet
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="BükümYeni_AdetİleBüküm_Modal" tabindex="-100" role="dialog"
+    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="BükümYeni_AdetİleBüküm_Modal_Header">Adet İle Büküm</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="Malzeme_Cinsi_Ekle_Div_Düzenle" style="padding-top: 25px;">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="">Zorluk Adı:</label>
+                            <input id="BükümYeni_AdetİleBüküm_Zorluk_Adı" class="form-control form-control" type="text"
+                                placeholder="Zorluk Adı">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="">Katsayı:</label>
+                            <input id="BükümYeni_AdetİleBüküm_Kaysayı" data-thousands="" data-decimal="," data-suffix=""
+                                class="form-control form-control" type="text" placeholder="Katsayı">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+                <button type="button" id="BükümYeni_AdetBüküm_Ekle_Modal_Kaydet" class="btn btn-primary">
+                    Kaydet
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="BükümYeni_KiloBüküm_Ekle_Modal" tabindex="-100" role="dialog"
+    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="BükümYeni_KiloBüküm_Ekle_Modal_Header">Kilo İle Büküm</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="Malzeme_Cinsi_Ekle_Div_Düzenle" style="padding-top: 25px;">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="">Ağırlık Baş:</label>
+                            <input id="BükümYeni_Kilo_İle_Ağırlık_Bas" data-thousands="" data-decimal=","
+                                data-suffix=" kg" class="form-control form-control" type="text"
+                                placeholder="Ağırlık Baş">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="">Ağırlık Son:</label>
+                            <input id="BükümYeni_Kilo_İle_Ağırlık_Son" data-thousands="" data-decimal=","
+                                data-suffix=" kg" class="form-control form-control" type="text"
+                                placeholder="Ağırlık Son">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="">Katsayı:</label>
+                            <input id="BükümYeni_Kilo_İle_Katsayı" data-thousands="" data-decimal="," data-suffix=""
+                                class="form-control form-control" type="text" placeholder="Katsayı">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+                <button type="button" id="BükümYeni_KiloBüküm_Ekle_Modal_Kaydet" class="btn btn-primary">
+                    Kaydet
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="BükümYeni_KiloBüküm_Ekle_Modal_Düzenle" tabindex="-100" role="dialog"
+    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="BükümYeni_KiloBüküm_Ekle_Modal_Header_Düzenle">Kilo İle Büküm Düzenle</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="Malzeme_Cinsi_Ekle_Div_Düzenle" style="padding-top: 25px;">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="">Ağırlık Baş:</label>
+                            <input id="BükümYeni_Kilo_İle_Ağırlık_Bas_Düzenle" data-thousands="" data-decimal=","
+                                data-suffix=" kg" class="form-control form-control" type="text"
+                                placeholder="Ağırlık Baş">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="">Ağırlık Son:</label>
+                            <input id="BükümYeni_Kilo_İle_Ağırlık_Son_Düzenle" data-thousands="" data-decimal=","
+                                data-suffix=" kg" class="form-control form-control" type="text"
+                                placeholder="Ağırlık Son">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="">Katsayı:</label>
+                            <input id="BükümYeni_Kilo_İle_Katsayı_Düzenle" data-thousands="" data-decimal=","
+                                data-suffix="" class="form-control form-control" type="text" placeholder="Katsayı">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+                <button type="button" id="BükümYeni_KiloBüküm_Ekle_Modal_Kaydet_Düzenle" class="btn btn-primary">
+                    Kaydet
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,497 @@
+<script>
+    $(document).ready(function () {
+        $('#BükümYeni_Uzunluk_İle_Uzunluk_Bas').maskMoney()
+        $('#BükümYeni_Uzunluk_İle_Uzunluk_Son').maskMoney()
+        $('#BükümYeni_Uzunluk_İle_Uzunluk_Kaysayı').maskMoney()
+
+
+
+        $('#BükümYeni_Uzunluk_İle_Uzunluk_Ekle').click(function () {
+            var is_sendable = 1;
+            var x = {
+
+                Uzunluk_Bas: $('#BükümYeni_Uzunluk_İle_Uzunluk_Bas').maskMoney('unmasked')[0].toFixed(2),
+                Uzunluk_Son: $('#BükümYeni_Uzunluk_İle_Uzunluk_Son').maskMoney('unmasked')[0].toFixed(2),
+                Zorluk_Katsayısı: $('#BükümYeni_Uzunluk_İle_Uzunluk_Kaysayı').maskMoney('unmasked')[0].toFixed(2)
+            }
+
+            if (x.Uzunluk_Bas == 0) {
+                $('#BükümYeni_Uzunluk_İle_Uzunluk_Bas').attr('class', 'form-control is-invalid')
+                is_sendable = 0
+            }
+            else {
+                $('#BükümYeni_Uzunluk_İle_Uzunluk_Bas').attr('class', 'form-control')
+                is_sendable = 1
+            }
+
+            if (x.Uzunluk_Son == 0) {
+                $('#BükümYeni_Uzunluk_İle_Uzunluk_Son').attr('class', 'form-control is-invalid')
+                is_sendable = 0
+            }
+            else {
+                $('#BükümYeni_Uzunluk_İle_Uzunluk_Son').attr('class', 'form-control')
+                is_sendable = 1
+            }
+
+            if (x.Zorluk_Katsayısı == 0) {
+                $('#BükümYeni_Uzunluk_İle_Uzunluk_Kaysayı').attr('class', 'form-control is-invalid')
+                is_sendable = 0
+            }
+            else {
+                $('#BükümYeni_Uzunluk_İle_Uzunluk_Kaysayı').attr('class', 'form-control')
+                is_sendable = 1
+            }
+            if (is_sendable == 1) {
+                $.ajax({
+                    url: 'api/BükümYeni/Büküm_Uzunluk_Hesabı_Add',
+                    type: 'POST',
+                    async: false,
+                    dataType: "json",
+                    data: JSON.stringify(x),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+
+                        Swal.fire(
+                            'İşlem Başarılı',
+                        )
+                        Uzunluk_Doldur()
+                    },
+                    error: function (xhr, status, error) {
+                        if (xhr.status == 200) {
+
+                        }
+                        else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Talep Esnasında Bir Hata Oluştur',
+                                text: '' + xhr.status + '   ' + error.Message,
+                            })
+                        }
+
+                    }
+                })
+
+
+            }
+
+
+
+
+        })
+
+        Uzunluk_Doldur()
+
+    })
+
+    function Uzunluk_Doldur() {
+
+
+        $('#Katsayılar_Ve_Uzunluklar').empty()
+
+        $.ajax({
+            url: 'api/BükümYeni/Büküm_Uzunluk_Hesabı_Get_All',
+            type: 'POST',
+            async: false,
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+
+                console.log(data)
+
+                for (var i = 0; i < data.length; i++) {
+
+                    var variable = '' +
+                        ' <div class="row" style="padding-top: 25px;">' +
+                        '                    <div class="col-md-12">' +
+                        '                        <div class="card card-primary">' +
+                        '                            <div class="card-header">' +
+                        '                                <div class="row">' +
+                        '                                    <div class="col-md-4">' +
+                        '                                        <input id="BükümYeni_Uzunluk_İle_Uzunluk_Bas_' + data[i].id + '"  data-thousands="" data-decimal=","' +
+                        '                                            data-suffix=" mm" class="form-control form-control" type="text"' +
+                        '                                            placeholder="Uzunluk Baş">' +
+                        '                                    </div>' +
+                        '                                    <div class="col-md-4">' +
+                        '                                        <input id="BükümYeni_Uzunluk_İle_Uzunluk_Son_' + data[i].id + '" data-thousands="" data-decimal=","' +
+                        '                                            data-suffix=" mm" class="form-control form-control" type="text"' +
+                        '                                            placeholder="Uzunluk Son">' +
+                        '' +
+                        '                                    </div>' +
+                        '                                    <div class="col-md-4">' +
+                        '                                        <input id="BükümYeni_Uzunluk_İle_Uzunluk_Kaysayı_' + data[i].id + '" data-thousands=""' +
+                        '                                            data-decimal="," data-suffix="" class="form-control form-control"' +
+                        '                                            type="text" placeholder="Katsayı">' +
+                        '                                    </div>' +
+                        '                                </div>' +
+                        '                            </div>' +
+                        '                            <div class="card-body">' +
+                        '                                <div class="row">' +
+                        '                                    <div class="col-md-12">' +
+                        '                                        <table id="BükümYeni_Uzunluk_Zorluk_Table_' + data[i].id + '"></table>' +
+                        '                                    </div>' +
+                        '                                </div>' +
+                        '                              <div class="row" style="padding-top: 25px;">' +
+                        '                                    <div class="col-md-8"></div>' +
+                        '                                    <div class="col-md-2">' +
+                        '                                        <button type="button" id="Yeni_Zorluk_Ekle_Modal_Aç_Button_' + data[i].id + '"' +
+                        '                                            class="btn btn-block btn-warning">' +
+                        '                                            Ekle' +
+                        '                                        </button>' +
+                        '                                    </div>' +
+                        '                                    <div class="col-md-2">' +
+                        '                                        <button type="button" id="Uzunluk_Genişlik_Sil_' + data[i].id + '"' +
+                        '                                          data_Id="' + data[i].id + '"  class="btn btn-block btn-danger">' +
+                        '                                            Sil' +
+                        '                                        </button>' +
+                        '                                    </div>' +
+                        '                                </div>' +
+                        '                            </div>' +
+                        '                        </div>' +
+                        '                    </div>' +
+                        '                </div>' +
+                        '';
+
+                    $('#Katsayılar_Ve_Uzunluklar').append(variable)
+
+                    $('#BükümYeni_Uzunluk_İle_Uzunluk_Bas_' + data[i].id).val(data[i].uzunluk_Bas.toFixed(2))
+                    $('#BükümYeni_Uzunluk_İle_Uzunluk_Bas_' + data[i].id).maskMoney();
+                    $('#BükümYeni_Uzunluk_İle_Uzunluk_Bas_' + data[i].id).trigger('mask.maskMoney');
+                    $('#BükümYeni_Uzunluk_İle_Uzunluk_Bas_' + data[i].id).attr("disabled", 'true');
+
+
+                    $('#BükümYeni_Uzunluk_İle_Uzunluk_Son_' + data[i].id).val(data[i].uzunluk_Son.toFixed(2))
+                    $('#BükümYeni_Uzunluk_İle_Uzunluk_Son_' + data[i].id).maskMoney();
+                    $('#BükümYeni_Uzunluk_İle_Uzunluk_Son_' + data[i].id).trigger('mask.maskMoney');
+                    $('#BükümYeni_Uzunluk_İle_Uzunluk_Son_' + data[i].id).attr("disabled", 'true');
+
+                    $('#BükümYeni_Uzunluk_İle_Uzunluk_Kaysayı_' + data[i].id).val(data[i].zorluk_Katsayısı.toFixed(2))
+                    $('#BükümYeni_Uzunluk_İle_Uzunluk_Kaysayı_' + data[i].id).maskMoney();
+                    $('#BükümYeni_Uzunluk_İle_Uzunluk_Kaysayı_' + data[i].id).trigger('mask.maskMoney');
+                    $('#BükümYeni_Uzunluk_İle_Uzunluk_Kaysayı_' + data[i].id).attr("disabled", 'true');
+
+
+                    Büküm_Yeni_Build_Table($('#BükümYeni_Uzunluk_Zorluk_Table_' + data[i].id)
+                        , 0
+                        , 0
+                        , data[i].id)
+                    var Data_Id = data[i].id
+                    $('#Yeni_Zorluk_Ekle_Modal_Aç_Button_' + data[i].id).click(function () {
+                        $('#Parametre_Modal').modal('hide')
+                        $('#Uzunul_Ve_Genişlik_Zorluk_Ekle_Modal').modal('show')
+                        $('#Uzunluk_Ve_Genişlik_Zorluk_Ekle_Kaydet_Modal_Kaydet').attr('Data_Id', Data_Id)
+
+
+                    })
+
+                    $('#Uzunluk_Genişlik_Sil_' + data[i].id).click(function () {
+                        var Zorluk_Id = $(this).attr('data_Id')
+                        console.log(Zorluk_Id)
+
+
+                        Swal.fire({
+                            title: 'Silmek İstediğinizden Eminmisiniz ?',
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Sil',
+                            cancelButtonText: 'Vazgeç'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+
+                                var x = {
+                                    id: Zorluk_Id
+                                }
+                                $.ajax({
+                                    url: 'api/BükümYeni/Büküm_Uzunluk_Hesabı_Delete',
+                                    type: 'POST',
+                                    async: false,
+                                    dataType: "json",
+                                    data: JSON.stringify(x),
+                                    contentType: "application/json; charset=utf-8",
+                                    success: function (data) {
+
+                                        Uzunluk_Doldur()
+
+
+                                        Swal.fire(
+                                            'Silindi',
+                                            'İşlem Başarılı',
+                                            'success'
+                                        )
+                                    },
+                                    error: function (xhr, status, error) {
+                                        if (xhr.status == 200) {
+
+                                        }
+                                        else {
+                                            Swal.fire({
+                                                icon: 'error',
+                                                title: 'Talep Esnasında Bir Hata Oluştur',
+                                                text: '' + xhr.status + '   ' + error.Message,
+                                            })
+                                        }
+
+                                    }
+                                })
+
+
+                            }
+                        })
+
+
+
+
+                    })
+
+
+
+
+
+                }
+
+            },
+            error: function (xhr, status, error) {
+                if (xhr.status == 200) {
+
+                }
+                else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Talep Esnasında Bir Hata Oluştur',
+                        text: '' + xhr.status + '   ' + error.Message,
+                    })
+                }
+
+            }
+        })
+
+
+
+
+
+
+    }
+
+    function Büküm_Yeni_Build_Table($el, cells, rows, Büküm_Uzunluk_Hesabı_Id) {
+
+        $el.bootstrapTable('destroy');
+
+
+        var i; var j; var row
+        var columns = [];
+        var data__ = [];
+
+        columns.push({
+            field: 'ID',
+            title: 'ID',
+            sortable: true
+        })
+        columns.push({
+            field: 'Zorluk_Adı',
+            title: 'Zorluk Adı',
+            sortable: true
+        })
+        columns.push({
+            field: 'Zorluk_Katsayısı',
+            title: 'Zorluk Katsayısı',
+            sortable: true
+        })
+
+
+        columns.push({
+            field: 'Düzenle',
+            title: 'Düzenle',
+        })
+        columns.push({
+            field: 'Sil',
+            title: 'Sil',
+        })
+
+        var x = {
+            Id: Büküm_Uzunluk_Hesabı_Id
+        }
+        $.ajax({
+            url: 'api/BükümYeni/Büküm_Uzunluk_Hesabı_Zorluk_Get_Genel_Id',
+            type: 'POST',
+            async: false,
+            dataType: "json",
+            data: JSON.stringify(x),
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+
+                var temp = data
+                console.log("0ı9sad908809asd089")
+                console.log(data)
+                for (i = 0; i < temp.length; i++) {
+                    row = {}
+
+
+                    var Zorluk_Adı = '' +
+                        '<input   id="Büküm_Uzunluk_Zorluk_Adı_İnput" class="form-control" disabled' +
+                        '                                           value="' + temp[i].zorluk_Adı + '"         type="text"' +
+                        '                                                      />' +
+                        '';
+
+
+                    var katSayı = '' +
+                        '<input   id="Büküm_Uzunluk_Zorluk_Katsayı_İnput" class="form-control" data-thousands="." data-decimal=","' +
+                        '                                           value="' + temp[i].zorluk_Katsayısı.toFixed(2) + '"         data-suffix="" type="text"' +
+                        '                                                      />' +
+                        '';
+
+
+
+
+
+                    row['ID'] = temp[i].id
+                    row['Zorluk_Adı'] = Zorluk_Adı
+                    row['Zorluk_Katsayısı'] = katSayı
+                    row['Sil'] = '<button class="btn btn-danger"  Zorluk_Id="' + temp[i].id + '"  id="Büküm_Uzunluk_Hesabu_Zorluk_Sil"><i class="fa fa-trash"></i></button>'
+                    row['Düzenle'] = '<button class="btn btn-block btn-warning" Zorluk_Id="' + temp[i].id + '"  Büküm_KiloHesabı_Id="' + data[i].büküm_Uzunluk_Hesabı_Id + '"  id="Büküm_Uzunluk_Hesabu_Zorluk_Düzenle">Düzenle</button>'
+
+                    data__.push(row)
+
+
+                }
+            },
+            error: function () {
+                alert('Talep esnasında sorun oluştu.Yeniden deneyin');
+            }
+        });
+
+
+
+        $el.bootstrapTable({
+            columns: columns,
+            data: data__,
+            onPostBody: function (data) {
+                console.log("auuağğuağuağu")
+                console.log(data)
+                $('#Büküm_Uzunluk_Zorluk_Katsayı_İnput').maskMoney();
+                $('#Büküm_Uzunluk_Zorluk_Katsayı_İnput').trigger('mask.maskMoney');
+                $('#Büküm_Uzunluk_Zorluk_Katsayı_İnput').attr("disabled", 'true');
+
+
+
+            }
+
+        })
+
+        $('button[id=Büküm_Uzunluk_Hesabu_Zorluk_Düzenle]').click(function () {
+
+            $('#Parametre_Modal').modal('hide')
+            $('#Uzunul_Ve_Genişlik_Zorluk_Düzenle_Modal').modal('show')
+            $('#Uzunluk_Ve_Genişlik_Zorluk_Düzenle_Kaydet').attr('Operasyon_ıd', $(this).attr('Zorluk_Id'))
+            $('#Uzunluk_Ve_Genişlik_Zorluk_Düzenle_Kaydet').attr('Genel_Id', $(this).attr('Büküm_KiloHesabı_Id'))
+
+        })
+        $('button[id=Büküm_Uzunluk_Hesabu_Zorluk_Sil]').click(function () {
+
+            var Zorluk_Id = $(this).attr('Zorluk_Id')
+            console.log(Zorluk_Id)
+
+
+            Swal.fire({
+                title: 'Silmek İstediğinizden Eminmisiniz ?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sil',
+                cancelButtonText: 'Vazgeç'
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                    var x = {
+                        id: Zorluk_Id
+                    }
+                    $.ajax({
+                        url: 'api/BükümYeni/Büküm_Uzunluk_Hesabı_Zorluk_Delete',
+                        type: 'POST',
+                        async: false,
+                        dataType: "json",
+                        data: JSON.stringify(x),
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+
+                            Büküm_Yeni_Build_Table($('#BükümYeni_Uzunluk_Zorluk_Table_' + data.büküm_Uzunluk_Hesabı_Id)
+                                , 0
+                                , 0
+                                , data.büküm_Uzunluk_Hesabı_Id)
+
+
+                            Swal.fire(
+                                'Silindi',
+                                'İşlem Başarılı',
+                                'success'
+                            )
+                        },
+                        error: function (xhr, status, error) {
+                            if (xhr.status == 200) {
+
+                            }
+                            else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Talep Esnasında Bir Hata Oluştur',
+                                    text: '' + xhr.status + '   ' + error.Message,
+                                })
+                            }
+
+                        }
+                    })
+
+
+                }
+            })
+
+        })
+
+    }
+
+
+</script>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-primary collapsed-card">
+            <div class="card-header">
+                <label for="">Uzunluk/Genişlik İle Büküm Hesaplama</label>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table id="Uzunluk_Veya_Genişlik_İle_Büküm_Hesaplama_Table"></table>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <input id="BükümYeni_Uzunluk_İle_Uzunluk_Bas" data-thousands="" data-decimal=","
+                            data-suffix=" mm" class="form-control form-control" type="text" placeholder="Uzunluk Baş">
+                    </div>
+                    <div class="col-md-3">
+                        <input id="BükümYeni_Uzunluk_İle_Uzunluk_Son" data-thousands="" data-decimal=","
+                            data-suffix=" mm" class="form-control form-control" type="text" placeholder="Uzunluk Son">
+                    </div>
+                    <div class="col-md-3">
+                        <input id="BükümYeni_Uzunluk_İle_Uzunluk_Kaysayı" data-thousands="" data-decimal=","
+                            data-suffix="" class="form-control form-control" type="text" placeholder="Katsayı">
+                    </div>
+                    <div class="col-md-3">
+                        <button type="button" id="BükümYeni_Uzunluk_İle_Uzunluk_Ekle" class="btn btn-block btn-primary">
+                            Ekle
+                        </button>
+                    </div>
+                </div>
+                <div id="Katsayılar_Ve_Uzunluklar"></div>
+
+            </div>
+        </div>
+    </div>
+</div>

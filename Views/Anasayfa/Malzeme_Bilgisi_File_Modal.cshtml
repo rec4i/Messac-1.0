@@ -1,0 +1,87 @@
+<script>
+    $(document).ready(function () {
+
+
+        var File_Id = 0;
+        $('#Malzeme_Bilgisi_Dosya_Ekle_İnput_Button').click(function () {
+            var variable = '' +
+                '<form style="padding-top: 25px;">' +
+                '  <div class="custom-file">' +
+                '    <input type="file" class="custom-file-input" id="Malzeme_Bilgisi_Dosya_İnputları">' +
+                '    <label class="custom-file-label" for="customFile">Choose file</label>' +
+                '  </div>' +
+                '</form>' +
+                '';
+            $('#previews').append(variable)
+            $(".custom-file-input").on("change", function () {
+                var fileName = $(this).val().split("\\").pop();
+                $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+                console.log(this.files)
+            });
+
+
+
+        })
+    })
+</script>
+<style>
+    #file-input::-webkit-file-upload-button {
+        visibility: hidden;
+        user-select: none;
+    }
+
+    #file-input {
+        display: none;
+        user-select: none;
+    }
+</style>
+
+<div class="modal fade" id="Malzeme_Bilgisi_Dosya_Ekle_Modal" tabindex="-100" role="dialog"
+    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="Malzeme_Bilgisi_Dosya_Ekle_Modal_Header">Dosya Ekle</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-12">
+                    <div class="card card-default">
+                        <div class="card-header">
+                            <h3 class="card-title">Lütfen Dosya Seçiniz </h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <button type="submit" id="Malzeme_Bilgisi_Dosya_Ekle_İnput_Button"
+                                        class="btn btn-success col fileinput-button dz-clickable">
+                                        <i class="fas fa-plus"></i>
+                                        <span>Dosya Ekle</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row" style="padding-top: 25px;">
+                                <div class="col-md-12">
+                                    <div id="previews">
+                                       
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,311 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.13.4/jquery.mask.min.js"></script>
+<script>
+    $(document).ready(function () {
+
+        $('#Yeni_Kesim_Maliyeti').click(function () {
+            if ($(this).attr('basıldımı') == 0) {
+
+                $(this).attr('basıldımı', "1")
+                $(this).attr('readonly', "true")
+                $(this).attr('style', 'background-color:#343a40a1;border-color:#343a40a1')
+
+                var variable = '' +
+                    '<div class="row" id="Kesim_Row">' +
+                    '    <div class="col-md-12">' +
+                    '        <div class="card card-dark border border-dark">' +
+                    '            <div class="card-header">' +
+                    '                <label for="">Kesim Maliyeti</label>' +
+                    '            </div>' +
+                    '            <div class="card-body">' +
+                    '                <div class="row">' +
+                    '                    <div class="col-md-12">' +
+                    '                        <label for="">Kesim Türü</label>' +
+                    '                        <select class="form-control" id="Kesim_Select"></select>' +
+                    '                    </div>' +
+                    '                </div>' +
+
+                    '                <div class="row">' +
+                    '                    <div class="col-md-6">' +
+                    '                        <label for="">Parça Adeti :</label>' +
+                    '                        <input type="text" class="form-control" id="Kesim_Hesabı_Malzeme_Adeti_İnput" data-thousands=""' +
+                    '                            placeholder="Malzeme Adeti" data-suffix="" data-decimal=",">' +
+                    '                    </div>' +
+                    '                    <div class="col-md-6">' +
+                    '                        <label for="">Kesim Verimliliği Katsayısı :</label>' +
+                    '                        <input type="text" class="form-control" id="Kesim_Hesabı_Verimlilik_İnput" data-thousands=""' +
+                    '                            placeholder="Kesim Verimliliği" value="1.25" data-suffix="" data-decimal=",">' +
+                    '                    </div>' +
+                    '                </div>' +
+                    '                <div class="row">' +
+                    '                    <div class="col-md-6">' +
+
+                    '                    </div>' +
+                    '                    <div class="col-md-6">' +
+                    '                        <label for="">Kesim Süresi (hh:mm:ss)</label>' +
+                    '                        <input type="text" id="Kesim_Süresi_Saat_Dakika" class="form-control">' +
+                    '                    </div>' +
+                    '                </div>' +
+                    '                <div class="row">' +
+                    '                    <div class="col-md-6">' +
+            
+                    '                    </div>' +
+                    '                    <div class="col-md-3">' +
+                    '                        <label for="">Malzeme Kesim Süresi(sn):</label>' +
+                    '                        <input id="Malzeme_Kesim_Süresi" data-thousands="" data-decimal="." data-suffix=" sn"' +
+                    '                            class="form-control" disabled type="text" placeholder="Malzeme Kesim Süresi(sn)">' +
+                    '                    </div>' +
+                    '                    <div class="col-md-3">' +
+                    '                        <label for="">Kesim Fiyatı</label>' +
+                    '                        <input id="Malzeme_Kesim_Fiyatı_İnput" data-suffix=" ₺" class="form-control form-control"' +
+                    '                            type="text" placeholder="Kesim Fiyatı">' +
+                    '                    </div>' +
+                    '                </div>' +
+                    '                <div class="row" style="padding-top: 25px;">' +
+                    '                    <div class="col-md-8"></div>' +
+                    '                    <div class="col-md-4">' +
+                    '                        <label for="">Malzeme Kesim Maliyeti:</label>' +
+                    '                        <input id="Malzeme_Kesim_Maliyeti" disabled data-suffix=" ₺" class="form-control form-control"' +
+                    '                            type="text" placeholder="Malzeme Kesim Maliyeti">' +
+                    '' +
+                    '                    </div>' +
+                    '                </div>' +
+                    '            </div>' +
+                    '        </div>' +
+                    '    </div>' +
+                    '</div>' +
+                    '' +
+                    '';
+                $('#Kesim_Maliyeti_Sırası').append(variable);
+
+
+                var $select = $('#Kesim_Select')
+
+               
+
+                //Malzeme_Kesim_Süresi
+                $('#Malzeme_Kesim_Süresi').maskMoney()
+                $('#Malzeme_Kesim_Süresi').trigger('mask.maskMoney');
+                //Malzeme_Fiyatı_İnput
+                $('#Malzeme_Kesim_Fiyatı_İnput').maskMoney()
+                $('#Malzeme_Kesim_Fiyatı_İnput').trigger('mask.maskMoney');
+                //Kesim_Hesabı_Adet_İnput
+                $('#Kesim_Hesabı_Adet_İnput').maskMoney()
+                $('#Kesim_Hesabı_Adet_İnput').trigger('mask.maskMoney');
+
+
+
+                //Kesim_Hesabı_Fire_Katsayısı_İnput
+                $('#Kesim_Hesabı_Fire_Katsayısı_İnput').maskMoney()
+                $('#Kesim_Hesabı_Fire_Katsayısı_İnput').trigger('mask.maskMoney');
+                //Kesim_Hesabı_Verimlilik_İnput
+                $('#Kesim_Hesabı_Verimlilik_İnput').maskMoney()
+                $('#Kesim_Hesabı_Verimlilik_İnput').trigger('mask.maskMoney');
+                //Kesim_Hesabı_Malzeme_Adeti_İnput
+                $('#Kesim_Hesabı_Malzeme_Adeti_İnput').maskMoney({
+                    precision: 0
+                })
+                $('#Kesim_Hesabı_Malzeme_Adeti_İnput').trigger('mask.maskMoney');
+
+                $('input[id=Kesim_Süresi_Saat_Dakika]').inputmask("hh:mm:ss", {
+                    placeholder: "hh:mm:ss",
+                    insertMode: false,
+                    showMaskOnHover: false,
+                    hourFormat: "24"
+                });
+
+                $('#Kesim_Hesabı_Fire_Dahil_Ağırlık_İnput').maskMoney({
+                    precision: 4
+                })
+                $('#Kesim_Hesabı_Fire_Dahil_Ağırlık_İnput').trigger('mask.maskMoney');
+
+
+
+
+                $('#Kesim_Hesabı_Malzeme_Adeti_İnput').val($('#Malzeme_Parça_Adeti').val())
+                $('#Kesim_Hesabı_Malzeme_Adeti_İnput').linkField('#Malzeme_Parça_Adeti','#Kesim_Hesabı_Malzeme_Adeti_İnput')
+
+                //
+
+                //$('#Kesim_Hesabı_Fire_Dahil_Ağırlık_İnput').mask("##0.0000", {reverse: true});
+
+                //Kesim_Hesabı_Fire_Dahil_Ağırlık_İnput
+
+
+
+                $('#Malzeme_Kalınlığı').on('keyup keypress blur change', function () {
+                    $('#Malzeme_Boyu_İnput').val($('#Malzeme_Kalınlığı').maskMoney('unmasked')[0].toFixed(2))
+                    $('#Malzeme_Boyu_İnput').maskMoney()
+                    $('#Malzeme_Boyu_İnput').trigger('mask.maskMoney');
+                    $('#Malzeme_Boyu_İnput').trigger('change');
+
+
+                    Uygun_Kesimi_Getir($('#Malzeme_Kalınlığı').maskMoney('unmasked')[0].toFixed(2), $('#Kesim_Select').find(':selected').attr('value'), $('#Malzeme_Kesim_Fiyatı_İnput'))
+
+
+                    $('#Büküm_Malzeme_Kilo_Boyu').val($('#Malzeme_Kalınlığı').maskMoney('unmasked')[0].toFixed(2))
+                    $('#Büküm_Malzeme_Kilo_Boyu').trigger('mask.maskMoney');
+                    $('#Büküm_Malzeme_Kilo_Boyu').trigger('change');
+
+
+                });
+
+                $('#Malzeme_Kesim_Fiyatı_İnput,#Malzeme_Kesim_Süresi').on('keyup keypress blur change', function () {
+
+
+
+                    var Result = Kesim_Maliyti_Hesapla($('#Malzeme_Kesim_Süresi').maskMoney('unmasked')[0].toFixed(2)
+                        , $('#Malzeme_Kesim_Fiyatı_İnput').maskMoney('unmasked')[0].toFixed(2))
+
+                    $('#Malzeme_Kesim_Maliyeti').val(Result.toFixed(2))
+                    $('#Malzeme_Kesim_Maliyeti').maskMoney()
+                    $('#Malzeme_Kesim_Maliyeti').trigger('mask.maskMoney');
+
+
+
+
+
+
+
+                });
+
+
+
+                $('#Kesim_Hesabı_Malzeme_Adeti_İnput,#Kesim_Hesabı_Verimlilik_İnput,#Kesim_Süresi_Saat_Dakika').on('keyup keypress blur change', function () {
+                    var Kesim_Süresi = Bir_Parçanın_Kesim_Suresini_Hesapla(
+                        $('#Kesim_Hesabı_Malzeme_Adeti_İnput').val()
+                        , $('#Kesim_Hesabı_Verimlilik_İnput').maskMoney('unmasked')[0].toFixed(2)
+                        , $('#Kesim_Süresi_Saat_Dakika').val()
+                    )
+                    if (Kesim_Süresi != NaN && Kesim_Süresi != null) {
+                        $('#Malzeme_Kesim_Süresi').val(Kesim_Süresi.toFixed(2))
+                        $('#Malzeme_Kesim_Süresi').trigger('mask.maskMoney')
+                    }
+                    console.log(Kesim_Süresi)
+
+                    $('#Malzeme_Kesim_Fiyatı_İnput').trigger('blur')
+
+
+
+                })
+
+
+                $('#Kesim_Select').change(function () {
+
+                   
+                    var x = {
+                        Id: $(this).find(':selected').attr('value')
+                    }
+                    $.ajax({
+                        url: 'api/BükümYeni/Büküm_KiloHesabı_Get_By_Id',
+                        type: 'POST',
+                        async: false,
+                        dataType: "json",
+                        global: false,
+                        data: JSON.stringify(x),
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            console.log(data)
+
+                        },
+                        error: function (xhr, status, error) {
+                            if (xhr.status == 200) {
+
+                            }
+                            else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Talep Esnasında Bir Hata Oluştur',
+                                    text: '' + xhr.status + '   ' + error.Message,
+                                })
+                            }
+
+                        }
+                    })
+
+
+
+
+                })
+
+                Kesim_Türü_Select_Doldu($select, $('#Kesim_Select').find(':selected').attr('value'))
+
+
+
+
+            }
+            else {
+
+                $(this).attr('basıldımı', "0")
+                $(this).attr('readonly', "false")
+                $(this).attr('style', 'background-color:#343a40;border-color:#343a40')
+                $('#Kesim_Row').remove()
+
+
+            }
+
+        })
+        $('input[id=Kesim_Süresi_Saat_Dakika]').val()
+
+    })
+
+    function Bir_Parçanın_Kesim_Suresini_Hesapla(Malzeme_Adet, Kesim_Verimliliği, Kesim_Süresi_Saat_Dakika) {
+        console.log(Kesim_Süresi_Saat_Dakika)
+        console.log(Kesim_Verimliliği)
+        console.log(Malzeme_Adet)
+
+        try {
+            return (parseFloat(convertDurationtoSeconds(Kesim_Süresi_Saat_Dakika)) * parseFloat(Kesim_Verimliliği)) / (parseFloat(Malzeme_Adet))
+        }
+        catch (err) {
+            return null
+        }
+
+
+    }
+
+    function convertDurationtoSeconds(duration) {
+        const [hours, minutes, seconds] = duration.split(':');
+        return Number(hours) * 60 * 60 + Number(minutes) * 60 + Number(seconds);
+    };
+    function Kesim_Maliyti_Hesapla(Süre, Fiyat) {
+
+        return parseFloat(Süre) * parseFloat(Fiyat)
+
+    }
+    function Kesim_Türü_Select_Doldu($select, Selected_Option) {
+        $.ajax({
+            url: 'api/Kesim/Kesim_Türü_Get_All',
+            type: 'POST',
+            async: false,
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                console.log(data)
+                $select.empty()
+                for (var i = 0; i < data.length; i++) {
+                    $select.append('<option  value="' + data[i].id + '">' + data[i].kesim_Türü_Txt + '</option>')
+                }
+                if (Selected_Option != null) {
+                    $select.val(Selected_Option)
+                }
+
+
+
+            },
+            error: function (xhr, status, error) {
+                if (xhr.status == 200) {
+
+                }
+                else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Talep Esnasında Bir Hata Oluştur',
+                        text: '' + xhr.status + '   ' + error.Message,
+                    })
+                }
+
+            }
+        })
+    }
+</script>
+<script src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js"></script>

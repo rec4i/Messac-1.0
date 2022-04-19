@@ -1,0 +1,208 @@
+<script>
+    $(document).ready(function () {
+        $('#Yeni_Kaplama_Ekle').click(function () {
+            if ($(this).attr('basıldımı') == 0) {
+                $(this).attr('basıldımı', "1")
+                $(this).attr('readonly', "true")
+                $(this).attr('style', 'background-color:#007bff5c;border-color:#007bff5c')
+
+                var variable = '' +
+                    '<div class="row" id="Kaplama_Row">' +
+                    '                        <div class="col-md-12">' +
+                    '                            <div class="card card-primary border border-primary">' +
+                    '                                <div class="card-header">' +
+                    '                                    <label for="">Kaplama Maliyeti</label>' +
+                    '                                </div>' +
+                    '                                <div class="card-body">' +
+                    '                                    <div class="row">' +
+                    '                                        <div class="col-md-10">' +
+                    '                                            <label>Lütfen Kaplama Seçiniz: </label>' +
+                    '                                        </div>' +
+                    '                                    </div>' +
+                    '                                    <div class="row">' +
+                    '                                        <div class="col-md-12">' +
+                    '                                            <select id="Kaplama_Select"' +
+                    '                                       son_eklenen_satır="-1"         style="width: 100% ; padding-bottom: 25px;"></select>' +
+                    '                                        </div>' +
+               
+                    '                                    </div>' +
+                    '                                    <div class="row" style="padding-top: 25px;">' +
+                    '                                        <div class="col-md-12">' +
+                    '                                            <div class="card">' +
+                    '                                                <div class="card-body">' +
+                    '                                                    <div id="Kaplamalar">' +
+                    '                                                      ' +
+                    '                                                    </div>' +
+                    '                                                </div>' +
+                    '                                            </div>' +
+                    '                                        </div>' +
+                    '                                    </div>' +
+                    '' +
+                    '                                </div>' +
+                    '                            </div>' +
+                    '                        </div>' +
+                    '                    </div>' +
+                    '';
+                $('#Kaplama_Sırası').append(variable)
+
+
+                $("#Kaplama_Select").select2({
+                    ajax: {
+                        url: '/api/Kaplama/kaplama_Get_By_Text',
+                        dataType: 'json',
+                        type: 'POST',
+                        delay: 250,
+                        global: false,
+                        contentType: "application/json; charset=utf-8",
+                        data: function (params) {
+                            var x = {
+                                Kapmala_Text: params.term
+                            }
+                            return JSON.stringify(x)
+                        },
+                        processResults: function (data, params) {
+
+
+                            return {
+                                results: $.map(data, function (item) {
+                                    return {
+                                        text: item.kapmala_Text,
+                                        id: item.id
+                                    }
+                                })
+                            };
+                        },
+                        cache: true
+                    },
+                    minimumInputLength: 2
+                })
+
+                $("#Kaplama_Select").change(function () {
+
+                    $(this).attr('son_eklenen_satır', parseInt($(this).attr('son_eklenen_satır')) + 1)
+                    var row_İndex = $(this).attr('son_eklenen_satır')
+                    var x = {
+                        Id: $('#Kaplama_Select').find(':selected').val()
+                    }
+
+                    var Gelen_Data;
+
+                    $.ajax({
+                        url: 'api/Kaplama/kaplama_Get_By_Id',
+                        type: 'POST',
+                        async: false,
+                        dataType: "json",
+                        data: JSON.stringify(x),
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            console.log(data)
+                            Gelen_Data = data;
+
+                        },
+                        error: function (xhr, status, error) {
+                            if (xhr.status == 200) {
+
+                            }
+                            else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Talep Esnasında Bir Hata Oluştur',
+                                    text: '' + xhr.status + '   ' + error.Message,
+                                })
+                            }
+
+                        }
+                    })
+
+                    var Kaynak_Satır = '' +
+                        ' <div class="row" name="Kaplama_Row" style="padding-top: 25px;" row_Id="' + row_İndex + '" >' +
+                        '                                                            <div class="col-md-3">' +
+                        '                                                                <input type="text" class="form-control" id="Kaplama_Text_' + row_İndex + '"' +
+                        '                                                                    placeholder="Kaynak Türü" Data_Id="'+Gelen_Data.id+'" value="' + Gelen_Data.kapmala_Text + '" disabled>' +
+                        '                                                            </div>' +
+                        '                                                            <div class="col-md-2">' +
+                        '                                                                <input type="text" class="form-control"' +
+                        '                                                                    placeholder="Birim" id="Kaplama_Birim' + row_İndex + '" value="' + Gelen_Data.birimler.birim_Kısa_ad + '" disabled>' +
+                        '                                                            </div>' +
+                        '                                                            <div class="col-md-2">' +
+                        '                                                                <input type="text" class="form-control"' +
+                        '                                                                    placeholder="Birim Fiyatı" value="' + Gelen_Data.birim_Maliyet.toFixed(2) + '"  data-thousands="." data-decimal="," data-suffix=" ₺" id="Kaplama_Birim_Fiyat_' + row_İndex + '">' +
+                        '                                                            </div>' +
+                        '                                                            <div class="col-md-2">' +
+                        '                                                                <input type="text" class="form-control"' +
+                        '                                                                    placeholder="Birim Adeti"   data-thousands="" data-decimal="." data-suffix=" ' + Gelen_Data.birimler.birim_Kısa_ad + '" id="Kaplama_Birim_Adeti_' + row_İndex + '">' +
+                        '                                                            </div>' +
+                        '                                                            <div class="col-md-2">' +
+                        '                                                                <input type="text" class="form-control"' +
+                        '                                                                  data-thousands="." disabled data-decimal="," data-suffix=" ₺"   placeholder="Toplam Fiyat" id="Kaplama_Toplam_Fİyat_' + row_İndex + '">' +
+                        '                                                            </div>' +
+                        '                                                            <div class="col-md-1">' +
+                        '                                                                <button type="button" id="Kaplama_Satırı_Sil' + row_İndex + '"' +
+                        '                                                                    class="btn btn-danger btn-block">' +
+                        '                                                                    <i class="fas fa-trash"></i>' +
+                        '                                                                    Sil' +
+                        '                                                                </button>' +
+                        '                                                            </div>' +
+                        '                                                        </div>' +
+                        '';
+                    $('#Kaplamalar').append(Kaynak_Satır)
+
+                  
+
+
+
+                    $('#Kaplama_Birim_Fiyat_' + row_İndex).maskMoney();
+                    $('#Kaplama_Birim_Fiyat_' + row_İndex).trigger('mask.maskMoney');
+
+
+                    $('#Kaplama_Birim_Adeti_' + row_İndex).maskMoney();
+                    $('#Kaplama_Birim_Adeti_' + row_İndex).trigger('mask.maskMoney');
+
+                    $('#Kaplama_Toplam_Fİyat_' + row_İndex).maskMoney();
+                    $('#Kaplama_Toplam_Fİyat_' + row_İndex).trigger('mask.maskMoney');
+                    //Kaynak_Birim_Adeti_  Kaplama_Toplam_Fİyat_
+                    //Kaynak_Toplam_Fiyat_
+                    $('#Kaynak_Satır_Sil_' + row_İndex).click(function () {
+                        $(this).parent().parent().remove()
+                    })
+
+
+                    $('#Kaplama_Birim_Adeti_' + row_İndex + ',#Kaplama_Birim_Fiyat_' + row_İndex).on('keyup keypress blur change', function () {
+
+
+                        var rv = Toplam_Fiyat_Hesapla($('#Kaplama_Birim_Adeti_' + row_İndex).maskMoney('unmasked')[0].toFixed(2)
+
+                            , $('#Kaplama_Birim_Fiyat_' + row_İndex).maskMoney('unmasked')[0].toFixed(2))
+
+                        $('#Kaplama_Toplam_Fİyat_' + row_İndex).val(rv.toFixed(2));
+                        $('#Kaplama_Toplam_Fİyat_' + row_İndex).maskMoney();
+                        $('#Kaplama_Toplam_Fİyat_' + row_İndex).trigger('mask.maskMoney');
+
+
+
+                    })
+
+
+
+                })
+
+
+
+
+
+
+            }
+            else {
+                $(this).attr('basıldımı', "0")
+                $(this).attr('readonly', "false")
+                $(this).attr('style', 'background-color:#007bff;border-color:#007bff')
+
+                $('#Kaplama_Row').remove()
+            }
+
+        })
+
+
+    })
+</script>
+

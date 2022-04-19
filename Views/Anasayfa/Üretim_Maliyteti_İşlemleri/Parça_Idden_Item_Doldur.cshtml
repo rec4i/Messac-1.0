@@ -1,0 +1,1260 @@
+<script>
+    $(document).ready(function () {
+        var Revize_Id = window.location.href.split('?')[1].split('&')[0].split('=')[1]
+        $('#Parça_Kaydet_Btn_Modal_Kaydet_Btn').attr('Revize_Id', Revize_Id)
+        console.log(Revize_Id)
+        Malzeme_Maliyeti_Varmı(Revize_Id)
+        Kesim_Maliyeti_Varmı(Revize_Id)
+        Tesfiye_Varmı(Revize_Id)
+        Büküm_Maliyeti_Varmı(Revize_Id)
+        Kaynak_Maliyeti_Varmı(Revize_Id)
+        Bağlantı_Elemanı_Maliyeti_Varmı(Revize_Id)
+        Kaplama_Maliyeti_Varmı(Revize_Id)
+        Dıs_Operasyon_Varmı(Revize_Id)
+        Paketleme_Varmı(Revize_Id)
+        Boya_Varmı(Revize_Id)
+
+    })
+    function Boya_Varmı(Revize_Id) {
+
+
+        var x = {
+            id: Revize_Id
+        }
+        var Dıs_Operasyon_Data;
+        $.ajax({
+            url: 'api/BoyaSaved/Boya_Maliyeti_Saved_Get_By_Parça_Id',
+            type: 'POST',
+            async: false,
+            dataType: "json",
+            data: JSON.stringify(x),
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                Dıs_Operasyon_Data = data
+
+            },
+            error: function (xhr, status, error) {
+                if (xhr.status == 200) {
+
+                }
+                else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Talep Esnasında Bir Hata Oluştur',
+                        text: '' + xhr.status + '   ' + error.Message,
+                    })
+                }
+
+            }
+        })
+        console.log(Dıs_Operasyon_Data)
+
+        try {
+            console.log("Boya_maliyeti_Odlu")
+            if (Dıs_Operasyon_Data[0].boya_Maliyeti_Saved_Row.length > 0) {
+
+                Boya_İnterval = setInterval(function (Dıs_Operasyon_Data) {
+
+
+                    $('#Yeni_Boya_Ekle').trigger('click')
+                    for (var i = 0; i < Dıs_Operasyon_Data[0].boya_Maliyeti_Saved_Row.length; i++) {
+                        Boya_Satır_Ekle(Dıs_Operasyon_Data[0].boya_Maliyeti_Saved_Row[i])
+                    }
+
+
+
+
+
+
+                    clearInterval(Boya_İnterval);
+                }, 500, Dıs_Operasyon_Data);
+
+
+            }
+        }
+        catch (err) { }
+
+    }
+    function Paketleme_Varmı(Revize_Id) {
+
+
+        var x = {
+            id: Revize_Id
+        }
+        var Dıs_Operasyon_Data;
+        $.ajax({
+            url: 'api/PaketlemeSaved/Paketleme_Maliyeti_Saved_Get_By_Parça_Id',
+            type: 'POST',
+            async: false,
+            dataType: "json",
+            data: JSON.stringify(x),
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                Dıs_Operasyon_Data = data
+
+            },
+            error: function (xhr, status, error) {
+                if (xhr.status == 200) {
+
+                }
+                else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Talep Esnasında Bir Hata Oluştur',
+                        text: '' + xhr.status + '   ' + error.Message,
+                    })
+                }
+
+            }
+        })
+        console.log(Dıs_Operasyon_Data)
+
+        try {
+            if (Dıs_Operasyon_Data[0].paketleme_Maliyeti_Saved_Row.length > 0) {
+                Paketleme_İnterval = setInterval(function (Dıs_Operasyon_Data) {
+
+
+                    $('#Yeni_Paketleme_Ekle').trigger('click')
+                    for (var i = 0; i < Dıs_Operasyon_Data[0].paketleme_Maliyeti_Saved_Row.length; i++) {
+                        Paketleme_Satır_Ekle(Dıs_Operasyon_Data[0].paketleme_Maliyeti_Saved_Row[i])
+                    }
+
+
+
+
+
+
+                    clearInterval(Paketleme_İnterval);
+                }, 500, Dıs_Operasyon_Data);
+
+
+            }
+        }
+        catch (err) { }
+
+
+
+    }
+    function Tesfiye_Varmı(Revize_Id) {
+
+
+        var x = {
+            id: Revize_Id
+        }
+        var Dıs_Operasyon_Data;
+        $.ajax({
+            url: 'api/TesfiyeSaved/Tesfiye_Maliyeti_Saved_Get_By_Parça_Id',
+            type: 'POST',
+            async: false,
+            dataType: "json",
+            data: JSON.stringify(x),
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                Dıs_Operasyon_Data = data
+
+            },
+            error: function (xhr, status, error) {
+                if (xhr.status == 200) {
+
+                }
+                else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Talep Esnasında Bir Hata Oluştur',
+                        text: '' + xhr.status + '   ' + error.Message,
+                    })
+                }
+
+            }
+        })
+        console.log(Dıs_Operasyon_Data)
+
+
+        try {
+            if (Dıs_Operasyon_Data[0].tesfiye_Maliyeti_Saved_Row.length > 0) {
+                Tesfitye_İnterval = setInterval(function (Dıs_Operasyon_Data) {
+
+
+                    $('#Yeni_Tesfiye_Ekle').trigger('click')
+                    for (var i = 0; i < Dıs_Operasyon_Data[0].tesfiye_Maliyeti_Saved_Row.length; i++) {
+                        Tesfiye_Satır_Ekle(Dıs_Operasyon_Data[0].tesfiye_Maliyeti_Saved_Row[i])
+                    }
+
+
+
+
+
+
+                    clearInterval(Tesfitye_İnterval);
+                }, 500, Dıs_Operasyon_Data);
+
+
+            }
+        }
+        catch (err) { }
+
+
+
+    }
+
+    function Dıs_Operasyon_Varmı(Revize_Id) {
+
+
+        var x = {
+            id: Revize_Id
+        }
+        var Dıs_Operasyon_Data;
+        $.ajax({
+            url: 'api/Dıs_Operasyon_Maliyeti_Saved/Dıs_Operasyon_Maliyeti_Saved_Get_By_Parça_Id',
+            type: 'POST',
+            async: false,
+            dataType: "json",
+            data: JSON.stringify(x),
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                Dıs_Operasyon_Data = data
+
+            },
+            error: function (xhr, status, error) {
+                if (xhr.status == 200) {
+
+                }
+                else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Talep Esnasında Bir Hata Oluştur',
+                        text: '' + xhr.status + '   ' + error.Message,
+                    })
+                }
+
+            }
+        })
+        console.log(Dıs_Operasyon_Data)
+
+
+        try {
+            if (Dıs_Operasyon_Data[0].dıs_Operasyon_Maliyeti_Saved_Rows.length > 0) {
+                Dıs_Operasyon_İnterval = setInterval(function (Dıs_Operasyon_Data) {
+
+
+                    $('#Yeni_Dıs_Operasyon_Ekle').trigger('click')
+                    for (var i = 0; i < Dıs_Operasyon_Data[0].dıs_Operasyon_Maliyeti_Saved_Rows.length; i++) {
+                        Dıs_Operasyon_Satır_Ekle(Dıs_Operasyon_Data[0].dıs_Operasyon_Maliyeti_Saved_Rows[i])
+                    }
+
+
+
+
+
+
+                    clearInterval(Dıs_Operasyon_İnterval);
+                }, 500, Dıs_Operasyon_Data);
+
+
+            }
+        }
+        catch (err) { }
+
+
+    }
+      function Boya_Satır_Ekle(Data) {
+        $("#Boya_Select").attr('son_eklenen_satır', parseInt($("#Boya_Select").attr('son_eklenen_satır')) + 1)
+        var row_İndex = $("#Boya_Select").attr('son_eklenen_satır')
+
+
+
+        var Gelen_Data = Data;
+
+
+
+
+
+        var Kaynak_Satır = '' +
+            ' <div class="row" style="padding-top: 25px;" name="Boya_Satır_Row" row_Id="' + row_İndex + '" >' +
+            '                                                            <div class="col-md-3">' +
+            '                                                                <input type="text" class="form-control" data_Id="' + Gelen_Data.id + '" id="Boya_Türü_' + row_İndex + '"' +
+            '                                                                    placeholder="Boya Türü" value="' + Gelen_Data.boya_Türü + '" disabled>' +
+            '                                                            </div>' +
+            '                                                            <div class="col-md-2">' +
+            '                                                                <input type="text" class="form-control"' +
+            '                                                                    placeholder="Birim Fiyatı" value="' + Gelen_Data.birim_Fiyat.toFixed(2) + '"  data-thousands="." data-decimal="," data-suffix=" ₺" id="Boya_Maliyeti_' + row_İndex + '">' +
+            '                                                            </div>' +
+            '                                                            <div class="col-md-2">' +
+            '                                                                <input type="text" class="form-control"' +
+            '                                                                    placeholder="Birim" id="Boya_Birimi_' + row_İndex + '" value="' + Gelen_Data.birim + '" disabled>' +
+            '                                                            </div>' +
+            '                                                            <div class="col-md-2">' +
+            '                                                                <input type="text" class="form-control"' +//Adet
+            '                                                                    placeholder="Birim Adeti"   data-thousands="" data-decimal="." value="' + Gelen_Data.adet.toFixed(2) + '" data-suffix=" ' + Gelen_Data.birim + '" id="Boya_Adeti_' + row_İndex + '">' +
+            '                                                            </div>' +
+            '                                                            <div class="col-md-2">' +
+            '                                                                <input type="text" class="form-control"' +
+            '                                                                  data-thousands="." disabled data-decimal="," data-suffix=" ₺"   placeholder="Toplam Fiyat"  value="' + Gelen_Data.toplam_Fiyat.toFixed(2) + '" id="Boya_Toplam_Fiyat' + row_İndex + '">' +
+            '                                                            </div>' +
+            '                                                            <div class="col-md-1">' +
+            '                                                                <button type="button" id="Boya_Satır_Sil_' + row_İndex + '"' +
+            '                                                                    class="btn btn-danger btn-block">' +
+            '                                                                    <i class="fas fa-trash"></i>' +
+            '                                                                    Sil' +
+            '                                                                </button>' +
+            '                                                            </div>' +
+            '                                                        </div>' +
+            '';
+        $('#Boya_Div').append(Kaynak_Satır)
+
+        $('#Boya_Maliyeti_' + row_İndex).maskMoney();
+        $('#Boya_Maliyeti_' + row_İndex).trigger('mask.maskMoney');
+
+        $('#Boya_Adeti_' + row_İndex).maskMoney();
+        $('#Boya_Adeti_' + row_İndex).trigger('mask.maskMoney');
+
+
+        $('#Boya_Toplam_Fiyat' + row_İndex).maskMoney();
+        $('#Boya_Toplam_Fiyat' + row_İndex).trigger('mask.maskMoney');
+        //Kaynak_Birim_Adeti_
+        //Kaynak_Toplam_Fiyat_
+        $('#Boya_Satır_Sil_' + row_İndex).click(function () {
+            $(this).parent().parent().remove()
+        })
+
+        $('#Boya_Adeti_' + row_İndex + ',#Boya_Maliyeti_' + row_İndex).on('keyup keypress blur change', function () {
+
+            var rv = Toplam_Fiyat_Hesapla($('#Boya_Adeti_' + row_İndex).maskMoney('unmasked')[0].toFixed(2)
+
+                , $('#Boya_Maliyeti_' + row_İndex).maskMoney('unmasked')[0].toFixed(2))
+
+            console.log(rv)
+            $('#Boya_Toplam_Fiyat' + row_İndex).val(rv.toFixed(2));
+            $('#Boya_Toplam_Fiyat' + row_İndex).maskMoney();
+            $('#Boya_Toplam_Fiyat' + row_İndex).trigger('mask.maskMoney');
+
+
+
+        })
+    }
+    function Paketleme_Satır_Ekle(Data) {
+        $("#Paketleme_Select").attr('son_eklenen_satır', parseInt($("#Paketleme_Select").attr('son_eklenen_satır')) + 1)
+        var row_İndex = $("#Paketleme_Select").attr('son_eklenen_satır')
+
+
+
+        var Gelen_Data = Data;
+
+
+
+
+
+        var Kaynak_Satır = '' +
+            ' <div class="row" style="padding-top: 25px;" name="Paketleme_Satır_Row" row_Id="' + row_İndex + '" >' +
+            '                                                            <div class="col-md-3">' +
+            '                                                                <input type="text" class="form-control" data_Id="' + Gelen_Data.id + '" id="Paketleme_Türü_' + row_İndex + '"' +
+            '                                                                    placeholder="Paketleme Türü" value="' + Gelen_Data.paketleme_Türü + '" disabled>' +
+            '                                                            </div>' +
+            '                                                            <div class="col-md-2">' +
+            '                                                                <input type="text" class="form-control"' +
+            '                                                                    placeholder="Birim Fiyatı" value="' + Gelen_Data.birim_Fiyat.toFixed(2) + '"  data-thousands="." data-decimal="," data-suffix=" ₺" id="Paketleme_Maliyeti_' + row_İndex + '">' +
+            '                                                            </div>' +
+            '                                                            <div class="col-md-2">' +
+            '                                                                <input type="text" class="form-control"' +
+            '                                                                    placeholder="Birim" id="Paketleme_Birimi_' + row_İndex + '" value="' + Gelen_Data.birim + '" disabled>' +
+            '                                                            </div>' +
+            '                                                            <div class="col-md-2">' +
+            '                                                                <input type="text" class="form-control"' +//Adet
+            '                                                                    placeholder="Birim Adeti"   data-thousands="" data-decimal="." value="' + Gelen_Data.adet.toFixed(2) + '" data-suffix=" ' + Gelen_Data.birim + '" id="Paketleme_Adeti_' + row_İndex + '">' +
+            '                                                            </div>' +
+            '                                                            <div class="col-md-2">' +
+            '                                                                <input type="text" class="form-control"' +
+            '                                                                  data-thousands="." disabled data-decimal="," data-suffix=" ₺"   placeholder="Toplam Fiyat"  value="' + Gelen_Data.toplam_Fiyat.toFixed(2) + '" id="Paketleme_Toplam_Fiyat' + row_İndex + '">' +
+            '                                                            </div>' +
+            '                                                            <div class="col-md-1">' +
+            '                                                                <button type="button" id="Paketleme_Satır_Sil_' + row_İndex + '"' +
+            '                                                                    class="btn btn-danger btn-block">' +
+            '                                                                    <i class="fas fa-trash"></i>' +
+            '                                                                    Sil' +
+            '                                                                </button>' +
+            '                                                            </div>' +
+            '                                                        </div>' +
+            '';
+        $('#Paketleme_Div').append(Kaynak_Satır)
+
+        $('#Paketleme_Maliyeti_' + row_İndex).maskMoney();
+        $('#Paketleme_Maliyeti_' + row_İndex).trigger('mask.maskMoney');
+
+        $('#Paketleme_Adeti_' + row_İndex).maskMoney();
+        $('#Paketleme_Adeti_' + row_İndex).trigger('mask.maskMoney');
+
+
+        $('#Paketleme_Toplam_Fiyat' + row_İndex).maskMoney();
+        $('#Paketleme_Toplam_Fiyat' + row_İndex).trigger('mask.maskMoney');
+        //Kaynak_Birim_Adeti_
+        //Kaynak_Toplam_Fiyat_
+        $('#Paketleme_Satır_Sil_' + row_İndex).click(function () {
+            $(this).parent().parent().remove()
+        })
+
+        $('#Paketleme_Adeti_' + row_İndex + ',#Paketleme_Maliyeti_' + row_İndex).on('keyup keypress blur change', function () {
+
+            var rv = Toplam_Fiyat_Hesapla($('#Paketleme_Adeti_' + row_İndex).maskMoney('unmasked')[0].toFixed(2)
+
+                , $('#Paketleme_Maliyeti_' + row_İndex).maskMoney('unmasked')[0].toFixed(2))
+
+            console.log(rv)
+            $('#Paketleme_Toplam_Fiyat' + row_İndex).val(rv.toFixed(2));
+            $('#Paketleme_Toplam_Fiyat' + row_İndex).maskMoney();
+            $('#Paketleme_Toplam_Fiyat' + row_İndex).trigger('mask.maskMoney');
+
+
+
+        })
+    }
+    function Tesfiye_Satır_Ekle(Data) {
+        $("#Tesfiye_Select").attr('son_eklenen_satır', parseInt($("#Tesfiye_Select").attr('son_eklenen_satır')) + 1)
+        var row_İndex = $("#Tesfiye_Select").attr('son_eklenen_satır')
+
+
+
+        var Gelen_Data = Data;
+
+
+
+
+
+        var Kaynak_Satır = '' +
+            ' <div class="row" style="padding-top: 25px;" name="Tesfiye_Satır_Row" row_Id="' + row_İndex + '" >' +
+            '                                                            <div class="col-md-3">' +
+            '                                                                <input type="text" class="form-control" data_Id="' + Gelen_Data.id + '" id="Tesfiye_Türü_' + row_İndex + '"' +
+            '                                                                    placeholder="Tesfiye Türü" value="' + Gelen_Data.tesfiye_Türü + '" disabled>' +
+            '                                                            </div>' +
+            '                                                            <div class="col-md-2">' +
+            '                                                                <input type="text" class="form-control"' +
+            '                                                                    placeholder="Birim Fiyatı" value="' + Gelen_Data.birim_Fiyat.toFixed(2) + '"  data-thousands="." data-decimal="," data-suffix=" ₺" id="Tesfiye_Maliyeti_' + row_İndex + '">' +
+            '                                                            </div>' +
+            '                                                            <div class="col-md-2">' +
+            '                                                                <input type="text" class="form-control"' +
+            '                                                                    placeholder="Birim" id="Tesfiye_Birimi_' + row_İndex + '" value="' + Gelen_Data.birim + '" disabled>' +
+            '                                                            </div>' +
+            '                                                            <div class="col-md-2">' +
+            '                                                                <input type="text" class="form-control"' +//Adet
+            '                                                                    placeholder="Birim Adeti"   data-thousands="" data-decimal="." value="' + Gelen_Data.adet.toFixed(2) + '" data-suffix=" ' + Gelen_Data.birim + '" id="Tefsiye_Adeti_' + row_İndex + '">' +
+            '                                                            </div>' +
+            '                                                            <div class="col-md-2">' +
+            '                                                                <input type="text" class="form-control"' +
+            '                                                                  data-thousands="." disabled data-decimal="," data-suffix=" ₺"   placeholder="Toplam Fiyat"  value="' + Gelen_Data.toplam_Fiyat.toFixed(2) + '" id="Tesfiye_Toplam_Fiyat' + row_İndex + '">' +
+            '                                                            </div>' +
+            '                                                            <div class="col-md-1">' +
+            '                                                                <button type="button" id="Tesfiye_Satır_Sil_' + row_İndex + '"' +
+            '                                                                    class="btn btn-danger btn-block">' +
+            '                                                                    <i class="fas fa-trash"></i>' +
+            '                                                                    Sil' +
+            '                                                                </button>' +
+            '                                                            </div>' +
+            '                                                        </div>' +
+            '';
+        $('#Tesfiye_Div').append(Kaynak_Satır)
+
+        $('#Tesfiye_Maliyeti_' + row_İndex).maskMoney();
+        $('#Tesfiye_Maliyeti_' + row_İndex).trigger('mask.maskMoney');
+
+        $('#Tefsiye_Adeti_' + row_İndex).maskMoney();
+        $('#Tefsiye_Adeti_' + row_İndex).trigger('mask.maskMoney');
+
+
+        $('#Tesfiye_Toplam_Fiyat' + row_İndex).maskMoney();
+        $('#Tesfiye_Toplam_Fiyat' + row_İndex).trigger('mask.maskMoney');
+        //Kaynak_Birim_Adeti_
+        //Kaynak_Toplam_Fiyat_
+        $('#Tesfiye_Satır_Sil_' + row_İndex).click(function () {
+            $(this).parent().parent().remove()
+        })
+
+        $('#Tefsiye_Adeti_' + row_İndex + ',#Tesfiye_Maliyeti_' + row_İndex).on('keyup keypress blur change', function () {
+
+            var rv = Toplam_Fiyat_Hesapla($('#Tefsiye_Adeti_' + row_İndex).maskMoney('unmasked')[0].toFixed(2)
+
+                , $('#Tesfiye_Maliyeti_' + row_İndex).maskMoney('unmasked')[0].toFixed(2))
+
+            console.log(rv)
+            $('#Tesfiye_Toplam_Fiyat' + row_İndex).val(rv.toFixed(2));
+            $('#Tesfiye_Toplam_Fiyat' + row_İndex).maskMoney();
+            $('#Tesfiye_Toplam_Fiyat' + row_İndex).trigger('mask.maskMoney');
+
+
+
+        })
+    }
+    function Dıs_Operasyon_Satır_Ekle(Data) {
+        $('#Dıs_Operasyon_Select').attr('son_eklenen_satır', parseInt($('#Dıs_Operasyon_Select').attr('son_eklenen_satır')) + 1)
+        var row_İndex = $('#Dıs_Operasyon_Select').attr('son_eklenen_satır')
+
+
+        var Gelen_Data = Data;
+
+
+
+        console.log("DIUSOPERASYON VAKSOKPD")
+        var Kaynak_Satır = '' +
+            ' <div class="row" style="padding-top: 25px;" name="Dıs_Operasyon_Row_Satır" row_Id="' + row_İndex + '" >' +
+            '                                                            <div class="col-md-3">' +
+            '                                                                <input type="text" class="form-control" data_Id="' + Gelen_Data.dıs_Operasyon_Maliyeti_Saved_Id + '" id="Operasyon_Adı_' + row_İndex + '"' +
+            '                                                                    placeholder="Dıs Operasyon Adı" value="' + Gelen_Data.dıs_Operasyon_Adı + '" disabled>' +
+            '                                                            </div>' +
+            '                                                            <div class="col-md-2">' +
+            '                                                                <input type="text" class="form-control"' +
+            '                                                                    placeholder="Birim Fiyatı" value="' + Gelen_Data.dıs_Operasyon_Birim_Fiyat.toFixed(2) + '"  data-thousands="." data-decimal="," data-suffix=" ₺" id="Operasyon_Maliyeti_' + row_İndex + '">' +
+            '                                                            </div>' +
+            '                                                            <div class="col-md-2">' +
+            '                                                                <input type="text" class="form-control"' +
+            '                                                                    placeholder="Birim Adeti"   data-thousands="" value="' + Gelen_Data.dıs_Operasyon_Adet.toFixed(2) + '" data-decimal="." id="Operasyon_Adeti_' + row_İndex + '">' +
+            '                                                            </div>' +
+            '                                                            <div class="col-md-2">' +
+            '                                                                <input type="text" class="form-control"' +
+            '                                                                  data-thousands="." disabled data-decimal="," data-suffix=" ₺"  value="' + Gelen_Data.toplam_Maliyet.toFixed(2) + '"  placeholder="Toplam Fiyat" id="Operasyon_Toplam_Fiyat_' + row_İndex + '">' +
+            '                                                            </div>' +
+            '                                                            <div class="col-md-1">' +
+            '                                                                <button type="button" id="Dıs_Operasyon_Satır_Sil' + row_İndex + '"' +
+            '                                                                    class="btn btn-danger btn-block">' +
+            '                                                                    <i class="fas fa-trash"></i>' +
+            '                                                                    Sil' +
+            '                                                                </button>' +
+            '                                                            </div>' +
+            '                                                        </div>' +
+            '';
+        $('#Dıs_Operasyonlar').append(Kaynak_Satır)
+
+        $('#Operasyon_Maliyeti_' + row_İndex).maskMoney();
+        $('#Operasyon_Maliyeti_' + row_İndex).trigger('mask.maskMoney');
+
+        $('#Operasyon_Adeti_' + row_İndex).maskMoney();
+        $('#Operasyon_Adeti_' + row_İndex).trigger('mask.maskMoney');
+
+
+        $('#Operasyon_Toplam_Fiyat_' + row_İndex).maskMoney();
+        $('#Operasyon_Toplam_Fiyat_' + row_İndex).trigger('mask.maskMoney');
+        //Kaynak_Birim_Adeti_
+        //Kaynak_Toplam_Fiyat_
+        $('#Dıs_Operasyon_Satır_Sil' + row_İndex).click(function () {
+            $(this).parent().parent().remove()
+        })
+
+        $('#Operasyon_Adeti_' + row_İndex + ',#Operasyon_Maliyeti_' + row_İndex).on('keyup keypress blur change', function () {
+
+            var rv = Toplam_Fiyat_Hesapla($('#Operasyon_Adeti_' + row_İndex).maskMoney('unmasked')[0].toFixed(2)
+
+                , $('#Operasyon_Maliyeti_' + row_İndex).maskMoney('unmasked')[0].toFixed(2))
+
+            console.log(rv)
+            $('#Operasyon_Toplam_Fiyat_' + row_İndex).val(rv.toFixed(2));
+            $('#Operasyon_Toplam_Fiyat_' + row_İndex).maskMoney();
+            $('#Operasyon_Toplam_Fiyat_' + row_İndex).trigger('mask.maskMoney');
+
+
+
+        })
+
+    }
+
+    function Kaplama_Maliyeti_Varmı(Revize_Id) {
+
+        var x = {
+            id: Revize_Id
+        }
+        var Kaplama_Maliyeti_Data;
+        $.ajax({
+            url: 'api/Kaplama_Maliyeti_Saved/Kaplama_Maliyeti_Saved_Get_By_Parça_Id',
+            type: 'POST',
+            async: false,
+            dataType: "json",
+            data: JSON.stringify(x),
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                Kaplama_Maliyeti_Data = data
+
+            },
+            error: function (xhr, status, error) {
+                if (xhr.status == 200) {
+
+                }
+                else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Talep Esnasında Bir Hata Oluştur',
+                        text: '' + xhr.status + '   ' + error.Message,
+                    })
+                }
+
+            }
+        })
+        console.log(Kaplama_Maliyeti_Data)
+
+
+        try {
+            if (Kaplama_Maliyeti_Data[0].kaplama_Maliyeti_Saved_Rows.length > 0) {
+
+                Kaplama_Maliyeti_İnterval = setInterval(function (Kaplama_Maliyeti_Data) {
+
+
+                    $('#Yeni_Kaplama_Ekle').trigger('click')
+                    for (var i = 0; i < Kaplama_Maliyeti_Data[0].kaplama_Maliyeti_Saved_Rows.length; i++) {
+                        Kaplama_Satır_Ekle(Kaplama_Maliyeti_Data[0].kaplama_Maliyeti_Saved_Rows[i])
+                    }
+
+
+
+
+
+
+                    clearInterval(Kaplama_Maliyeti_İnterval);
+                }, 500, Kaplama_Maliyeti_Data);
+
+
+            }
+
+        }
+        catch (err) { }
+
+
+
+
+
+    }
+    function Kaplama_Satır_Ekle(Data) {
+        $("#Kaplama_Select").attr('son_eklenen_satır', parseInt($("#Kaplama_Select").attr('son_eklenen_satır')) + 1)
+        var row_İndex = $("#Kaplama_Select").attr('son_eklenen_satır')
+
+
+        var Gelen_Data = Data;
+
+
+
+        var Kaynak_Satır = '' +
+            ' <div class="row" name="Kaplama_Row" style="padding-top: 25px;" row_Id="' + row_İndex + '" >' +
+            '                                                            <div class="col-md-3">' +
+            '                                                                <input type="text" class="form-control" id="Kaplama_Text_' + row_İndex + '"' +
+            '                                                                    placeholder="Kaynak Türü" Data_Id="' + Gelen_Data.kaplama_Maliyeti_Saved_Id + '" value="' + Gelen_Data.kaplama_Adı + '" disabled>' +
+            '                                                            </div>' +
+            '                                                            <div class="col-md-2">' +
+            '                                                                <input type="text" class="form-control"' +
+            '                                                                    placeholder="Birim" id="Kaplama_Birim' + row_İndex + '" value="' + Gelen_Data.kaplama_Birimi + '" disabled>' +
+            '                                                            </div>' +
+            '                                                            <div class="col-md-2">' +
+            '                                                                <input type="text" class="form-control"' +
+            '                                                                    placeholder="Birim Fiyatı" value="' + Gelen_Data.birim_Fiyat.toFixed(2) + '"  data-thousands="." data-decimal="," data-suffix=" ₺" id="Kaplama_Birim_Fiyat_' + row_İndex + '">' +
+            '                                                            </div>' +
+            '                                                            <div class="col-md-2">' +
+            '                                                                <input type="text" class="form-control"' +
+            '                                                                    placeholder="Birim Adeti"   data-thousands="" value="' + Gelen_Data.adet + '" data-decimal="." data-suffix=" ' + Gelen_Data.kaplama_Birimi + '" id="Kaplama_Birim_Adeti_' + row_İndex + '">' +
+            '                                                            </div>' +
+            '                                                            <div class="col-md-2">' +
+            '                                                                <input type="text" class="form-control"' +
+            '                                                                  data-thousands="." disabled data-decimal="," data-suffix=" ₺"    value="' + Gelen_Data.toplam_Fiyat + '" placeholder="Toplam Fiyat" id="Kaplama_Toplam_Fİyat_' + row_İndex + '">' +
+            '                                                            </div>' +
+            '                                                            <div class="col-md-1">' +
+            '                                                                <button type="button" id="Kaplama_Satırı_Sil' + row_İndex + '"' +
+            '                                                                    class="btn btn-danger btn-block">' +
+            '                                                                    <i class="fas fa-trash"></i>' +
+            '                                                                    Sil' +
+            '                                                                </button>' +
+            '                                                            </div>' +
+            '                                                        </div>' +
+            '';
+        $('#Kaplamalar').append(Kaynak_Satır)
+
+
+
+
+
+        $('#Kaplama_Birim_Fiyat_' + row_İndex).maskMoney();
+        $('#Kaplama_Birim_Fiyat_' + row_İndex).trigger('mask.maskMoney');
+
+
+        $('#Kaplama_Birim_Adeti_' + row_İndex).maskMoney();
+        $('#Kaplama_Birim_Adeti_' + row_İndex).trigger('mask.maskMoney');
+
+        $('#Kaplama_Toplam_Fİyat_' + row_İndex).maskMoney();
+        $('#Kaplama_Toplam_Fİyat_' + row_İndex).trigger('mask.maskMoney');
+        //Kaynak_Birim_Adeti_  Kaplama_Toplam_Fİyat_
+        //Kaynak_Toplam_Fiyat_
+        $('#Kaynak_Satır_Sil_' + row_İndex).click(function () {
+            $(this).parent().parent().remove()
+        })
+
+
+        $('#Kaplama_Birim_Adeti_' + row_İndex + ',#Kaplama_Birim_Fiyat_' + row_İndex).on('keyup keypress blur change', function () {
+
+
+            var rv = Toplam_Fiyat_Hesapla($('#Kaplama_Birim_Adeti_' + row_İndex).maskMoney('unmasked')[0].toFixed(2)
+
+                , $('#Kaplama_Birim_Fiyat_' + row_İndex).maskMoney('unmasked')[0].toFixed(2))
+
+            $('#Kaplama_Toplam_Fİyat_' + row_İndex).val(rv.toFixed(2));
+            $('#Kaplama_Toplam_Fİyat_' + row_İndex).maskMoney();
+            $('#Kaplama_Toplam_Fİyat_' + row_İndex).trigger('mask.maskMoney');
+
+
+
+        })
+    }
+
+    function Bağlantı_Elemanı_Maliyeti_Varmı(Revize_Id) {
+
+        var x = {
+            id: Revize_Id
+        }
+        var Bağlantı_Elemanı_Maliyeti_Data;
+        $.ajax({
+            url: 'api/Bağlantı_Elemanı_Saved/BağlantıElemanıSaved_Get_By_Parça_Id',
+            type: 'POST',
+            async: false,
+            dataType: "json",
+            data: JSON.stringify(x),
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                Bağlantı_Elemanı_Maliyeti_Data = data
+
+            },
+            error: function (xhr, status, error) {
+                if (xhr.status == 200) {
+
+                }
+                else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Talep Esnasında Bir Hata Oluştur',
+                        text: '' + xhr.status + '   ' + error.Message,
+                    })
+                }
+
+            }
+        })
+
+
+        try {
+            if (Bağlantı_Elemanı_Maliyeti_Data[0].bağlantı_Elemanı_Saved_rows.length > 0) {
+                Bağlantı_Elemanı_Maliyeti_İnterval = setInterval(function (Bağlantı_Elemanı_Maliyeti_Data) {
+
+
+                    $('#Yeni_Bağlantı_Elemanı_Ekle').trigger('click')
+                    for (var i = 0; i < Bağlantı_Elemanı_Maliyeti_Data[0].bağlantı_Elemanı_Saved_rows.length; i++) {
+                        Bağlantı_Elemanı_Satır_Ekle(Bağlantı_Elemanı_Maliyeti_Data[0].bağlantı_Elemanı_Saved_rows[i])
+                    }
+
+
+
+
+
+
+                    clearInterval(Bağlantı_Elemanı_Maliyeti_İnterval);
+                }, 500, Bağlantı_Elemanı_Maliyeti_Data);
+
+            }
+
+        }
+        catch (err) { }
+
+
+
+
+
+
+
+
+
+
+    }
+    function Bağlantı_Elemanı_Satır_Ekle(Data) {
+
+        $("#Bağlantı_Elemanı_Select").attr('son_eklenen_satır', parseInt($("#Bağlantı_Elemanı_Select").attr('son_eklenen_satır')) + 1)
+        var row_İndex = $("#Bağlantı_Elemanı_Select").attr('son_eklenen_satır')
+
+
+        var Gelen_Data = Data;
+
+
+        var Kaynak_Satır = '' +
+            ' <div class="row" name="Bağlantı_Row" style="padding-top: 25px;" row_Id="' + row_İndex + '" >' +
+            '                                                            <div class="col-md-3">' +
+            '                                                                <input type="text" class="form-control" Data_Id="' + Gelen_Data.bağlantı_Elemanı_Id + '" id="Bağlantı_Elemanı_Adı_' + row_İndex + '"' +
+            '                                                                    placeholder="Bağlantı Elemanı" value="' + Gelen_Data.bağlantı_Elemanı_Adı + '" disabled>' +
+            '                                                            </div>' +
+            '                                                            <div class="col-md-2">' +
+            '                                                                <input type="text" class="form-control"' +
+            '                                                                    placeholder="Birim Fiyatı" value="' + Gelen_Data.birim_Fiyat.toFixed(2) + '"  data-thousands="." data-decimal="," data-suffix=" ₺" id="Bağlantı_Elemanı_Birim_Fiyatı_' + row_İndex + '">' +
+            '                                                            </div>' +
+            '                                                            <div class="col-md-3">' +
+            '                                                                <input type="text" class="form-control"' +
+            '                                                                    placeholder="Birim Adeti"   data-thousands="" data-decimal="." value="' + Gelen_Data.adet.toFixed(2) + '" data-suffix="" id="Bağlantı_Elemanı_Birim_Adeti' + row_İndex + '">' +
+            '                                                            </div>' +
+            '                                                            <div class="col-md-3">' +
+            '                                                                <input type="text" class="form-control"' +
+            '                                                                  data-thousands="." disabled data-decimal="," data-suffix=" ₺"  value="' + Gelen_Data.toplam_Fiyat.toFixed(2) + '"  placeholder="Toplam Fiyat" id="Bağlantı_Elemanı_Satır_Toplamı_' + row_İndex + '">' +
+            '                                                            </div>' +
+            '                                                            <div class="col-md-1">' +
+            '                                                                <button type="button" id="Bağlantı_Elemanı_Satır_Sİl' + row_İndex + '"' +
+            '                                                                    class="btn btn-danger btn-block">' +
+            '                                                                    <i class="fas fa-trash"></i>' +
+            '                                                                    Sil' +
+            '                                                                </button>' +
+            '                                                            </div>' +
+            '                                                        </div>' +
+            '';
+        $('#Bağlantı_Elemanları').append(Kaynak_Satır)
+
+        $('#Bağlantı_Elemanı_Birim_Fiyatı_' + row_İndex).maskMoney()
+        $('#Bağlantı_Elemanı_Birim_Fiyatı_' + row_İndex).trigger('mask.maskMoney')
+
+
+        $('#Bağlantı_Elemanı_Birim_Adeti' + row_İndex).maskMoney()
+        $('#Bağlantı_Elemanı_Birim_Adeti' + row_İndex).trigger('mask.maskMoney')
+
+
+        $('#Bağlantı_Elemanı_Birim_Adeti' + row_İndex + ',#Bağlantı_Elemanı_Birim_Fiyatı_' + row_İndex).on('keyup keypress blur change', function () {
+
+
+            var rv = parseFloat($('#Bağlantı_Elemanı_Birim_Adeti' + row_İndex).maskMoney('unmasked')[0].toFixed(2)) * parseFloat($('#Bağlantı_Elemanı_Birim_Fiyatı_' + row_İndex).maskMoney('unmasked')[0].toFixed(2))
+
+            $('#Bağlantı_Elemanı_Satır_Toplamı_' + row_İndex).val(rv.toFixed(2))
+            $('#Bağlantı_Elemanı_Satır_Toplamı_' + row_İndex).maskMoney()
+            $('#Bağlantı_Elemanı_Satır_Toplamı_' + row_İndex).trigger('mask.maskMoney')
+        })
+
+
+
+    }
+
+    function Kaynak_Maliyeti_Varmı(Revize_Id) {
+
+        var x = {
+            id: Revize_Id
+        }
+        var Kaynak_Maliyeti_Data;
+        $.ajax({
+            url: 'api/Kaynak_Maliyeti_Saved/Kaynak_Maliyeti_Saved_Get_By_Parça_Id',
+            type: 'POST',
+            async: false,
+            dataType: "json",
+            data: JSON.stringify(x),
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                Kaynak_Maliyeti_Data = data
+
+            },
+            error: function (xhr, status, error) {
+                if (xhr.status == 200) {
+
+                }
+                else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Talep Esnasında Bir Hata Oluştur',
+                        text: '' + xhr.status + '   ' + error.Message,
+                    })
+                }
+
+            }
+        })
+
+        try {
+            if (Kaynak_Maliyeti_Data[0].kaynak_Maliyeti_Saved_Row.length > 0) {
+                Kaynak_Maliyet_İnterval = setInterval(function (Kaynak_Maliyeti_Data) {
+
+
+                    $('#Yeni_Kaynak_Ekle').trigger('click')
+                    for (var i = 0; i < Kaynak_Maliyeti_Data[0].kaynak_Maliyeti_Saved_Row.length; i++) {
+                        Kaynak_Satır_Ekle(Kaynak_Maliyeti_Data[0].kaynak_Maliyeti_Saved_Row[i])
+                    }
+
+
+
+
+
+
+                    clearInterval(Kaynak_Maliyet_İnterval);
+                }, 500, Kaynak_Maliyeti_Data);
+
+            }
+        }
+        catch (err) { }
+
+
+
+
+
+
+
+    }
+
+    function Kaynak_Satır_Ekle(Row_Data) {
+        $("#Kaynak_Select").attr('son_eklenen_satır', parseInt($("#Kaynak_Select").attr('son_eklenen_satır')) + 1)
+        var row_İndex = $("#Kaynak_Select").attr('son_eklenen_satır')
+
+        var Gelen_Data = Row_Data;
+
+
+
+        var Kaynak_Satır = '' +
+            ' <div class="row" style="padding-top: 25px;" name="Kaynak_Row" row_Id="' + row_İndex + '" >' +
+            '                                                            <div class="col-md-3">' +
+            '                                                                <input type="text" class="form-control"  id="Kaynak_Türü_' + row_İndex + '"' +
+            '                                                                    placeholder="Kaynak Türü" value="' + Gelen_Data.kaynak_Adı + '" disabled>' +
+            '                                                            </div>' +
+            '                                                            <div class="col-md-2">' +
+            '                                                                <input type="text" class="form-control"' +
+            '                                                                    placeholder="Birim" id="Kaynak_Birim_' + row_İndex + '" value="' + Gelen_Data.kaynak_birimi + '" disabled>' +
+            '                                                            </div>' +
+            '                                                            <div class="col-md-2">' +
+            '                                                                <input type="text" class="form-control"' +
+            '                                                                    placeholder="Birim Fiyatı" value="' + Gelen_Data.birim_Fiyat.toFixed(2) + '"  data-thousands="." data-decimal="," data-suffix=" ₺" id="Kaynak_Birim_Fiyat_' + row_İndex + '">' +
+            '                                                            </div>' +
+            '                                                            <div class="col-md-2">' +
+            '                                                                <input type="text" class="form-control"' +
+            '                                                                    placeholder="Birim Adeti"   data-thousands="" data-decimal="." value="' + Gelen_Data.adet.toFixed(2) + '" data-suffix=" ' + Gelen_Data.kaynak_birimi + '" id="Kaynak_Birim_Adeti_' + row_İndex + '">' +
+            '                                                            </div>' +
+            '                                                            <div class="col-md-2">' +
+            '                                                                <input type="text" class="form-control"' +
+            '                                                                  data-thousands="." disabled data-decimal="," data-suffix=" ₺"  value="' + Gelen_Data.toplam_Fiyat.toFixed(2) + '"  placeholder="Toplam Fiyat" id="Kaynak_Toplam_Fiyat_' + row_İndex + '">' +
+            '                                                            </div>' +
+            '                                                            <div class="col-md-1">' +
+            '                                                                <button type="button" id="Kaynak_Satır_Sil_' + row_İndex + '"' +
+            '                                                                    class="btn btn-danger btn-block">' +
+            '                                                                    <i class="fas fa-trash"></i>' +
+            '                                                                    Sil' +
+            '                                                                </button>' +
+            '                                                            </div>' +
+            '                                                        </div>' +
+            '';
+        $('#Kaynaklar').append(Kaynak_Satır)
+
+        $('#Kaynak_Birim_Fiyat_' + row_İndex).maskMoney();
+        $('#Kaynak_Birim_Fiyat_' + row_İndex).trigger('mask.maskMoney');
+
+        $('#Kaynak_Toplam_Fiyat_' + row_İndex).maskMoney();
+        $('#Kaynak_Toplam_Fiyat_' + row_İndex).trigger('mask.maskMoney');
+
+
+        $('#Kaynak_Birim_Adeti_' + row_İndex).maskMoney();
+        $('#Kaynak_Birim_Adeti_' + row_İndex).trigger('mask.maskMoney');
+        //Kaynak_Birim_Adeti_
+        //Kaynak_Toplam_Fiyat_
+        $('#Kaynak_Satır_Sil_' + row_İndex).click(function () {
+            $(this).parent().parent().remove()
+        })
+
+
+
+        $('#Kaynak_Birim_Adeti_' + row_İndex + ',#Kaynak_Birim_Fiyat_' + row_İndex).on('keyup keypress blur change', function () {
+
+
+            var rv = Toplam_Fiyat_Hesapla($('#Kaynak_Birim_Fiyat_' + row_İndex).maskMoney('unmasked')[0].toFixed(2)
+
+                , $('#Kaynak_Birim_Adeti_' + row_İndex).maskMoney('unmasked')[0].toFixed(2))
+
+            $('#Kaynak_Toplam_Fiyat_' + row_İndex).val(rv.toFixed(2));
+            $('#Kaynak_Toplam_Fiyat_' + row_İndex).maskMoney();
+            $('#Kaynak_Toplam_Fiyat_' + row_İndex).trigger('mask.maskMoney');
+
+
+
+        })
+
+    }
+
+    function Büküm_Maliyeti_Varmı(Revize_Id) {
+        var x = {
+            id: Revize_Id
+        }
+        var Büküm_Maliyeti_Data;
+        $.ajax({
+            url: 'api/Büküm_Maliyeti_Saved/Büküm_Maliyeti_Saved_Ağırlık_Get_By_Parça_Id',
+            type: 'POST',
+            async: false,
+            dataType: "json",
+            data: JSON.stringify(x),
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                Büküm_Maliyeti_Data = data
+                console.log("asd9*009*asd*09")
+                console.log(data)
+
+            },
+            error: function (xhr, status, error) {
+                if (xhr.status == 200) {
+
+                }
+                else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Talep Esnasında Bir Hata Oluştur',
+                        text: '' + xhr.status + '   ' + error.Message,
+                    })
+                }
+
+            }
+        })
+        console.log(Büküm_Maliyeti_Data)
+
+
+        if (Büküm_Maliyeti_Data.length > 0) {
+
+            $('#Yeni_Büküm_Maliyeti').trigger('click')
+            if (Büküm_Maliyeti_Data[0].büküm_Tipi == 0) {
+
+                $('#Büküm_Hesabı_Malzeme_Ağırlığı_İnput').val(Büküm_Maliyeti_Data[0].malzeme_Ağırlığı.toFixed(2))
+                $('#Büküm_Hesabı_Malzeme_Ağırlığı_İnput').maskMoney()
+                $('#Büküm_Hesabı_Malzeme_Ağırlığı_İnput').trigger('mask.maskMoney')
+
+                $('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Katsayı').val(Büküm_Maliyeti_Data[0].kat_Sayı.toFixed(2))
+                $('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Katsayı').maskMoney()
+                $('#Büküm_Hesabı_Malzeme_AğırlığBüküm_Hesabı_Malzeme_Ağırlık_Hesabı_Katsayıı_İnput').trigger('mask.maskMoney')
+
+
+
+                $('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Büküm_Maliyeti').val(Büküm_Maliyeti_Data[0].büküm_Maliyeti.toFixed(2))
+                $('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Büküm_Maliyeti').maskMoney()
+                $('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Büküm_Maliyeti').trigger('mask.maskMoney')
+                $('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Büküm_Maliyeti').attr('class', "form-control is-valid")
+                $('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Büküm_Maliyeti').attr('en_büyük_olan', "1")
+
+                //Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Büküm_Maliyeti
+
+
+            }
+
+            if (Büküm_Maliyeti_Data[0].büküm_Tipi == 1) {
+
+                $('#Büküm_Hesabı_Adet_İle_Büküm_Zorluğu_select').val(Büküm_Maliyeti_Data[0].büküm_Zorluğu_Id)
+
+
+                $('#Büküm_Yeni_Hesabı_Adet_İle_Büküm_Katsayısı').val(Büküm_Maliyeti_Data[0].kat_Sayı.toFixed(2))
+                $('#Büküm_Yeni_Hesabı_Adet_İle_Büküm_Katsayısı').trigger('mask.maskMoney')
+
+                $('#Büküm_Hesabı_Adet_İle_Büküm_Maliyeti').val(Büküm_Maliyeti_Data[0].büküm_Maliyeti.toFixed(2))
+                $('#Büküm_Hesabı_Adet_İle_Büküm_Maliyeti').trigger('mask.maskMoney')
+
+
+                $('#Büküm_Hesabı_Adet_İle_Büküm_Maliyeti').attr('class', "form-control is-valid")
+                $('#Büküm_Hesabı_Adet_İle_Büküm_Maliyeti').attr('en_büyük_olan', "1")
+
+
+                $('#Büküm_Yeni_Adeti_İnput').val(Büküm_Maliyeti_Data[0].büküm_Adeti.toFixed(2))
+                $('#Büküm_Yeni_Adeti_İnput').trigger('mask.maskMoney')
+
+                //Büküm_Yeni_Adeti_İnput
+
+            }
+
+            if (Büküm_Maliyeti_Data[0].büküm_Tipi == 2) {
+
+                $('#Büküm_Hesabı_Adet_İle_Büküm_Zorluğu_select').val(Büküm_Maliyeti_Data[0].büküm_Zorluğu_Id)
+
+
+                $('#Büküm_Yeni_Hesabı_Adet_İle_Büküm_Katsayısı').val(Büküm_Maliyeti_Data[0].kat_Sayı.toFixed(2))
+                $('#Büküm_Yeni_Hesabı_Adet_İle_Büküm_Katsayısı').trigger('mask.maskMoney')
+
+                $('#Büküm_Hesabı_Adet_İle_Büküm_Maliyeti').val(Büküm_Maliyeti_Data[0].büküm_Maliyeti.toFixed(2))
+                $('#Büküm_Hesabı_Adet_İle_Büküm_Maliyeti').trigger('mask.maskMoney')
+
+
+
+
+                $('#Eninemi_Uzunluğa_Boyunamı_Select').val(Büküm_Maliyeti_Data[0].hesap_Çeşiti_Id)
+                //Eninemi_Uzunluğa_Boyunamı_Select
+
+                $('#Büküm_Hesabı_Uzunluğa_Malzeme_Eni').val(Büküm_Maliyeti_Data[0].malzeme_Eni.toFixed(2))
+                $('#Büküm_Hesabı_Uzunluğa_Malzeme_Eni').trigger('mask.maskMoney')
+                //Büküm_Hesabı_Uzunluğa_Malzeme_Eni
+
+                $('#Büküm_Hesabı_Uzunluğa_Malzeme_Genişliği').val(Büküm_Maliyeti_Data[0].malzeme_Boyu.toFixed(2))
+                $('#Büküm_Hesabı_Uzunluğa_Malzeme_Genişliği').trigger('mask.maskMoney')
+                //Büküm_Hesabı_Uzunluğa_Malzeme_Genişliği
+
+
+                $('#Büküm_Hesabı_Uzunluğa_Malzeme_Katayısı').val(Büküm_Maliyeti_Data[0].malzeme_Boyu_Katsayı.toFixed(2))
+                $('#Büküm_Hesabı_Uzunluğa_Malzeme_Katayısı').trigger('mask.maskMoney')
+                //Büküm_Hesabı_Uzunluğa_Malzeme_Katayısı
+
+
+                $('#Büküm_Hesabı_Uzunluğa_Malzeme_Zorluk_Katayısı').val(Büküm_Maliyeti_Data[0].büküm_Zorluğu_Id)
+                //Malzeme_Büküm_Uzunluk_Zorluk_Hesabı
+                //Büküm_Zorluğu_Id
+
+                $('#Büküm_Hesabı_Uzunluğa_Malzeme_Zorluk_Katayısı').val(Büküm_Maliyeti_Data[0].büküm_Zorluğu_Katsayı.toFixed(2))
+                $('#Büküm_Hesabı_Uzunluğa_Malzeme_Zorluk_Katayısı').trigger('mask.maskMoney')
+                //Büküm_Zorluğu_Katsayı
+
+                //Büküm_Hesabı_Uzunluğa_Malzeme_Zorluk_Katayısı
+
+                $('#Büküm_Yeni_Adeti_İnput').val(Büküm_Maliyeti_Data[0].büküm_Adeti.toFixed(2))
+                $('#Büküm_Yeni_Adeti_İnput').trigger('mask.maskMoney')
+
+                $('#Büküm_Hesabı_Uzunluk_İle_Büküm_Maliyeti').attr('class', "form-control is-valid")
+                $('#Büküm_Hesabı_Uzunluk_İle_Büküm_Maliyeti').attr('en_büyük_olan', "1")
+
+
+            }
+
+
+
+        }
+
+
+    }
+
+
+    function Kesim_Maliyeti_Varmı(Revize_Id) {
+        var x = {
+            id: Revize_Id
+        }
+        var Kesim_Maliyet_Data;
+        $.ajax({
+            url: 'api/Kesim_Maliyeti_Saved/Kesim_Maliyeti_Saved_Get_By_Parça_Id',
+            type: 'POST',
+            async: false,
+            dataType: "json",
+            data: JSON.stringify(x),
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                Kesim_Maliyet_Data = data
+
+            },
+            error: function (xhr, status, error) {
+                if (xhr.status == 200) {
+
+                }
+                else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Talep Esnasında Bir Hata Oluştur',
+                        text: '' + xhr.status + '   ' + error.Message,
+                    })
+                }
+
+            }
+        })
+
+        if (Kesim_Maliyet_Data.length != 0) {
+            // console.log("asddsa")
+            Kesim_Maliyet_İnterval = setInterval(function (Kesim_Maliyet_Data) {
+                $('#Yeni_Kesim_Maliyeti').trigger('click')
+
+
+                $('#Kesim_Select').val(Kesim_Maliyet_Data[0].malzeme_Kesim_Türü_Id)
+
+
+                $('#Kesim_Hesabı_Malzeme_Adeti_İnput').val(Kesim_Maliyet_Data[0].parça_Adeti)
+                $('#Kesim_Hesabı_Malzeme_Adeti_İnput').trigger('mask.maskMoney')
+
+                $('#Kesim_Hesabı_Verimlilik_İnput').val(Kesim_Maliyet_Data[0].kesim_Verimliliği)
+                $('#Kesim_Hesabı_Verimlilik_İnput').trigger('mask.maskMoney')
+
+
+                $('#Kesim_Süresi_Saat_Dakika').val(Kesim_Maliyet_Data[0].kesim_Süresi_Saat.split('T')[1])
+
+
+                $('#Malzeme_Kesim_Süresi').val(Kesim_Maliyet_Data[0].kesim_Süresi_Saniye)
+                $('#Malzeme_Kesim_Süresi').trigger('mask.maskMoney')
+
+                $('#Malzeme_Kesim_Fiyatı_İnput').val(Kesim_Maliyet_Data[0].kesim_Fiyatı.toFixed(2))
+                $('#Malzeme_Kesim_Fiyatı_İnput').trigger('mask.maskMoney')
+
+                $('#Malzeme_Kesim_Maliyeti').val(Kesim_Maliyet_Data[0].kesim_Maliyeti.toFixed(2))
+                $('#Malzeme_Kesim_Maliyeti').trigger('mask.maskMoney')
+
+
+                //Malzeme_Kesim_Maliyeti
+
+                //Malzeme_Kesim_Fiyatı_İnput
+                //Kesim_Süresi_Saat_Dakika
+                //Kesim_Hesabı_Malzeme_Adeti_İnput
+                //Kesim_Hesabı_Verimlilik_İnput
+
+                clearInterval(Kesim_Maliyet_İnterval);
+            }, 500, Kesim_Maliyet_Data);
+
+
+        }
+
+
+
+    }
+    function Malzeme_Maliyeti_Varmı(Revize_Id) {
+        var x = {
+            id: Revize_Id
+        }
+        var Malzeme_Maliyet_Data;
+        $.ajax({
+            url: 'api/Malzeme_Maliyeti_Saved/Malzeme_Maliyeti_Saved_Get_By_Parça_Id',
+            type: 'POST',
+            async: false,
+            dataType: "json",
+            data: JSON.stringify(x),
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                Malzeme_Maliyet_Data = data
+
+            },
+            error: function (xhr, status, error) {
+                if (xhr.status == 200) {
+
+                }
+                else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Talep Esnasında Bir Hata Oluştur',
+                        text: '' + xhr.status + '   ' + error.Message,
+                    })
+                }
+
+            }
+        })
+        if (Malzeme_Maliyet_Data.length != 0) {
+            // console.log("asddsa")
+            Malzeme_Maliyet_İnterval = setInterval(function (Malzeme_Maliyet_Data) {
+                $('#Yeni_Malzeme_Ekle').trigger('click')
+
+                var option = new Option(Malzeme_Maliyet_Data[0].malzeme_Adı, Malzeme_Maliyet_Data[0].malzeme_Id, true, true);
+                $('#Malzeme_Select').append(option).trigger('change');
+
+
+                $('#Malzeme_Fiyatı_İnput').val(Malzeme_Maliyet_Data[0].malzeme_Birim_Fiyatı.toFixed(2))
+                $('#Malzeme_Fiyatı_İnput').trigger('mask.maskMoney')
+
+                $('#Malzeme_Kesim_Select').val(Malzeme_Maliyet_Data[0].malzeme_Kesim_Türü_Id)
+
+
+
+                $('#Malzeme_Boyu_İnput').val(Malzeme_Maliyet_Data[0].plaka_Boyu.toFixed(2))
+                $('#Malzeme_Boyu_İnput').trigger('mask.maskMoney')
+
+
+                $('#Malzeme_Eni_İnput').val(Malzeme_Maliyet_Data[0].plaka_Eni.toFixed(2))
+                $('#Malzeme_Eni_İnput').trigger('mask.maskMoney')
+
+
+                $('#Malzeme_Genişliği_İnput').val(Malzeme_Maliyet_Data[0].plaka_Kalınlığı.toFixed(2))
+                $('#Malzeme_Genişliği_İnput').trigger('mask.maskMoney')
+
+
+
+
+
+                $('#Malzeme_Parça_Adeti').val(Malzeme_Maliyet_Data[0].parça_Adeti.toFixed(2))
+                $('#Malzeme_Parça_Adeti').trigger('mask.maskMoney')
+
+                $('#Malzeme_Parça_Firesiz_ağırlığı').val(Malzeme_Maliyet_Data[0].parça_Firesiz_Ağırlığı.toFixed(4))
+                $('#Malzeme_Parça_Firesiz_ağırlığı').trigger('mask.maskMoney')
+
+
+                $('#Malzeme_Malzeme_Birim_Fiyatı_İnput').val(Malzeme_Maliyet_Data[0].plaka_Maliyeti.toFixed(2))
+                $('#Malzeme_Malzeme_Birim_Fiyatı_İnput').trigger('mask.maskMoney')
+
+
+                clearInterval(Malzeme_Maliyet_İnterval);
+            }, 500, Malzeme_Maliyet_Data);
+
+
+        }
+
+    }
+
+
+</script>

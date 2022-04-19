@@ -1,0 +1,304 @@
+<script>
+    $(document).ready(function () {
+        $('#Paketleme_Birim_Fiyat_İnput').maskMoney()
+        var $table = $('#Paketleme_Table')
+        Paketleme_Tablo_Doldur($table, 0, 0, 0)
+
+        $('#Paketleme_Ekle_Button').click(function () {
+            var Gönderilsinmi = 1;
+            var x = {
+                Paketleme_Türü: $('#Paketleme_Adı_İnpuıt').val(),
+                Birim_Id: $('#Paketleme_Birim_Select').find('option:selected').attr('value'),
+                Maliyet: $('#Paketleme_Birim_Fiyat_İnput').maskMoney('unmasked')[0].toFixed(2)
+            }
+            if (x.Paketleme_Türü == "") {
+                Gönderilsinmi = 0;
+                $('#Paketleme_Adı_İnpuıt').attr('class', 'form-control is-invalid')
+            }
+            else {
+
+                $('#Paketleme_Adı_İnpuıt').attr('class', 'form-control')
+                Gönderilsinmi = 1;
+            }
+
+            if (x.Maliyet == "") {
+                $('#Paketleme_Birim_Fiyat_İnput').attr('class', 'form-control is-invalid')
+                Gönderilsinmi = 0;
+            }
+            else {
+                Gönderilsinmi = 1;
+                $('#Paketleme_Birim_Fiyat_İnput').attr('class', 'form-control')
+            }
+
+            if (x.Birim_Id == undefined) {
+                Gönderilsinmi = 0;
+                $('#Paketleme_Birim_Select').attr('class', 'form-control is-invalid')
+            }
+            else {
+                Gönderilsinmi = 1;
+                $('#Paketleme_Birim_Select').attr('class', 'form-control')
+            }
+
+
+
+
+
+
+
+            if (Gönderilsinmi == 1) {
+                $.ajax({
+                    url: 'api/Paketleme/Paketleme_Add',
+                    type: 'POST',
+                    async: false,
+                    dataType: "json",
+                    data: JSON.stringify(x),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+
+
+
+                        var $table = $('#Paketleme_Table')
+                        Paketleme_Tablo_Doldur($table, 0, 0, 0)
+                        //
+
+                    },
+                    error: function (xhr, status, error) {
+                        if (xhr.status == 200) {
+
+                        }
+                        else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Talep Esnasında Bir Hata Oluştur',
+                                text: '' + xhr.status + '   ' + error.Message,
+                            })
+                        }
+
+                    }
+                })
+            }
+
+
+        })
+
+    })
+
+    function Paketleme_Tablo_Doldur($el, cells, rows) {
+
+        $el.bootstrapTable('destroy');
+
+
+        var i; var j; var row
+        var columns = [];
+        var data__ = [];
+        columns.push({
+            field: 'ID',
+            title: 'ID',
+            sortable: true
+        })
+        columns.push({
+            field: 'Paketleme_Türü',
+            title: 'Paketleme Türü',
+            sortable: true
+        })
+
+        columns.push({
+            field: 'Birim',
+            title: 'Birim',
+            sortable: true
+        })
+        columns.push({
+            field: 'Fiyat',
+            title: 'Fiyat',
+            sortable: true
+        })
+
+        @* columns.push({
+            field: 'Düzenle',
+            title: 'Düzenle',
+        }) *@
+        columns.push({
+            field: 'Sil',
+            title: 'Sil',
+        })
+
+
+        $.ajax({
+            url: 'api/Paketleme/Paketleme_Get_All',
+            type: 'POST',
+            async: false,
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+
+                var temp = data
+
+                console.log(data)
+                for (i = 0; i < temp.length; i++) {
+                    row = {}
+                    var Fiyatı = '' +
+                        '<input   id="Paketleme_Maliye_Tablo_İnput" class="form-control" data-thousands="." data-decimal=","' +
+                        '                                           value="' + temp[i].maliyet.toFixed(2) + '"         data-suffix=" ₺" type="text"' +
+                        '                                                      />' +
+                        '';
+
+
+
+
+                    row['ID'] = temp[i].id
+                    row['Paketleme_Türü'] = temp[i].paketleme_Türü
+                    row['Birim'] = temp[i].birim.birim_Kısa_ad
+                    row['Fiyat'] = Fiyatı
+                    row['Sil'] = '<button class="btn btn-danger" Paketleme_Id="' + temp[i].id + '"  id="Paketleme_Sil_Btn"><i class="fa fa-trash"></i></button>'
+                    row['Düzenle'] = '<button class="btn btn-block btn-warning" Kaynak_Id="' + temp[i].id + '" id="Paketleme_Düzenle">Düzenle</button>'
+
+                    data__.push(row)
+
+
+                }
+            },
+            error: function () {
+                alert('Talep esnasında sorun oluştu.Yeniden deneyin');
+            }
+        });
+
+
+
+        $el.bootstrapTable({
+            columns: columns,
+            data: data__,
+            onPostBody: function (data) {
+                console.log(data)
+                $('#Paketleme_Maliye_Tablo_İnput').maskMoney();
+                $('#Paketleme_Maliye_Tablo_İnput').trigger('mask.maskMoney');
+                $('#Paketleme_Maliye_Tablo_İnput').attr("disabled", 'true');
+
+            }
+
+        })
+
+        $('button[id=Paketleme_Sil_Btn]').click(function () {
+            console.log("sdadsa")
+            Swal.fire({
+                title: 'Silmek İstediğinizden Eminmisiniz ?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sil',
+                cancelButtonText: 'Vazgeç'
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                    var x = {
+                        id: $(this).attr('Paketleme_Id')
+                    }
+                    $.ajax({
+                        url: 'api/Paketleme/Paketleme_Delete',
+                        type: 'POST',
+                        async: false,
+                        dataType: "json",
+                        data: JSON.stringify(x),
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            //Uzunluk_Fiyat_Table_'+data[i].id
+
+                            var $table = $('#Paketleme_Table')
+                            Paketleme_Tablo_Doldur($table, 0, 0, 0)
+
+
+                            Swal.fire(
+                                'Silindi',
+                                'İşlem Başarılı',
+                                'success'
+                            )
+                        },
+                        error: function (xhr, status, error) {
+                            if (xhr.status == 200) {
+
+                            }
+                            else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Talep Esnasında Bir Hata Oluştur',
+                                    text: '' + xhr.status + '   ' + error.Message,
+                                })
+                            }
+
+                        }
+                    })
+
+
+                }
+            })
+
+
+        })
+        $('#Paketleme_Düzenle').click(function () {
+            $('#Parametre_Modal').modal('hide')
+            $('#Kaynak_Düzenle_modal').modal('show')
+            $('#Kaynak_Düzenle_Kaydet_Button').attr('Kaynak_Id', $(this).attr('Kaynak_Id'))
+
+        })
+        // $el.bootstrapTable('hideColumn', 'ID')
+
+
+
+
+
+
+
+
+
+
+    }
+</script>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card card-danger collapsed-card">
+            <div class="card-header">
+                <h3 class="card-title">Paketleme</h3>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <input id="Paketleme_Adı_İnpuıt" class="form-control form-control" type="text"
+                                placeholder="Paketleme Adı">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <select class="form-control" id="Paketleme_Birim_Select">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <input id="Paketleme_Birim_Fiyat_İnput" data-thousands="." data-decimal="," data-suffix=" ₺"
+                                class="form-control form-control" type="text" placeholder="Birim Fiyatı">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" id="Paketleme_Ekle_Button" İşlem="0" class="btn btn-primary btn-block">
+                            Ekle
+                        </button>
+                    </div>
+                </div>
+                <div id="Tesviye_Div">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table id="Paketleme_Table"></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

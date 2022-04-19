@@ -1,0 +1,1146 @@
+@{
+    Layout = "~/Views/Shared/Anasayfa_Layout.cshtml";
+}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.11.2/jquery.mask.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.7-beta.29/jquery.inputmask.min.js"></script>
+
+
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+
+
+        var Default_resim = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEBLAEsAAD/4QBWRXhpZgAATU0AKgAAAAgABAEaAAUAAAABAAAAPgEbAAUAAAABAAAARgEoAAMAAAABAAIAAAITAAMAAAABAAEAAAAAAAAAAAEsAAAAAQAAASwAAAAB/+0ALFBob3Rvc2hvcCAzLjAAOEJJTQQEAAAAAAAPHAFaAAMbJUccAQAAAgAEAP/hDIFodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvADw/eHBhY2tldCBiZWdpbj0n77u/JyBpZD0nVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkJz8+Cjx4OnhtcG1ldGEgeG1sbnM6eD0nYWRvYmU6bnM6bWV0YS8nIHg6eG1wdGs9J0ltYWdlOjpFeGlmVG9vbCAxMC4xMCc+CjxyZGY6UkRGIHhtbG5zOnJkZj0naHR0cDovL3d3dy53My5vcmcvMTk5OS8wMi8yMi1yZGYtc3ludGF4LW5zIyc+CgogPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9JycKICB4bWxuczp0aWZmPSdodHRwOi8vbnMuYWRvYmUuY29tL3RpZmYvMS4wLyc+CiAgPHRpZmY6UmVzb2x1dGlvblVuaXQ+MjwvdGlmZjpSZXNvbHV0aW9uVW5pdD4KICA8dGlmZjpYUmVzb2x1dGlvbj4zMDAvMTwvdGlmZjpYUmVzb2x1dGlvbj4KICA8dGlmZjpZUmVzb2x1dGlvbj4zMDAvMTwvdGlmZjpZUmVzb2x1dGlvbj4KIDwvcmRmOkRlc2NyaXB0aW9uPgoKIDxyZGY6RGVzY3JpcHRpb24gcmRmOmFib3V0PScnCiAgeG1sbnM6eG1wTU09J2h0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8nPgogIDx4bXBNTTpEb2N1bWVudElEPmFkb2JlOmRvY2lkOnN0b2NrOjQ5ZDRhN2FlLTI1NjYtNDY5Yi05NmI5LWUxYzAxM2JiNmEwYzwveG1wTU06RG9jdW1lbnRJRD4KICA8eG1wTU06SW5zdGFuY2VJRD54bXAuaWlkOjUxYWY0OTY0LWE4MjQtNDk1Yy04MzgzLTQ3OTYxMzNjMzY2YjwveG1wTU06SW5zdGFuY2VJRD4KIDwvcmRmOkRlc2NyaXB0aW9uPgo8L3JkZjpSREY+CjwveDp4bXBtZXRhPgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAo8P3hwYWNrZXQgZW5kPSd3Jz8+/9sAQwAFAwQEBAMFBAQEBQUFBgcMCAcHBwcPCwsJDBEPEhIRDxERExYcFxMUGhURERghGBodHR8fHxMXIiQiHiQcHh8e/8AACwgBaAFoAQERAP/EABsAAQADAQEBAQAAAAAAAAAAAAAFBgcEAgMB/8QAPhABAAEDAgIECA0EAgMAAAAAAAECAwQFBhEhEjFBUQcTNmFzgbHRFSIkMkJSU2JxcpGhwRQjk+GC8RY0Vf/aAAgBAQAAPwDXQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA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"
+
+        var TextBox1 = $('input[id*=TextBox1]')
+        var TextBox2 = $('input[id*=TextBox2]')
+        var Today = new Date();
+
+        function formatDate(date) {
+            var d = new Date(date),
+                month = '' + (d.getMonth() + 1),
+                day = '' + (d.getDate()),
+                year = d.getFullYear();
+
+            if (month.length < 2)
+                month = '0' + month;
+            if (day.length < 2)
+                day = '0' + day;
+
+            return [year, month, day].join('-');
+        }
+        var x = new Date(Today);
+
+        var d = new Date(x.getFullYear(), x.getMonth() + 1, 0);
+        TextBox2.attr('value', formatDate(d));
+        var d = new Date(x.getFullYear(), x.getMonth(), 1);
+        TextBox1.attr('value', formatDate(d));
+
+        $('[data-mask]').inputmask('0(599)-999-9999', { autoclear: true })
+
+        var Hasta_Listesi = [];
+
+
+
+        var today = new Date();
+        var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+        $('#Kayıt_Tarihi').val(date)
+        var resimbase64 = "";
+        $('#fileId').change(function () {
+            var file = this.files[0]
+            var reader = new FileReader();
+
+
+            reader.onload = function () {
+                base64String = reader.result;
+
+                resimbase64 = base64String;
+                $('#Uye_Resim').attr('src', '' + base64String)
+                // alert(imageBase64Stringsep);
+                console.log(base64String);
+            }
+            reader.readAsDataURL(file);
+
+        })
+        Cinsiyet_Doldur()
+        function Cinsiyet_Doldur() {
+            $.ajax({
+                url: '/api/UyeIslemleri/Get_Cinsiyet',
+                type: 'POST',
+                async: false,
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    console.log(data)
+                    $('#Uye_Cinsiyet').empty();
+                    $('#Uye_Cinsiyet').append('<option value="0">Lütfen Cinsiyet Seçiniz</opiton>')
+                    for (var i = 0; i < data.length; i++) {
+                        $('#Uye_Cinsiyet').append('<option value="' + data[i].id + '">' + data[i].cinsiyet_Adı + '</opiton>')
+                    }
+                },
+                error: function (xhr, status, error) {
+                    if (xhr.status == 200) {
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Talep Esnasında Bir Hata Oluştur',
+                            text: '' + xhr.status + '   ' + error.Message,
+                        })
+                    }
+
+                }
+            });
+
+        }
+
+
+        Meslek_Doldur()
+        function Meslek_Doldur() {
+            $.ajax({
+                url: '/api/UyeIslemleri/Get_Meslekler',
+                type: 'POST',
+                async: false,
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    console.log(data)
+                    $('#Meslek').empty();
+                    $('#Meslek').append('<option value="0">Lütfen Meslek Seçiniz</opiton>')
+                    for (var i = 0; i < data.length; i++) {
+                        $('#Meslek').append('<option value="' + data[i].id + '">' + data[i].meslek_Adı + '</opiton>')
+                    }
+                },
+                error: function (xhr, status, error) {
+                    if (xhr.status == 200) {
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Talep Esnasında Bir Hata Oluştur',
+                            text: '' + xhr.status + '   ' + error.Message,
+                        })
+                    }
+
+                }
+            });
+
+        }
+        Parti_Görevi_Doldur()
+        function Parti_Görevi_Doldur() {
+            $.ajax({
+                url: '/api/UyeIslemleri/Get_Parti_Görevi',
+                type: 'POST',
+                async: false,
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    console.log(data)
+                    $('#Parti_Görevi').empty();
+                    $('#Parti_Görevi').append('<option value="0">Lütfen Parti Görevi Seçiniz</opiton>')
+                    for (var i = 0; i < data.length; i++) {
+                        $('#Parti_Görevi').append('<option value="' + data[i].id + '">' + data[i].görev_Adı + '</opiton>')
+                    }
+                },
+                error: function (xhr, status, error) {
+                    if (xhr.status == 200) {
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Talep Esnasında Bir Hata Oluştur',
+                            text: '' + xhr.status + '   ' + error.Message,
+                        })
+                    }
+
+                }
+            });
+
+        }
+        İl_Doldur()
+        function İl_Doldur() {
+            $.ajax({
+                url: '/api/UyeIslemleri/Get_Şehirler',
+                type: 'POST',
+                async: false,
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    $('#İl').empty();
+                    $('#İl').append('<option value="0">Lütfen İl Seçiniz</opiton>')
+                    for (var i = 0; i < data.length; i++) {
+                        $('#İl').append('<option value="' + data[i].şehir_ID + '">' + data[i].şehir_Adı + '</opiton>')
+                    }
+                },
+                error: function (xhr, status, error) {
+                    if (xhr.status == 200) {
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Talep Esnasında Bir Hata Oluştur',
+                            text: '' + xhr.status + '   ' + error.Message,
+                        })
+                    }
+
+                }
+            });
+
+        }
+
+        function İlçe_Doldur(İl_Id) {
+
+            $.ajax({
+                url: '/api/UyeIslemleri/Get_İlçeler',
+                type: 'POST',
+                async: false,
+                data: '{' +
+                    '"Şehir_ID":"' + İl_Id + '"' +
+                    '}',
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    $('#İlçe').empty();
+                    for (var i = 0; i < data.length; i++) {
+                        $('#İlçe').append('<option value="' + data[i].şehir_ID + '">' + data[i].şehir_Adı + '</opiton>')
+                    }
+                },
+                error: function (xhr, status, error) {
+                    if (xhr.status == 200) {
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Talep Esnasında Bir Hata Oluştur',
+                            text: '' + xhr.status + '   ' + error.Message,
+                        })
+                    }
+
+                }
+            });
+
+        }
+
+        $('#İl').change(function () {
+            İlçe_Doldur($(this).find('option:selected').attr('value'))
+        })
+        $('#Yeni_Uye_Oluştur').click(function () {
+
+
+            var gönderilsinmi = true;
+
+            if ($('#Dogum_Tarihi').val() == "") {
+                $('#Dogum_Tarihi').attr('class', 'form-control  form-control-sm is-invalid')
+                gönderilsinmi = false;
+
+            }
+            else {
+                $('#Dogum_Tarihi').attr('class', 'form-control  form-control-sm')
+            }
+
+
+            if ($('#Uye_Adı').val() == "") {
+                $('#Uye_Adı').attr('class', 'form-control  form-control-sm is-invalid')
+                gönderilsinmi = false;
+            }
+            else {
+                $('#Uye_Adı').attr('class', 'form-control  form-control-sm')
+            }
+
+
+            if ($('#Uye_Soyadı').val() == "") {
+                $('#Uye_Soyadı').attr('class', 'form-control  form-control-sm is-invalid')
+                gönderilsinmi = false;
+            }
+            else {
+                $('#Uye_Soyadı').attr('class', 'form-control  form-control-sm')
+            }
+
+
+            if ($('#Uye_Tc_Kimlik').val() == "") {
+                $('#Uye_Tc_Kimlik').attr('class', 'form-control  form-control-sm is-invalid')
+                gönderilsinmi = false;
+            }
+            else {
+                $('#Uye_Tc_Kimlik').attr('class', 'form-control  form-control-sm')
+            }
+
+
+            if ($('#Meslek').find('option:selected').attr('value') == "0") {
+                $('#Meslek').attr('class', 'form-control  form-control-sm is-invalid')
+                gönderilsinmi = false;
+            }
+            else {
+                $('#Meslek').attr('class', 'form-control  form-control-sm')
+            }
+
+            if ($('#Parti_Görevi').find('option:selected').attr('value') == "0") {
+                $('#Parti_Görevi').attr('class', 'form-control  form-control-sm is-invalid')
+                gönderilsinmi = false;
+            }
+            else {
+                $('#Parti_Görevi').attr('class', 'form-control  form-control-sm')
+            }
+
+
+
+            if ($('#İl').find('option:selected').attr('value') == "0") {
+                $('#İl').attr('class', 'form-control  form-control-sm is-invalid')
+                gönderilsinmi = false;
+            }
+            else {
+                $('#İl').attr('class', 'form-control  form-control-sm')
+            }
+
+
+
+            if ($('#İlçe').find('option:selected').attr('value') == "0") {
+                $('#İlçe').attr('class', 'form-control  form-control-sm is-invalid')
+                gönderilsinmi = false;
+            }
+            else {
+                $('#İlçe').attr('class', 'form-control  form-control-sm')
+            }
+
+
+
+            if (gönderilsinmi == true) {
+                if ($(this).attr('İşlem') == "1") {
+                    $.ajax({
+                        url: '/api/UyeIslemleri/YeniUye',
+                        type: 'POST',
+                        async: false,
+                        dataType: "json",
+
+                        data: '{' +
+                            '"TC":"' + $('#Uye_Tc_Kimlik').val() + '",' +
+                            '"Cinsiyet":"' + $('#Uye_Cinsiyet').find('option:selected').attr('value') + '",' +
+                            '"Mail":"' + $('#Mail_Adresi').val() + '",' +
+                            '"AD":"' + $('#Uye_Adı').val() + '",' +
+                            '"SOYAD":"' + $('#Uye_Soyadı').val() + '",' +
+                            '"AnaADI":"' + $('#Anne_Adı').val() + '",' +
+                            '"BabaADI":"' + $('#Baba_Adı').val() + '",' +
+                            '"TELEFONNO":"' + $('#Cep_Tel').val().replace('-', '') + '",' +
+                            '"AdresIS":"' + $('#Adres_İş').val() + '",' +
+                            '"AdresEV":"' + $('#Adres_Ev').val() + '",' +
+                            '"MESLEK":"' + $('#Meslek').find('option:selected').attr('value') + '",' +
+                            '"PartiGOREVI":"' + $('#Parti_Görevi').find('option:selected').attr('value') + '",' +
+                            '"GorevYeriIL":"' + $('#İl').find('option:selected').attr('value') + '",' +
+                            '"GorevYeriILCE":"' + $('#İlçe').find('option:selected').attr('value') + '",' +
+                            '"RESİM":"' + $('#Uye_Resim').attr('src') + '",' +
+                            '"Doğum_Tarihi":"' + $('#Dogum_Tarihi').val() + '"' +
+                            '}',
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+
+
+                        },
+                        error: function (xhr, status, error) {
+                            if (xhr.status == 200) {
+                            }
+                            else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Talep Esnasında Bir Hata Oluştur',
+                                    text: 'Hata Kodu:' + xhr.status + '  Hata İçeriği: ' + xhr,
+                                })
+                            }
+
+                        },
+                        complete: function () {
+                            Hasta_Listesi_Tablosu_Doldur()
+
+                            $('#Yeni_Hasta_Modal').modal('hide')
+
+                        }
+
+
+                    });
+                }
+                if ($(this).attr('İşlem') == "2") {
+
+                    $.ajax({
+                        url: '/api/UyeIslemleri/UyeUpdate',
+                        type: 'POST',
+                        async: false,
+                        dataType: "json",
+
+                        data: '{' +
+                            '"Id":"' + $('#Yeni_Uye_Oluştur').attr('Uye_Id') + '",' +
+                            '"TC":"' + $('#Uye_Tc_Kimlik').val() + '",' +
+                            '"Cinsiyet":"' + $('#Uye_Cinsiyet').find('option:selected').attr('value') + '",' +
+                            '"Mail":"' + $('#Mail_Adresi').val() + '",' +
+                            '"AD":"' + $('#Uye_Adı').val() + '",' +
+                            '"SOYAD":"' + $('#Uye_Soyadı').val() + '",' +
+                            '"AnaADI":"' + $('#Anne_Adı').val() + '",' +
+                            '"BabaADI":"' + $('#Baba_Adı').val() + '",' +
+                            '"TELEFONNO":"' + $('#Cep_Tel').val().replace('-', '') + '",' +
+                            '"AdresIS":"' + $('#Adres_İş').val() + '",' +
+                            '"AdresEV":"' + $('#Adres_Ev').val() + '",' +
+                            '"MESLEK":"' + $('#Meslek').find('option:selected').attr('value') + '",' +
+                            '"PartiGOREVI":"' + $('#Parti_Görevi').find('option:selected').attr('value') + '",' +
+                            '"GorevYeriIL":"' + $('#İl').find('option:selected').attr('value') + '",' +
+                            '"GorevYeriILCE":"' + $('#İlçe').find('option:selected').attr('value') + '",' +
+                            '"RESİM":"' + $('#Uye_Resim').attr('src') + '",' +
+                            '"Doğum_Tarihi":"' + $('#Dogum_Tarihi').val() + '"' +
+                            '}',
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+
+
+                        },
+                        error: function (xhr, status, errors) {
+                            if (xhr.status == 200) {
+                            }
+                            else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Talep Esnasında Bir Hata Oluştur',
+                                    text: 'Hata Kodu:' + xhr.status + '  Hata İçeriği: ' + xhr,
+                                })
+                            }
+
+                        },
+                        complete: function () {
+                            Hasta_Listesi_Tablosu_Doldur()
+
+                            $('#Yeni_Hasta_Modal').modal('hide')
+
+                        }
+
+
+                    });
+                }
+            }
+
+        })
+
+
+
+
+
+        Hasta_Listesi_Tablosu_Doldur()
+        function Hasta_Listesi_Tablosu_Doldur() {
+            var Liste_ = [];
+
+
+
+            var Şehir_Liste = []
+            for (var i = 0; i < $('#Şehir_Txt').val().length; i++) {
+                var x = {
+                    CityID: $('#Şehir_Txt').val()[i]
+                }
+                Şehir_Liste.push(x)
+            }
+
+
+
+            var İlçe_Liste = []
+            for (var i = 0; i < $('#İlçe_Txt').val().length; i++) {
+                var x = {
+                    TownID: $('#İlçe_Txt').val()[i]
+                }
+                İlçe_Liste.push(x)
+            }
+
+
+            var Cinsiyet_Liste = []
+            for (var i = 0; i < $('#Cinsiyet_Txt').val().length; i++) {
+                var x = {
+                    Id: $('#Cinsiyet_Txt').val()[i]
+                }
+                Cinsiyet_Liste.push(x)
+            }
+
+            var Meslek_Liste = []
+            for (var i = 0; i < $('#Meslek_txt').val().length; i++) {
+                var x = {
+                    Id: $('#Meslek_txt').val()[i]
+                }
+                Meslek_Liste.push(x)
+            }
+
+            var Parti_Görevi_Liste = []
+            for (var i = 0; i < $('#Parti_Görevi_Txt').val().length; i++) {
+                var x = {
+                    Id: $('#Parti_Görevi_Txt').val()[i]
+                }
+                Parti_Görevi_Liste.push(x)
+            }
+
+            $.ajax({
+                url: 'api/UyeIslemleri/Get_Uyeler',
+                type: 'POST',
+                async: false,
+                dataType: "json",
+                data: '{' +
+                    '"Bas_Tar":"' + $('#TextBox1').val() + '",' +
+                    '"Bit_Tar":"' + $('#TextBox2').val() + '",' +
+                    '"Şehirler":' + JSON.stringify(Şehir_Liste) + ',' +
+                    '"İlçeler":' + JSON.stringify(İlçe_Liste) + ',' +
+                    '"Cinsiyet":' + JSON.stringify(Cinsiyet_Liste) + ',' +
+                    '"Parti_Görevi":' + JSON.stringify(Parti_Görevi_Liste) + ',' +
+                    '"Meslek":' + JSON.stringify(Meslek_Liste) + ',' +
+                    '"Doğum_Tar_Bas":"' + $('#Doğum_Tar_Bas').val() + '",' +
+                    '"Doğum_Tar_Son":"' + $('#Doğum_Tar_Son').val() + '"' +
+                    '}',
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+
+                    Liste_ = data;
+                    console.log(data)
+
+                },
+                error: function (xhr, status, error, title) {
+                    if (xhr.status == 200) {
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Talep Esnasında Bir Hata Oluştur',
+                            text: 'Hata Kodu:' + xhr.status + '  Hata İçeriği: ' + title,
+                        })
+                    }
+
+                }
+            });
+
+            $('#Hasta_Listesi').empty();
+
+            $('#Hasta_Listesi').append('<table id="Hasta_listei_Table" class="display" style="width: 100%">' +
+                '<thead>' +
+                '<tr>' +
+                '<th>AD SOYAD</th>' +
+                '<th>Baba Adı</th>' +
+                '<th>Anne Adı</th>' +
+                '<th>Tc Kimlik</th>' +
+                '<th>Kayıt Tarihi</th>' +
+                '<th>Cep Telefonu</th>' +
+                '<th>Cinsiyet</th>' +
+                '<th>Meslek</th>' +
+                '<th>Partideki Görevi</th>' +
+                '<th>Görev Yeri İl</th>' +
+                '<th>Görev Yeri İlçe</th>' +
+                '<th>Adres Ev</th>' +
+                '<th>Adres İş</th>' +
+                '<th style="text-align: center;">Düzenle</th>' +
+                '</tr>' +
+                '</thead>' +
+                '<tbody id="Hasta_Listesi_Tbody">' +
+                '</tbody>' +
+                '<tfoot>' +
+                ' <tr>' +
+                '<th></th>' +
+                '<th></th>' +
+                '<th></th>' +
+                '<th></th>' +
+                '<th></th>' +
+                '<th></th>' +
+                '<th></th>' +
+                '<th></th>' +
+                '<th></th>' +
+                '<th></th>' +
+                '<th></th>' +
+                '<th></th>' +
+                '<th></th>' +
+                '<th></th>' +
+                '</tr>' +
+                '</tfoot>' +
+                '</table>'
+            );
+
+
+            if (Liste_.length > 0) {
+                var Tbody = $('tbody[id=Hasta_Listesi_Tbody]')
+
+
+                for (var i = 0; i < Liste_.length; i++) {
+                    let Uye_Tc = Liste_[i].tc
+                    Tbody.append(
+                        '<tr>' +
+                        '<td>' + Liste_[i].ad + " " + Liste_[i].soyad + '</td>' +
+                        '<td>' + Liste_[i].babaADI + '</td>' +
+                        '<td>' + Liste_[i].anaADI + '</td>' +
+                        '<td>' + Liste_[i].tc + '</td>' +
+                        '<td>' + Liste_[i].kayır_Tarihi + '</td>' +
+                        '<td>' + Liste_[i].telefonno + '</td>' +
+                        '<td>' + Liste_[i].cinsiyet + '</td>' +
+                        '<td>' + Liste_[i].meslek + '</td>' +
+                        '<td>' + Liste_[i].partiGOREVI + '</td>' +
+                        '<td>' + Liste_[i].gorevYeriIL + '</td>' +
+                        '<td>' + Liste_[i].gorevYeriILCE + '</td>' +
+                        '<td>' + Liste_[i].adresEV + '</td>' +
+                        '<td>' + Liste_[i].adresIS + '</td>' +
+                        '<td style="text-align: center;"><a style="font-size: 20px;    " id="Düzenle" value="' + Liste_[i].id + '"><i class="fa fa-edit"></i></a></td>' +
+                        '</tr>'
+                    )
+                }
+
+
+            }
+
+
+
+            $('#Hasta_listei_Table').dataTable({
+                "lengthMenu": [10, 25, 50, 75, 100, 200, 500, 750, 1000],
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.10.22/i18n/Turkish.json"
+                },
+                "order": [],
+                scrollX: true
+
+            });
+            $('#Düzenle').click(function () {
+                $('#Yeni_Hasta_Modal').modal('show')
+
+                $('#Yeni_Uye_Oluştur').attr('İşlem', '2');
+                $('#Yeni_Uye_Oluştur').attr('Uye_Id', $(this).attr('value'));
+                $.ajax({
+                    url: 'api/UyeIslemleri/Get_Uye',
+                    type: 'POST',
+                    async: false,
+                    dataType: "json",
+                    data: '{' +
+                        '"Uye_ID":"' + $(this).attr('value') + '"' +
+                        '}',
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        console.log(data)
+                        $('#Uye_Tc_Kimlik').val(data.tc)
+                        $('#Uye_Cinsiyet').val(data.cinsiyet)
+                        $('#Mail_Adresi').val(data.mail)
+                        $('#Uye_Adı').val(data.ad)
+                        $('#Dogum_Tarihi').val(data.doğum_Tarihi)
+                        $('#Uye_Soyadı').val(data.soyad)
+                        $('#Anne_Adı').val(data.anaADI)
+                        $('#Baba_Adı').val(data.babaADI)
+                        $('#Cep_Tel').val(data.telefonno)
+                        $('#Adres_İş').val(data.adresIS)
+                        $('#Adres_Ev').val(data.adresEV)
+                        $('#Meslek').val(data.meslek)
+                        $('#Parti_Görevi').val(data.partiGOREVI)
+                        $('#İl').val(data.gorevYeriIL)
+                        İlçe_Doldur(data.gorevYeriIL)
+                        $('#İlçe').val(data.gorevYeriILCE)
+                        $('#Uye_Resim').attr('src', data.resİm)
+
+
+                    },
+                    error: function (xhr, status, error) {
+                        if (xhr.status == 200) {
+                        }
+                        else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Talep Esnasında Bir Hata Oluştur',
+                                text: '' + xhr.status + '   ' + error.Message,
+                            })
+                        }
+
+                    }
+                });
+
+
+
+            })
+
+
+
+
+        };
+        $('#Yeni_Hasta').click(function () {
+            $('#Yeni_Hasta_Modal').modal('show')
+            $('#Yeni_Uye_Oluştur').attr('İşlem', '1');
+
+
+        })
+
+        $('#Yeni_Hasta_Modal').on('hidden.bs.modal', function () {
+
+            $('#Uye_Tc_Kimlik').val("")
+            $('#Uye_Cinsiyet').find('option:selected').attr('value')
+            $('#Mail_Adresi').val("")
+            $('#Uye_Adı').val("")
+            $('#Dogum_Tarihi').val("")
+            $('#Uye_Soyadı').val("")
+            $('#Anne_Adı').val("")
+            $('#Baba_Adı').val("")
+            $('#Cep_Tel').val("")
+            $('#Adres_İş').val("")
+            $('#Adres_Ev').val("")
+            $('#Meslek').find('option:selected').attr('value')
+            $('#Parti_Görevi').find('option:selected').attr('value')
+            $('#İl').find('option:selected').attr('value')
+            $('#İlçe').find('option:selected').attr('value')
+            $('#Uye_Resim').attr('src', Default_resim)
+            $('#Uye_Adı').attr('class', 'form-control  form-control-sm')
+            $('#Uye_Soyadı').attr('class', 'form-control  form-control-sm')
+            $('#Uye_Tc_Kimlik').attr('class', 'form-control  form-control-sm')
+            $('#Dogum_Tarihi').attr('class', 'form-control  form-control-sm')
+            $('#İl').attr('class', 'form-control  form-control-sm')
+            $('#İlçe').attr('class', 'form-control  form-control-sm')
+            $('#Parti_Görevi').attr('class', 'form-control  form-control-sm')
+            $('#Meslek').attr('class', 'form-control  form-control-sm')
+
+        })
+
+
+        $("#Şehir_Txt").select2({
+            ajax: {
+                url: "api/UyeIslemleri/Search_Şehirler",
+                dataType: 'json',
+                type: 'POST',
+                delay: 250,
+                global: false,
+                contentType: "application/json; charset=utf-8",
+                data: function (params) {
+                    return '{"String_Request":"' + params.term + '"}'
+                },
+                processResults: function (data, params) {
+
+                    return {
+                        results: $.map(data, function (item) {
+
+                            return {
+                                text: item.şehir_Adı,
+                                id: item.şehir_ID
+                            }
+                        })
+                    };
+                },
+                cache: true
+            },
+            minimumInputLength: 2
+        })
+
+        $("#Meslek_txt").select2({
+            ajax: {
+                url: "api/UyeIslemleri/Search_Meslekler",
+                dataType: 'json',
+                type: 'POST',
+                delay: 250,
+                global: false,
+                contentType: "application/json; charset=utf-8",
+                data: function (params) {
+                    return '{"String_Request":"' + params.term + '"}'
+                },
+                processResults: function (data, params) {
+
+                    return {
+                        results: $.map(data, function (item) {
+
+                            return {
+                                text: item.meslek_Adı,
+                                id: item.id
+                            }
+                        })
+                    };
+                },
+                cache: true
+            },
+            minimumInputLength: 2
+        })
+
+        $("#İlçe_Txt").select2({
+            ajax: {
+                url: "api/UyeIslemleri/Search_İlçeler",
+                dataType: 'json',
+                type: 'POST',
+                delay: 250,
+                global: false,
+                contentType: "application/json; charset=utf-8",
+                data: function (params) {
+                    return '{"String_Request":"' + params.term + '"}'
+                },
+                processResults: function (data, params) {
+
+                    return {
+                        results: $.map(data, function (item) {
+
+                            return {
+                                text: item.şehir_Adı,
+                                id: item.şehir_ID
+                            }
+                        })
+                    };
+                },
+                cache: true
+            },
+            minimumInputLength: 2
+        })
+
+        $("#Parti_Görevi_Txt").select2({
+            ajax: {
+                url: "api/UyeIslemleri/Search_Parti_Görevi",
+                dataType: 'json',
+                type: 'POST',
+                delay: 250,
+                global: false,
+                contentType: "application/json; charset=utf-8",
+                data: function (params) {
+                    return '{"String_Request":"' + params.term + '"}'
+                },
+                processResults: function (data, params) {
+
+                    return {
+                        results: $.map(data, function (item) {
+
+                            return {
+                                text: item.görev_Adı,
+                                id: item.id
+                            }
+                        })
+                    };
+                },
+                cache: true
+            },
+            minimumInputLength: 2
+        })
+
+        $("#Cinsiyet_Txt").select2({
+            ajax: {
+                url: "api/UyeIslemleri/Search_Cinsiyet",
+                dataType: 'json',
+                type: 'POST',
+                delay: 250,
+                global: false,
+                contentType: "application/json; charset=utf-8",
+                data: function (params) {
+                    return '{"String_Request":"' + params.term + '"}'
+                },
+                processResults: function (data, params) {
+
+                    return {
+                        results: $.map(data, function (item) {
+
+                            return {
+                                text: item.cinsiyet_Adı,
+                                id: item.id
+                            }
+                        })
+                    };
+                },
+                cache: true
+            },
+            minimumInputLength: 2
+        })
+
+        //Filtreler
+        $('#Filtreler').click(function () {
+            if ($('#Filtreler_Div').attr("hidden") == "hidden") {
+                $('#Filtreler_Div').removeAttr('hidden')
+            }
+            else {
+                $('#Filtreler_Div').attr('hidden', 'hidden')
+            }
+
+        })
+
+        $('#SET').click(function () {
+            Hasta_Listesi_Tablosu_Doldur()
+
+        })
+
+        $('#Filtreleri_Kaldır').click(function () {
+            $('#Şehir_Txt').empty()
+            $('#İlçe_Txt').empty()
+            $('#Meslek_txt').empty()
+            $('#Cinsiyet_Txt').empty()
+            $('#Parti_Görevi_Txt').empty()
+
+            $('#Doğum_Tar_Bas').val("")
+            $('#Doğum_Tar_Son').val("")
+            
+
+        })
+    })
+</script>
+<style>
+    table.dataTable th {
+        font-size: 12px;
+    }
+
+    table.dataTable tr.dtrg-level-0 td {
+        font-size: 12px;
+    }
+</style>
+
+
+<div class="modal fade" id="Yeni_Hasta_Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="Yeni_Hasta_Modal_Başlık">Yeni Üye Oluşturmak İçin Bilgileri Doldurunuz</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <img style="border-radius: 100%;width: 250px; height:250px;"
+                            src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEBLAEsAAD/4QBWRXhpZgAATU0AKgAAAAgABAEaAAUAAAABAAAAPgEbAAUAAAABAAAARgEoAAMAAAABAAIAAAITAAMAAAABAAEAAAAAAAAAAAEsAAAAAQAAASwAAAAB/+0ALFBob3Rvc2hvcCAzLjAAOEJJTQQEAAAAAAAPHAFaAAMbJUccAQAAAgAEAP/hDIFodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvADw/eHBhY2tldCBiZWdpbj0n77u/JyBpZD0nVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkJz8+Cjx4OnhtcG1ldGEgeG1sbnM6eD0nYWRvYmU6bnM6bWV0YS8nIHg6eG1wdGs9J0ltYWdlOjpFeGlmVG9vbCAxMC4xMCc+CjxyZGY6UkRGIHhtbG5zOnJkZj0naHR0cDovL3d3dy53My5vcmcvMTk5OS8wMi8yMi1yZGYtc3ludGF4LW5zIyc+CgogPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9JycKICB4bWxuczp0aWZmPSdodHRwOi8vbnMuYWRvYmUuY29tL3RpZmYvMS4wLyc+CiAgPHRpZmY6UmVzb2x1dGlvblVuaXQ+MjwvdGlmZjpSZXNvbHV0aW9uVW5pdD4KICA8dGlmZjpYUmVzb2x1dGlvbj4zMDAvMTwvdGlmZjpYUmVzb2x1dGlvbj4KICA8dGlmZjpZUmVzb2x1dGlvbj4zMDAvMTwvdGlmZjpZUmVzb2x1dGlvbj4KIDwvcmRmOkRlc2NyaXB0aW9uPgoKIDxyZGY6RGVzY3JpcHRpb24gcmRmOmFib3V0PScnCiAgeG1sbnM6eG1wTU09J2h0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8nPgogIDx4bXBNTTpEb2N1bWVudElEPmFkb2JlOmRvY2lkOnN0b2NrOjQ5ZDRhN2FlLTI1NjYtNDY5Yi05NmI5LWUxYzAxM2JiNmEwYzwveG1wTU06RG9jdW1lbnRJRD4KICA8eG1wTU06SW5zdGFuY2VJRD54bXAuaWlkOjUxYWY0OTY0LWE4MjQtNDk1Yy04MzgzLTQ3OTYxMzNjMzY2YjwveG1wTU06SW5zdGFuY2VJRD4KIDwvcmRmOkRlc2NyaXB0aW9uPgo8L3JkZjpSREY+CjwveDp4bXBtZXRhPgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAo8P3hwYWNrZXQgZW5kPSd3Jz8+/9sAQwAFAwQEBAMFBAQEBQUFBgcMCAcHBwcPCwsJDBEPEhIRDxERExYcFxMUGhURERghGBodHR8fHxMXIiQiHiQcHh8e/8AACwgBaAFoAQERAP/EABsAAQADAQEBAQAAAAAAAAAAAAAFBgcEAgMB/8QAPhABAAEDAgIECA0EAgMAAAAAAAECAwQFBhEhEjFBUQcTNmFzgbHRFSIkMkJSU2JxcpGhwRQjk+GC8RY0Vf/aAAgBAQAAPwDXQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA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"
+                            alt="" id="Uye_Resim">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="exampleInputFile">Resim :</label>
+                                    <div class="input-group">
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" id="fileId">
+                                            <label class="custom-file-label" for="exampleInputFile">Resim Seç</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12">
+                            <div class="form-group">
+                                <label>Kayıt Tarihi:</label>
+                                <input id="Kayıt_Tarihi" class="form-control form-control-sm" type="date"
+                                    placeholder="Kayıt Tarihi" disabled>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Üye Adı:</label>
+                                    <input id="Uye_Adı" class="form-control form-control-sm" type="text"
+                                        placeholder="Üye Adı">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Üye Soyadı:</label>
+                                    <input id="Uye_Soyadı" class="form-control form-control-sm" type="text"
+                                        placeholder="Üye Soyadı">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label>Üye Tc Kimlik No:</label>
+                            <input id="Uye_Tc_Kimlik" class="form-control form-control-sm" type="number"
+                                placeholder="Üye Tc Kimlik No">
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label>Üye Cinsiyet:</label>
+                            <select id="Uye_Cinsiyet" class="form-control form-control-sm">
+                                <option value="1">Erkek</option>
+                                <option value="2">Kadın</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label>Doğum Tarihi:</label>
+                            <input id="Dogum_Tarihi" class="form-control form-control-sm" type="date">
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label>Cep Tel:</label>
+                            <input id="Cep_Tel" type="text" class="form-control form-control-sm" data-inputmask=''
+                                data-mask="" placeholder="0(5__) ___-__-__" inputmode="text">
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label>Mail Adresi:</label>
+                            <input id="Mail_Adresi" type="text" class="form-control form-control-sm"
+                                placeholder="Mail Adresi" inputmode="text">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label>Baba Adı:</label>
+                            <input id="Baba_Adı" class="form-control form-control-sm" type="text"
+                                placeholder="Baba Adı">
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label>Anne Adı:</label>
+                            <input id="Anne_Adı" class="form-control form-control-sm" type="text"
+                                placeholder="Anne Adı">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label>Meslek:</label>
+                            <select id="Meslek" class="form-control form-control-sm">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label>Partideki Görevi:</label>
+                            <select id="Parti_Görevi" class="form-control form-control-sm">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label>Görev Yeri İl:</label>
+                            <select id="İl" class="form-control form-control-sm">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label>Görev Yeri İlçe:</label>
+                            <select id="İlçe" class="form-control form-control-sm">
+                                <option value="0">Lütfen Şehir Seçiniz</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label>Adres Ev:</label>
+                            <textarea id="Adres_Ev" class="form-control" rows="3" placeholder="Adres Ev"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label>Adres İş:</label>
+                            <textarea id="Adres_İş" class="form-control" rows="3" placeholder="Adres İş"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+                <button type="button" id="Yeni_Uye_Oluştur" İşlem="0" class="btn btn-primary">Kaydet</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-outline card-info">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-4 ">
+                        <div class="form-group">
+                            <input id="TextBox1" class="form-control" type="date" />
+                        </div>
+                    </div>
+                    <div class="col-lg-4 ">
+                        <div class="form-group">
+                            <input id="TextBox2" class="form-control" type="date" />
+                        </div>
+                    </div>
+                    <div class="col-lg-1">
+                        <button type="button" id="SET" class="btn btn-primary btn-block">&nbsp;SET</button>
+                    </div>
+                    <div class="col-lg-1">
+                        <button type="button" id="Filtreler" class="btn btn-primary btn-block"><i
+                                class="fa fa-fw fa-filter"></i>&nbsp;Filtreler</button>
+                    </div>
+                    <div class="col-lg-2">
+                        <button type="button" id="Yeni_Hasta" class="btn btn-primary btn-block"><i
+                                class="fa  fa-plus-square"></i>&nbsp;Yeni Uye</button>
+                    </div>
+
+                </div>
+                <div hidden="hidden" id="Filtreler_Div">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <label>Görev Yeri İl:</label>
+                        </div>
+                        <div class="col-md-2">
+                            <label>Görev Yeri İlçe:</label>
+                        </div>
+                        <div class="col-md-2">
+                            <label>Meslek:</label>
+                        </div>
+                        <div class="col-md-2">
+                            <label>Cinsiyet:</label>
+                        </div>
+                        <div class="col-md-2">
+                            <label>Parti Görevi:</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <select class="js-example-basic-multiple form-control form-control" multiple
+                                style="width: 100%;" id="Şehir_Txt"></select>
+                        </div>
+                        <div class="col-md-2">
+                            <select class="js-example-basic-multiple form-control form-control" multiple
+                                style="width: 100%;" id="İlçe_Txt"></select>
+                        </div>
+                        <div class="col-md-2">
+                            <select class="js-example-basic-multiple form-control form-control" multiple
+                                style="width: 100%;" id="Meslek_txt"></select>
+                        </div>
+                        <div class="col-md-2">
+                            <select class="js-example-basic-multiple form-control form-control" multiple
+                                style="width: 100%;" id="Cinsiyet_Txt"></select>
+                        </div>
+                        <div class="col-md-2">
+                            <select class="js-example-basic-multiple form-control form-control" multiple
+                                style="width: 100%;" id="Parti_Görevi_Txt"></select>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" id="Filtreleri_Kaldır" class="btn btn-primary btn-block btn-sm"><i
+                                    class="fa fa-fw fa-trash"></i>&nbsp;Filtreleri Kaldır</button>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Doğum Tarihi Başlangıç:</label>
+                        </div>
+                        <div class="col-md-6">
+                            <label>Doğum Tarihi Son:</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <input id="Doğum_Tar_Bas" class="form-control" type="date" />
+                        </div>
+                        <div class="col-md-6">
+                            <input id="Doğum_Tar_Son" class="form-control" type="date" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="padding-top: 15px">
+                    <div class="col-12">
+                        <div id="Hasta_Listesi"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,1123 @@
+<script>
+    $(document).ready(function () {
+        var variable = '' +
+            '<tr>' +
+            '                            <th scope="row">1</th>' +
+            '                            <td>' +
+            '                                <div class="progress">' +
+            '                                    <div class="progress-bar bg-primary progress-bar-striped" role="progressbar"' +
+            '                                        aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">' +
+            '                                        <span class="sr-only"></span>' +
+            '                                    </div>' +
+            '                                </div>' +
+            '                            </td>' +
+            '                        </tr>' +
+            '';
+        $('#Parça_Modal_Kaydet_Btn').click(function () {
+            var Yapılan_İşlemler = Get_Yapılan_İşlemler()
+            $('#İşlemler_Tbody').empty()
+            if (Yapılan_İşlemler.length > 0) {
+                for (var i = 0; i < Yapılan_İşlemler.length; i++) {
+                    var variable = '' +
+                        '<tr>' +
+                        '                            <th scope="row">' + Yapılan_İşlemler[i].işlem_Adı + '</th>' +
+                        '                            <td>' +
+                        '                                <div class="progress">' +
+                        '                                    <div class="progress-bar bg-primary progress-bar-striped" role="progressbar"' +
+                        '                                        aria-valuenow="0" id="Progress_Bar_İşlem_Kaydet" işlem_adı="' + Yapılan_İşlemler[i].işlem_Adı + '" aria-valuemin="0" aria-valuemax="100" style="width: 0%">' +
+                        '                                        <span class="sr-only"></span>' +
+                        '                                    </div>' +
+                        '                                </div>' +
+                        '                            </td>' +
+                        '                        </tr>' +
+                        '';
+                    $('#İşlemler_Tbody').append(variable)
+
+                }
+            }
+            else {
+                var variable = '' +
+                    ' <tr>' +
+                    '                            <th colspan="2" class="text-center">Hiç İşlem Bulunamadı</th>' +
+                    '                        </tr>' +
+                    '';
+                $('#İşlemler_Tbody').append(variable)
+
+            }
+
+        })
+
+
+
+        $('#Parça_Kaydet_Btn_Modal_Kaydet_Btn').click(function () {
+
+            console.log(Get_Girilen_Malzeme_Bilgileri())
+            Write_DB_Malzeme_Bilgileri(Get_Girilen_Malzeme_Bilgileri(), $(this).attr('Revize_Id'))
+
+
+
+            console.log(Get_Girilen_Büküm_Hesabı())
+            Write_Db_Büküm_Bilgileri(Get_Girilen_Büküm_Hesabı(), $(this).attr('Revize_Id'))
+
+
+            console.log(Get_Kesim_Maliyeti())
+            Write_Db_Kesim_Bilgileri(Get_Kesim_Maliyeti(), $(this).attr('Revize_Id'))
+
+            console.log(Get_Kaynak_Maliyeti())
+            Write_Db_Kaynak_Bilgileri(Get_Kaynak_Maliyeti(), $(this).attr('Revize_Id'))
+
+
+            console.log(Get_Bağlantı_Elemanı_Maliyeti())
+            Write_Db_Bağlatı_Bilgileri(Get_Bağlantı_Elemanı_Maliyeti(), $(this).attr('Revize_Id'))
+
+
+            console.log(Get_Kaplama_Maliyeti())
+            Wtrite_Db_Kaplama_Bilgileri(Get_Kaplama_Maliyeti(), $(this).attr('Revize_Id'))
+
+
+            console.log(Get_Toplam_Maliyet())
+            Write_Db_Toplam_Maliyet_Bilgileri(Get_Toplam_Maliyet(), $(this).attr('Revize_Id'))
+
+
+            console.log(Get_Dıs_Operasyon_Maliyeti())
+            Wtrite_Db_Dıs_Operasyon_Bilgileri(Get_Dıs_Operasyon_Maliyeti(), $(this).attr('Revize_Id'))
+
+            console.log(Get_Tesfiye_Bilgileri())
+            Wtrite_Db_Tesfiye_Bilgileri(Get_Tesfiye_Bilgileri(), $(this).attr('Revize_Id'))
+
+
+            console.log(Get_Paketleme_Bilgileri())
+            Wtrite_Db_Paketleme_Bilgileri(Get_Paketleme_Bilgileri(), $(this).attr('Revize_Id'))
+
+
+            console.log(Get_Paketleme_Bilgileri())
+            Wtrite_Db_Boya_Bilgileri(Get_Boya_Bilgileri(), $(this).attr('Revize_Id'))
+
+        })
+
+
+
+
+    })
+    function Wtrite_Db_Boya_Bilgileri(Kaplama_Bilgileri, Revize_Id) {
+
+        if (Kaplama_Bilgileri != []) {
+            var Row_Id = "";
+            var x = {
+                Revize_Id: Revize_Id
+            }
+            $.ajax({
+                url: 'api/BoyaSaved/Boya_Maliyeti_Saved_Add',
+                type: 'POST',
+                async: false,
+                dataType: "json",
+                data: JSON.stringify(x),
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+
+                    Row_Id = data.id;
+
+
+                },
+                error: function (xhr, status, error) {
+                    if (xhr.status == 200) {
+
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Talep Esnasında Bir Hata Oluştur',
+                            text: '' + xhr.status + '   ' + error.Message,
+                        })
+                    }
+
+                }
+            })
+
+            for (var i = 0; i < Kaplama_Bilgileri.length; i++) {
+                var x = {
+
+                    Boya_Maliyeti_Saved_Id: Row_Id,
+                    Boya_Türü: Kaplama_Bilgileri[i].Boya_Text,
+                    Birim: Kaplama_Bilgileri[i].Birim,
+                    Birim_Fiyat: Kaplama_Bilgileri[i].Maliyet,
+                    Adet: Kaplama_Bilgileri[i].Adet,
+                    Toplam_Fiyat: Kaplama_Bilgileri[i].Toplam_Fiyat,
+                }
+
+                //BağlantıElemanıSaved_Row_Add
+
+                $.ajax({
+                    url: 'api/BoyaSaved/Boya_Maliyeti_Saved_Row_Add',
+                    type: 'POST',
+                    async: false,
+                    dataType: "json",
+                    data: JSON.stringify(x),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+
+                        Swal.fire(
+                            'İşlem Başarılı',
+                        )
+
+
+
+                    },
+                    error: function (xhr, status, error) {
+                        if (xhr.status == 200) {
+
+                        }
+                        else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Talep Esnasında Bir Hata Oluştur',
+                                text: '' + xhr.status + '   ' + error.Message,
+                            })
+                        }
+
+                    }
+                })
+
+
+
+            }
+
+
+
+        }
+
+
+    }
+    function Wtrite_Db_Paketleme_Bilgileri(Kaplama_Bilgileri, Revize_Id) {
+
+        if (Kaplama_Bilgileri != []) {
+            var Row_Id = "";
+            var x = {
+                Revize_Id: Revize_Id
+            }
+            $.ajax({
+                url: 'api/PaketlemeSaved/Paketleme_Maliyeti_Saved_Add',
+                type: 'POST',
+                async: false,
+                dataType: "json",
+                data: JSON.stringify(x),
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+
+                    Row_Id = data.id;
+
+
+                },
+                error: function (xhr, status, error) {
+                    if (xhr.status == 200) {
+
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Talep Esnasında Bir Hata Oluştur',
+                            text: '' + xhr.status + '   ' + error.Message,
+                        })
+                    }
+
+                }
+            })
+
+            for (var i = 0; i < Kaplama_Bilgileri.length; i++) {
+                var x = {
+
+                    Paketleme_Maliyeti_Saved_Id: Row_Id,
+                    Paketleme_Türü: Kaplama_Bilgileri[i].Paketleme_Türü,
+                    Birim: Kaplama_Bilgileri[i].Birim,
+                    Birim_Fiyat: Kaplama_Bilgileri[i].Maliyet,
+                    Adet: Kaplama_Bilgileri[i].Adet,
+                    Toplam_Fiyat: Kaplama_Bilgileri[i].Toplam_Fiyat,
+                }
+
+                //BağlantıElemanıSaved_Row_Add
+
+                $.ajax({
+                    url: 'api/PaketlemeSaved/Paketleme_Maliyeti_Saved_Row_Add',
+                    type: 'POST',
+                    async: false,
+                    dataType: "json",
+                    data: JSON.stringify(x),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+
+                        Swal.fire(
+                            'İşlem Başarılı',
+                        )
+
+
+
+                    },
+                    error: function (xhr, status, error) {
+                        if (xhr.status == 200) {
+
+                        }
+                        else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Talep Esnasında Bir Hata Oluştur',
+                                text: '' + xhr.status + '   ' + error.Message,
+                            })
+                        }
+
+                    }
+                })
+
+
+
+            }
+
+
+
+        }
+
+
+    }
+    function Wtrite_Db_Tesfiye_Bilgileri(Kaplama_Bilgileri, Revize_Id) {
+
+        if (Kaplama_Bilgileri != []) {
+            var Row_Id = "";
+            var x = {
+                Revize_Id: Revize_Id
+            }
+            $.ajax({
+                url: 'api/TesfiyeSaved/Tesfiye_Maliyeti_Saved_Add',
+                type: 'POST',
+                async: false,
+                dataType: "json",
+                data: JSON.stringify(x),
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+
+                    Row_Id = data.id;
+
+
+                },
+                error: function (xhr, status, error) {
+                    if (xhr.status == 200) {
+
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Talep Esnasında Bir Hata Oluştur',
+                            text: '' + xhr.status + '   ' + error.Message,
+                        })
+                    }
+
+                }
+            })
+
+            for (var i = 0; i < Kaplama_Bilgileri.length; i++) {
+                var x = {
+
+                    Tesfiye_Maliyeti_Saved_Id: Row_Id,
+                    Tesfiye_Türü: Kaplama_Bilgileri[i].Tesfiye_Türü,
+                    Birim: Kaplama_Bilgileri[i].Birim,
+                    Birim_Fiyat: Kaplama_Bilgileri[i].Maliyet,
+                    Adet: Kaplama_Bilgileri[i].Adet,
+                    Toplam_Fiyat: Kaplama_Bilgileri[i].Toplam_Fiyat,
+                }
+
+                //BağlantıElemanıSaved_Row_Add
+
+                $.ajax({
+                    url: 'api/TesfiyeSaved/Tesfiye_Maliyeti_Saved_Row_Add',
+                    type: 'POST',
+                    async: false,
+                    dataType: "json",
+                    data: JSON.stringify(x),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+
+                        Swal.fire(
+                            'İşlem Başarılı',
+                        )
+
+
+
+                    },
+                    error: function (xhr, status, error) {
+                        if (xhr.status == 200) {
+
+                        }
+                        else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Talep Esnasında Bir Hata Oluştur',
+                                text: '' + xhr.status + '   ' + error.Message,
+                            })
+                        }
+
+                    }
+                })
+
+
+
+            }
+
+
+
+        }
+
+
+    }
+    function Wtrite_Db_Dıs_Operasyon_Bilgileri(Kaplama_Bilgileri, Revize_Id) {
+
+        if (Kaplama_Bilgileri != []) {
+            var Row_Id = "";
+            var x = {
+                Revize_Id: Revize_Id
+            }
+            $.ajax({
+                url: 'api/Dıs_Operasyon_Maliyeti_Saved/Dıs_Operasyon_Maliyeti_Saved_Add',
+                type: 'POST',
+                async: false,
+                dataType: "json",
+                data: JSON.stringify(x),
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+
+                    Row_Id = data.id;
+
+
+                },
+                error: function (xhr, status, error) {
+                    if (xhr.status == 200) {
+
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Talep Esnasında Bir Hata Oluştur',
+                            text: '' + xhr.status + '   ' + error.Message,
+                        })
+                    }
+
+                }
+            })
+
+            for (var i = 0; i < Kaplama_Bilgileri.length; i++) {
+                var x = {
+
+                    Dıs_Operasyon_Maliyeti_Saved_Id: Row_Id,
+                    Dıs_Operasyon_Adı: Kaplama_Bilgileri[i].Operasyon_Adı,
+                    Dıs_Operasyon_Birim_Fiyat: Kaplama_Bilgileri[i].Operasyon_Maliyeti,
+                    Dıs_Operasyon_Adet: Kaplama_Bilgileri[i].Operasyon_Adeti,
+                    Toplam_Fiyat: Kaplama_Bilgileri[i].Toplam_Fiyat,
+                }
+
+                //BağlantıElemanıSaved_Row_Add
+
+                $.ajax({
+                    url: 'api/Dıs_Operasyon_Maliyeti_Saved/Dıs_Operasyon_Maliyeti_Saved_Row_Add',
+                    type: 'POST',
+                    async: false,
+                    dataType: "json",
+                    data: JSON.stringify(x),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+
+                        Swal.fire(
+                            'İşlem Başarılı',
+                        )
+
+
+
+                    },
+                    error: function (xhr, status, error) {
+                        if (xhr.status == 200) {
+
+                        }
+                        else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Talep Esnasında Bir Hata Oluştur',
+                                text: '' + xhr.status + '   ' + error.Message,
+                            })
+                        }
+
+                    }
+                })
+
+
+
+            }
+
+
+
+        }
+
+
+    }
+
+    function Write_Db_Toplam_Maliyet_Bilgileri(Toplam_Maliyet_Bilgileri, Revize_Id) {
+
+        if (Toplam_Maliyet_Bilgileri != null) {
+            var x = {
+                Revize_Id: Revize_Id,
+
+                İşçilik_Maliyeti: Toplam_Maliyet_Bilgileri.İşçilik_Maliyeti,
+                İşçilik_Kar_Oranı: Toplam_Maliyet_Bilgileri.İşçilik_Kar_Oranı,
+                İşçilik_Karlı_Toplam: Toplam_Maliyet_Bilgileri.İşçilik_Karlı_Toplam,
+
+                Malzeme_Maliyeti: Toplam_Maliyet_Bilgileri.Malzeme_Maliyeti,
+                Malzeme_Kar_Oranı: Toplam_Maliyet_Bilgileri.Malzeme_Kar_Oranı,
+                Malzeme_Karlı_Toplam: Toplam_Maliyet_Bilgileri.Malzeme_Karlı_Toplam,
+
+                Malzeme_Birim_Fiyatı: Toplam_Maliyet_Bilgileri.Malzeme_Birim_Fiyatı,
+                Hurda_Birim_Satış_Oranı: Toplam_Maliyet_Bilgileri.Hurda_Birim_Satış_Oranı,
+                Malzeme_Hurda_Fiyatı: Toplam_Maliyet_Bilgileri.Malzeme_Hurda_Fiyatı,
+                Malzeme_Fire_Oranı: Toplam_Maliyet_Bilgileri.Malzeme_Fire_Oranı,
+                Fire_Maliyeti: Toplam_Maliyet_Bilgileri.Fire_Maliyeti,
+
+            }
+            var Toplam_Maliyet_Id = "";
+
+            $.ajax({
+                url: 'api/Toplam_Maliyet_Saved/Toplam_Maliyet_Saved_Add',
+                type: 'POST',
+                async: false,
+                dataType: "json",
+                data: JSON.stringify(x),
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+
+                    Toplam_Maliyet_Id = data.id;
+                },
+                error: function (xhr, status, error) {
+                    if (xhr.status == 200) {
+
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Talep Esnasında Bir Hata Oluştur',
+                            text: '' + xhr.status + '   ' + error.Message,
+                        })
+                    }
+
+                }
+            })
+
+            for (var i = 0; i < Toplam_Maliyet_Bilgileri.İşçilik_Maliyeti_Selecteds.length; i++) {
+                var x = {
+                    Toplam_Maliyet_Saved_Id: Toplam_Maliyet_Id,
+                    Maliyet_Text: Toplam_Maliyet_Bilgileri.İşçilik_Maliyeti_Selecteds[i].İşlem_Adı,
+                    İşlem_Maliyeti: Toplam_Maliyet_Bilgileri.İşçilik_Maliyeti_Selecteds[i].İşlem_Maliyeti,
+                }
+
+                $.ajax({
+                    url: 'api/Toplam_Maliyet_Saved/İşçilik_Maliyeti_Selected_Add',
+                    type: 'POST',
+                    async: false,
+                    dataType: "json",
+                    data: JSON.stringify(x),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+
+
+                    },
+                    error: function (xhr, status, error) {
+                        if (xhr.status == 200) {
+
+                        }
+                        else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Talep Esnasında Bir Hata Oluştur',
+                                text: '' + xhr.status + '   ' + error.Message,
+                            })
+                        }
+
+                    }
+                })
+
+
+            }
+
+
+
+            for (var i = 0; i < Toplam_Maliyet_Bilgileri.Malzeme_Maliyeti_Selected.length; i++) {
+                var x = {
+                    Toplam_Maliyet_Saved_Id: Toplam_Maliyet_Id,
+                    Maliyet_Text: Toplam_Maliyet_Bilgileri.Malzeme_Maliyeti_Selected[i].İşlem_Adı,
+                    İşlem_Maliyeti: Toplam_Maliyet_Bilgileri.Malzeme_Maliyeti_Selected[i].İşlem_Maliyeti,
+                }
+
+                $.ajax({
+                    url: 'api/Toplam_Maliyet_Saved/Malzeme_Maliyeti_Selected_Add',
+                    type: 'POST',
+                    async: false,
+                    dataType: "json",
+                    data: JSON.stringify(x),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+
+
+                    },
+                    error: function (xhr, status, error) {
+                        if (xhr.status == 200) {
+
+                        }
+                        else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Talep Esnasında Bir Hata Oluştur',
+                                text: '' + xhr.status + '   ' + error.Message,
+                            })
+                        }
+
+                    }
+                })
+
+
+
+
+
+            }
+
+            Swal.fire(
+                'İşlem Başarılı',
+            )
+
+
+        }
+
+
+
+
+    }
+
+
+
+    function Wtrite_Db_Kaplama_Bilgileri(Kaplama_Bilgileri, Revize_Id) {
+
+        if (Kaplama_Bilgileri != []) {
+            var Row_Id = "";
+            var x = {
+                Revize_Id: Revize_Id
+            }
+            $.ajax({
+                url: 'api/Kaplama_Maliyeti_Saved/Kaplama_Maliyeti_Saved_Add',
+                type: 'POST',
+                async: false,
+                dataType: "json",
+                data: JSON.stringify(x),
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+
+                    Row_Id = data.id;
+
+
+                },
+                error: function (xhr, status, error) {
+                    if (xhr.status == 200) {
+
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Talep Esnasında Bir Hata Oluştur',
+                            text: '' + xhr.status + '   ' + error.Message,
+                        })
+                    }
+
+                }
+            })
+
+            for (var i = 0; i < Kaplama_Bilgileri.length; i++) {
+                var x = {
+
+                    Kaplama_Maliyeti_Saved_Id: Row_Id,
+                    Kaplama_Adı: Kaplama_Bilgileri[i].Kaplama_Text,
+                    Kaplama_Birimi: Kaplama_Bilgileri[i].Kaplama_Birim,
+                    Birim_Fiyat: Kaplama_Bilgileri[i].Kaplama_Birim_Fiyat,
+                    Adet: Kaplama_Bilgileri[i].Kaplama_Birim_Adeti,
+                    Toplam_Fiyat: Kaplama_Bilgileri[i].Kaplama_Toplam_Fİyat,
+                }
+
+                //BağlantıElemanıSaved_Row_Add
+
+                $.ajax({
+                    url: 'api/Kaplama_Maliyeti_Saved/Kaplama_Maliyeti_Saved_Row_Add',
+                    type: 'POST',
+                    async: false,
+                    dataType: "json",
+                    data: JSON.stringify(x),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+
+                        Swal.fire(
+                            'İşlem Başarılı',
+                        )
+
+
+
+                    },
+                    error: function (xhr, status, error) {
+                        if (xhr.status == 200) {
+
+                        }
+                        else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Talep Esnasında Bir Hata Oluştur',
+                                text: '' + xhr.status + '   ' + error.Message,
+                            })
+                        }
+
+                    }
+                })
+
+
+
+            }
+
+
+
+        }
+
+
+    }
+
+    function Write_Db_Bağlatı_Bilgileri(Bağlantı_Bilgileri, Revize_Id) {
+        if (Bağlantı_Bilgileri != []) {
+            console.log(Bağlantı_Bilgileri)
+            var Row_Id = "";
+            var x = {
+                Revize_Id: Revize_Id
+            }
+            $.ajax({
+                url: 'api/Bağlantı_Elemanı_Saved/BaglantıElemanları_Add',
+                type: 'POST',
+                async: false,
+                dataType: "json",
+                data: JSON.stringify(x),
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+
+                    Row_Id = data.id;
+
+
+                },
+                error: function (xhr, status, error) {
+                    if (xhr.status == 200) {
+
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Talep Esnasında Bir Hata Oluştur',
+                            text: '' + xhr.status + '   ' + error.Message,
+                        })
+                    }
+
+                }
+            })
+
+            for (var i = 0; i < Bağlantı_Bilgileri.length; i++) {
+                var x = {
+
+                    Bağlantı_Elemanı_Saved_Id: Row_Id,
+                    Bağlantı_Elemanı_Id: Bağlantı_Bilgileri[i].Bağlantı_Elemanı_Id,
+                    Bağlantı_Elemanı_Adı: Bağlantı_Bilgileri[i].Bağlantı_Elemanı_Adı,
+                    Birim_Fiyat: Bağlantı_Bilgileri[i].Bağlantı_Elemanı_Birim_Fiyatı,
+                    Adet: Bağlantı_Bilgileri[i].Bağlantı_Elemanı_Birim_Adeti,
+                    Toplam_Fiyat: Bağlantı_Bilgileri[i].Kaynak_Maliyeti,
+                }
+
+                //BağlantıElemanıSaved_Row_Add
+
+                $.ajax({
+                    url: 'api/Bağlantı_Elemanı_Saved/BağlantıElemanıSaved_Row_Add',
+                    type: 'POST',
+                    async: false,
+                    dataType: "json",
+                    data: JSON.stringify(x),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+
+                        Swal.fire(
+                            'İşlem Başarılı',
+                        )
+
+
+
+                    },
+                    error: function (xhr, status, error) {
+                        if (xhr.status == 200) {
+
+                        }
+                        else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Talep Esnasında Bir Hata Oluştur',
+                                text: '' + xhr.status + '   ' + error.Message,
+                            })
+                        }
+
+                    }
+                })
+
+
+
+            }
+
+
+
+
+
+        }
+
+
+    }
+
+    function Write_Db_Kaynak_Bilgileri(Kaynak_Bilgileri, Revize_Id) {
+        if (Kaynak_Bilgileri != []) {
+            console.log(Kaynak_Bilgileri)
+            var Row_Id = "";
+            var x = {
+                Revize_Id: Revize_Id
+            }
+            $.ajax({
+                url: 'api/Kaynak_Maliyeti_Saved/Kaynak_Maliyeti_Saved_Add',
+                type: 'POST',
+                async: false,
+                dataType: "json",
+                data: JSON.stringify(x),
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+
+                    Row_Id = data.id;
+
+
+                },
+                error: function (xhr, status, error) {
+                    if (xhr.status == 200) {
+
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Talep Esnasında Bir Hata Oluştur',
+                            text: '' + xhr.status + '   ' + error.Message,
+                        })
+                    }
+
+                }
+            })
+
+            for (var i = 0; i < Kaynak_Bilgileri.length; i++) {
+                var x = {
+
+                    Kaynak_Maliyeti_Saved_Id: Row_Id,
+                    Kaynak_Adı: Kaynak_Bilgileri[i].Kaynak_Türü,
+                    Kaynak_birimi: Kaynak_Bilgileri[i].Kaynak_Birimi,
+                    Birim_Fiyat: Kaynak_Bilgileri[i].Kaynak_Birim_Fiyatı,
+                    Adet: Kaynak_Bilgileri[i].Kaynak_Birim_Adeti,
+                    Toplam_Fiyat: Kaynak_Bilgileri[i].Kaynak_Maliyeti,
+
+                }
+                $.ajax({
+                    url: 'api/Kaynak_Maliyeti_Saved/Kaynak_Maliyeti_Saved_Row_Add',
+                    type: 'POST',
+                    async: false,
+                    dataType: "json",
+                    data: JSON.stringify(x),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+
+                        Swal.fire(
+                            'İşlem Başarılı',
+                        )
+
+
+                    },
+                    error: function (xhr, status, error) {
+                        if (xhr.status == 200) {
+
+                        }
+                        else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Talep Esnasında Bir Hata Oluştur',
+                                text: '' + xhr.status + '   ' + error.Message,
+                            })
+                        }
+
+                    }
+                })
+            }
+
+
+        }
+
+    }
+    function Write_Db_Kesim_Bilgileri(Kesim_Bilgileri, Revize_Id) {
+        if (Kesim_Bilgileri != null) {
+            var x = {
+                Revize_Id: Revize_Id,
+                Malzeme_Kesim_Türü_Id: Kesim_Bilgileri.Kesim_Türü,
+                Parça_Adeti: Kesim_Bilgileri.Parça_Adeti,
+                Kesim_Süresi_Saat: '0001-01-01' + 'T' + Kesim_Bilgileri.Kesim_Süresi,
+                Kesim_Süresi_Saniye: Kesim_Bilgileri.Malzeme_Kesim_Süresi,
+                Kesim_Fiyatı: Kesim_Bilgileri.Kesim_Fiyatı,
+                Kesim_Maliyeti: Kesim_Bilgileri.Kesim_Maliyeti,
+
+                //Parça_Firesiz_Ağırlığı
+            }
+            $.ajax({
+                url: 'api/Kesim_Maliyeti_Saved/Kesim_Maliyeti_Saved_Add',
+                type: 'POST',
+                async: false,
+                dataType: "json",
+                data: JSON.stringify(x),
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+
+                    Swal.fire(
+                        'İşlem Başarılı',
+                    )
+
+
+                },
+                error: function (xhr, status, error) {
+                    if (xhr.status == 200) {
+
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Talep Esnasında Bir Hata Oluştur',
+                            text: '' + xhr.status + '   ' + error.Message,
+                        })
+                    }
+
+                }
+            })
+
+        }
+    }
+    function Write_Db_Büküm_Bilgileri(Büküm_Bilgileri, Revize_Id) {
+
+        if (Büküm_Bilgileri != null) {
+
+            if (Büküm_Bilgileri.Büküm_Tipi == "0") {
+                console.log("asddsa")
+                var x = {
+                    Revize_Id: Revize_Id,
+                    Malzeme_Ağırlığı: Büküm_Bilgileri.Malzeme_Ağırlığı,
+                    Kat_Sayı: Büküm_Bilgileri.Katsayı,
+                    Büküm_Maliyeti: Büküm_Bilgileri.Büküm_Maliyeti,
+                    Büküm_Tipi: "0"
+
+                    //Parça_Firesiz_Ağırlığı
+                }
+                $.ajax({
+                    url: 'api/Büküm_Maliyeti_Saved/Büküm_Maliyeti_Saved_Ağırlık_Add',
+                    type: 'POST',
+                    async: false,
+                    dataType: "json",
+                    data: JSON.stringify(x),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+
+                        Swal.fire(
+                            'İşlem Başarılı',
+                        )
+
+
+                    },
+                    error: function (xhr, status, error) {
+                        if (xhr.status == 200) {
+
+                        }
+                        else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Talep Esnasında Bir Hata Oluştur',
+                                text: '' + xhr.status + '   ' + error.Message,
+                            })
+                        }
+
+                    }
+                })
+
+            }
+            if (Büküm_Bilgileri.Büküm_Tipi == "1") {
+                var x = {
+                    Revize_Id: Revize_Id,
+                    Büküm_Adeti: Büküm_Bilgileri.Büküm_Adeti,
+                    Büküm_Zorluğu_Id: Büküm_Bilgileri.Büküm_Zorluğu_Id,
+                    Kat_Sayı: Büküm_Bilgileri.Katsayı,
+                    Büküm_Maliyeti: Büküm_Bilgileri.Büküm_Maliyeti,
+                    Büküm_Tipi: "1"
+
+                }
+                $.ajax({
+                    url: 'api/Büküm_Maliyeti_Saved/Büküm_Maliyeti_Saved_Ağırlık_Add',
+                    type: 'POST',
+                    async: false,
+                    dataType: "json",
+                    data: JSON.stringify(x),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+
+                        Swal.fire(
+                            'İşlem Başarılı',
+                        )
+
+
+                    },
+                    error: function (xhr, status, error) {
+                        if (xhr.status == 200) {
+
+                        }
+                        else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Talep Esnasında Bir Hata Oluştur',
+                                text: '' + xhr.status + '   ' + error.Message,
+                            })
+                        }
+
+                    }
+                })
+
+            }
+            if (Büküm_Bilgileri.Büküm_Tipi == "2") {
+                var x = {
+                    Revize_Id: Revize_Id,
+                    Büküm_Adeti: Büküm_Bilgileri.Büküm_Adeti,
+                    Hesap_Çeşiti_Id: Büküm_Bilgileri.Hesap_Çeşiti,
+                    Malzeme_Eni: Büküm_Bilgileri.Malzeme_Eni,
+                    Malzeme_Boyu: Büküm_Bilgileri.Malzeme_Boyu,
+                    Malzeme_Boyu_Katsayı: Büküm_Bilgileri.Uzunluk_Katsayısı,
+                    Büküm_Zorluğu_Id: Büküm_Bilgileri.Büküm_Zorluğu,
+                    Büküm_Zorluğu_Katsayı: Büküm_Bilgileri.Zorluk_Katsayısı,
+                    Büküm_Maliyeti: Büküm_Bilgileri.Büküm_Maliyeti,
+                    Büküm_Tipi: "2"
+
+
+
+                }
+                $.ajax({
+                    url: 'api/Büküm_Maliyeti_Saved/Büküm_Maliyeti_Saved_Uzunluk_Add',
+                    type: 'POST',
+                    async: false,
+                    dataType: "json",
+                    data: JSON.stringify(x),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+
+                        Swal.fire(
+                            'İşlem Başarılı',
+                        )
+
+
+                    },
+                    error: function (xhr, status, error) {
+                        if (xhr.status == 200) {
+
+                        }
+                        else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Talep Esnasında Bir Hata Oluştur',
+                                text: '' + xhr.status + '   ' + error.Message,
+                            })
+                        }
+
+                    }
+                })
+
+
+            }
+        }
+
+
+    }
+
+    function Write_DB_Malzeme_Bilgileri(Malzeme_Bilgileri, Revize_Id) {
+        if (Malzeme_Bilgileri != null) {
+            var x = {
+                Revize_Id: Revize_Id,
+                Malzeme_Adı: Malzeme_Bilgileri.Malzeme_Adı,
+
+                Malzeme_Id: Malzeme_Bilgileri.Malzeme_Id,
+                Malzeme_Birim_Fiyatı: Malzeme_Bilgileri.Malzeme_Fiyatı,
+                Malzeme_Kesim_Türü_Id: Malzeme_Bilgileri.Malzeme_Kesim_Türü,
+                Plaka_Eni: Malzeme_Bilgileri.Malzeme_Eni,
+                Plaka_Boyu: Malzeme_Bilgileri.Malzeme_Boyu,
+                Plaka_Kalınlığı: Malzeme_Bilgileri.Malzeme_Genişliği,
+                Parça_Adeti: Malzeme_Bilgileri.Malzeme_Genişliği,
+                Parça_Firesiz_Ağırlığı: Malzeme_Bilgileri.Parça_Firesiz_Ağırlığı,
+                Plaka_Maliyeti: Malzeme_Bilgileri.Malzeme_Maliyeti
+                //Parça_Firesiz_Ağırlığı
+            }
+            $.ajax({
+                url: 'api/Malzeme_Maliyeti_Saved/Malzeme_Maliyeti_Saved_Add',
+                type: 'POST',
+                async: false,
+                dataType: "json",
+                data: JSON.stringify(x),
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+
+                    Swal.fire(
+                        'İşlem Başarılı',
+                    )
+
+
+                },
+                error: function (xhr, status, error) {
+                    if (xhr.status == 200) {
+
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Talep Esnasında Bir Hata Oluştur',
+                            text: '' + xhr.status + '   ' + error.Message,
+                        })
+                    }
+
+                }
+            })
+
+        }
+
+
+    }
+
+</script>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-dark">
+            <div class="card-header">
+                <label for="">İlerleme Durumu</label>
+            </div>
+            <div class="card-body">
+                <table class="table table-hover table-bordered">
+                    <thead>
+                        <tr>
+                            <th class="text-center" scope="col">İşlem Adı</th>
+                            <th class="text-center" scope="col">İşlem Durumu</th>
+                        </tr>
+                    </thead>
+                    <tbody id="İşlemler_Tbody">
+                        <tr>
+                            <th colspan="2" class="text-center">Hiç İşlem Bulunamadı</th>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

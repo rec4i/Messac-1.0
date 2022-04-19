@@ -1,0 +1,217 @@
+<script>
+    $(document).ready(function () {
+        $('#Yeni_Paketleme_Ekle').click(function () {
+
+            if ($(this).attr('basıldımı') == 0) {
+                $(this).attr('basıldımı', "1")
+                $(this).attr('readonly', "true")
+                $(this).attr('style', 'background-color:#b0025947;border-color:#b0025947')
+
+
+
+                var Bağlantı_Elemanı_Satır = '' +
+                    '<div class="row" id="Paketleme_Genel_Row" >' +
+                    '                        <div class="col-md-12">' +
+                    '                            <div class="card card-info border" style="border-color:#b00259 !important" >' +
+                    '                                <div class="card-header"style="background-color:#b00259;border-color:#b00259" >' +
+                    '                                    <label for="">Paketleme Maliyeti</label>' +
+                    '                                </div>' +
+                    '                                <div class="card-body">' +
+                    '                                    <div class="row">' +
+                    '                                        <div class="col-md-10">' +
+                    '                                            <label>Lütfen Paketleme Türü Seçiniz: </label>' +
+                    '                                        </div>' +
+                    '                                    </div>' +
+                    '                                    <div class="row">' +
+                    '                                        <div class="col-md-12">' +
+                    '                                            <select id="Paketleme_Select"' +
+                    '                                           son_eklenen_satır="-1"        style="width: 100% ; padding-bottom: 25px;"></select>' +
+                    '                                        </div>' +
+
+                    '                                    </div>' +
+                    '                                    <div class="row" style="padding-top: 25px;">' +
+                    '                                        <div class="col-md-12">' +
+                    '                                            <div class="card">' +
+                    '                                                <div class="card-body">' +
+                    '                                                    <div id="Paketleme_Div">' +
+                    '                                                      ' +
+                    '                                                    </div>' +
+                    '                                                </div>' +
+                    '                                            </div>' +
+                    '                                        </div>' +
+                    '                                    </div>' +
+                    '' +
+                    '                                </div>' +
+                    '                            </div>' +
+                    '                        </div>' +
+                    '                    </div>' +
+                    '';
+
+                $('#Paketleme_Maliyeti_Sırası').append(Bağlantı_Elemanı_Satır)
+
+
+
+                $("#Paketleme_Select").select2({
+                    ajax: {
+                        url: '/api/Paketleme/Paketleme_Get_By_Text',
+                        dataType: 'json',
+                        type: 'POST',
+                        delay: 250,
+                        global: false,
+                        contentType: "application/json; charset=utf-8",
+                        data: function (params) {
+                            var x = {
+                                Paketleme_Türü: params.term
+                            }
+                            return JSON.stringify(x)
+                        },
+                        processResults: function (data, params) {
+
+
+                            return {
+                                results: $.map(data, function (item) {
+                                    return {
+                                        text: item.paketleme_Türü,
+                                        id: item.id
+                                    }
+                                })
+                            };
+                        },
+                        cache: true
+                    },
+                    minimumInputLength: 2
+                })
+
+
+                $('#Paketleme_Select').change(function () {
+
+
+                    $(this).attr('son_eklenen_satır', parseInt($(this).attr('son_eklenen_satır')) + 1)
+                    var row_İndex = $(this).attr('son_eklenen_satır')
+                    var x = {
+                        Id: $('#Paketleme_Select').find(':selected').val()
+                    }
+
+                    var Gelen_Data;
+
+                    $.ajax({
+                        url: '/api/Paketleme/Paketleme_Get_By_Id',
+                        type: 'POST',
+                        async: false,
+                        dataType: "json",
+                        data: JSON.stringify(x),
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            console.log(data)
+                            Gelen_Data = data;
+
+
+
+                        },
+                        error: function (xhr, status, error) {
+                            if (xhr.status == 200) {
+
+                            }
+                            else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Talep Esnasında Bir Hata Oluştur',
+                                    text: '' + xhr.status + '   ' + error.Message,
+                                })
+                            }
+
+                        }
+                    })
+
+
+
+
+                    var Kaynak_Satır = '' +
+                        ' <div class="row" style="padding-top: 25px;" name="Paketleme_Satır_Row" row_Id="' + row_İndex + '" >' +
+                        '                                                            <div class="col-md-3">' +
+                        '                                                                <input type="text" class="form-control" data_Id="' + Gelen_Data.id + '" id="Paketleme_Türü_' + row_İndex + '"' +
+                        '                                                                    placeholder="Paketleme Türü" value="' + Gelen_Data.paketleme_Türü + '" disabled>' +
+                        '                                                            </div>' +
+                        '                                                            <div class="col-md-2">' +
+                        '                                                                <input type="text" class="form-control"' +
+                        '                                                                    placeholder="Birim Fiyatı" value="' + Gelen_Data.maliyet.toFixed(2) + '"  data-thousands="." data-decimal="," data-suffix=" ₺" id="Paketleme_Maliyeti_' + row_İndex + '">' +
+                        '                                                            </div>' +
+                        '                                                            <div class="col-md-2">' +
+                        '                                                                <input type="text" class="form-control"' +
+                        '                                                                    placeholder="Birim" id="Paketleme_Birimi_' + row_İndex + '" value="' + Gelen_Data.birim.birim_Kısa_ad + '" disabled>' +
+                        '                                                            </div>' +
+                        '                                                            <div class="col-md-2">' +
+                        '                                                                <input type="text" class="form-control"' +
+                        '                                                                    placeholder="Birim Adeti"   data-thousands="" data-decimal="."  data-suffix=" ' + Gelen_Data.birim.birim_Kısa_ad + '" id="Paketleme_Adeti_' + row_İndex + '">' +
+                        '                                                            </div>' +
+                        '                                                            <div class="col-md-2">' +
+                        '                                                                <input type="text" class="form-control"' +
+                        '                                                                  data-thousands="." disabled data-decimal="," data-suffix=" ₺"   placeholder="Toplam Fiyat" id="Paketleme_Toplam_Fiyat' + row_İndex + '">' +
+                        '                                                            </div>' +
+                        '                                                            <div class="col-md-1">' +
+                        '                                                                <button type="button" id="Paketleme_Satır_Sil_' + row_İndex + '"' +
+                        '                                                                    class="btn btn-danger btn-block">' +
+                        '                                                                    <i class="fas fa-trash"></i>' +
+                        '                                                                    Sil' +
+                        '                                                                </button>' +
+                        '                                                            </div>' +
+                        '                                                        </div>' +
+                        '';
+                    $('#Paketleme_Div').append(Kaynak_Satır)
+
+                    $('#Paketleme_Maliyeti_' + row_İndex).maskMoney();
+                    $('#Paketleme_Maliyeti_' + row_İndex).trigger('mask.maskMoney');
+
+                    $('#Paketleme_Adeti_' + row_İndex).maskMoney();
+                    $('#Paketleme_Adeti_' + row_İndex).trigger('mask.maskMoney');
+
+
+                    $('#Paketleme_Toplam_Fiyat' + row_İndex).maskMoney();
+                    $('#Paketleme_Toplam_Fiyat' + row_İndex).trigger('mask.maskMoney');
+                    //Kaynak_Birim_Adeti_
+                    //Kaynak_Toplam_Fiyat_
+                    $('#Paketleme_Satır_Sil_' + row_İndex).click(function () {
+                        $(this).parent().parent().remove()
+                    })
+
+                    $('#Paketleme_Adeti_' + row_İndex + ',#Paketleme_Maliyeti_' + row_İndex).on('keyup keypress blur change', function () {
+
+                        var rv = Toplam_Fiyat_Hesapla($('#Paketleme_Adeti_' + row_İndex).maskMoney('unmasked')[0].toFixed(2)
+
+                            , $('#Paketleme_Maliyeti_' + row_İndex).maskMoney('unmasked')[0].toFixed(2))
+
+                        console.log(rv)
+                        $('#Paketleme_Toplam_Fiyat' + row_İndex).val(rv.toFixed(2));
+                        $('#Paketleme_Toplam_Fiyat' + row_İndex).maskMoney();
+                        $('#Paketleme_Toplam_Fiyat' + row_İndex).trigger('mask.maskMoney');
+
+
+
+                    })
+
+
+
+                })
+
+
+
+
+            }
+            else {
+
+                $(this).attr('basıldımı', "0")
+                $(this).attr('readonly', "false")
+                $(this).attr('style', 'background-color:#b00259;border-color:#b00259')
+                $('#Paketleme_Genel_Row').remove()
+
+
+
+
+
+            }
+
+
+        })
+
+    })
+</script>

@@ -1,0 +1,681 @@
+@{
+    Layout = "~/Views/Shared/Anasayfa_Layout.cshtml";
+}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.8.2/css/lightbox.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.8.2/js/lightbox.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/select2.min.js"></script>
+<script type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery-maskmoney/3.0.2/jquery.maskMoney.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap4-duallistbox/4.0.2/jquery.bootstrap-duallistbox.min.js"
+    integrity="sha512-l/BJWUlogVoiA2Pxj3amAx2N7EW9Kv6ReWFKyJ2n6w7jAQsjXEyki2oEVsE6PuNluzS7MvlZoUydGrHMIg33lw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap4-duallistbox/4.0.2/bootstrap-duallistbox.min.css"
+    integrity="sha512-BcFCeKcQ0xb020bsj/ZtHYnUsvPh9jS8PNIdkmtVoWvPJRi2Ds9sFouAUBo0q8Bq0RA/RlIncn6JVYXFIw/iQA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+
+<style>
+    .photo-gallery {
+        color: #313437;
+        background-color: #fff;
+    }
+
+    .photo-gallery p {
+        color: #7d8285;
+    }
+
+    .photo-gallery h2 {
+        font-weight: bold;
+        margin-bottom: 40px;
+        padding-top: 40px;
+        color: inherit;
+    }
+
+
+
+    .photo-gallery .intro {
+        font-size: 16px;
+        max-width: 500px;
+        margin: 0 auto 40px;
+    }
+
+    .photo-gallery .intro p {
+        margin-bottom: 0;
+    }
+
+    .photo-gallery .photos {
+        padding-bottom: 20px;
+    }
+
+    .photo-gallery .item {
+        padding-bottom: 30px;
+    }
+
+    .select2-selection__rendered {
+        line-height: 41px !important;
+    }
+
+    .select2-container .select2-selection--single {
+        height: 47px !important;
+    }
+
+    .select2-selection__arrow {
+        height: 44px !important;
+    }
+</style>
+
+<script>
+    (function ($) {
+        $.fn.linkField = function (field, trigerlenecek_Field) {
+            var self = this, field = $(field);
+
+            field.keyup(function () {
+                self.val(field.val());
+                if (trigerlenecek_Field != null) {
+                    $(trigerlenecek_Field).trigger('blur')
+                }
+            });
+            return this.keyup(function () {
+                field.val(self.val());
+            });
+        }
+    })(jQuery);
+</script>
+<script>
+    $(document).ready(function () {
+
+
+        $("#Malzeme_Select").select2({
+            ajax: {
+                url: '/api/Malzeme/Malzeme_Get_By_Text',
+                dataType: 'json',
+                type: 'POST',
+                delay: 250,
+                global: false,
+                contentType: "application/json; charset=utf-8",
+                data: function (params) {
+                    var x = {
+                        Malzeme_Cinsi: params.term
+                    }
+                    return JSON.stringify(x)
+                },
+                processResults: function (data, params) {
+
+
+                    return {
+                        results: $.map(data, function (item) {
+                            return {
+                                text: item.malzeme_Cinsi,
+                                id: item.id
+                            }
+                        })
+                    };
+                },
+                cache: true
+            },
+            minimumInputLength: 2
+        })
+
+
+
+
+
+
+
+        function Kesim_Türü_Getir(Kesim_Türü, Malzeme_Kalınlığı, Kesim_Türü) {
+
+
+
+            var variable = '' +
+                '<div class="row">' +
+                '                        <div class="col-md-12">' +
+                '                            <div class="card card-danger">' +
+                '                                <div class="card-header">' +
+                '                                    <label for="">Kesim Maliyeti</label>' +
+                '                                </div>' +
+                '                                <div class="card-body">' +
+                '                                    <div class="row">' +
+                '                                        <div class="col-md-12">' +
+                '                                            <label for="">Kesim Türü</label>' +
+                '                                            <select class="form-control" id="Kesim_Select"></select>' +
+                '                                        </div>' +
+                '                                     </div>' +
+                '                                    <div class="row">' +
+                '                                        <div class="col-md-4">' +
+                '                                            <label for="">Malzeme Kalınlığı: </label>' +
+                '                                            <input id="Malzeme_Kalınlığı" data-thousands="" data-decimal=","' +
+                '                                                data-suffix=" mm" class="form-control " type="text"' +
+                '                                                placeholder="Malzeme Kalınlığı">' +
+                '                                        </div>' +
+                '                                        <div class="col-md-4">' +
+                '                                            <label for="">Malzeme Kesim Süresi(sn):</label>' +
+                '                                            <input id="Malzeme_Kesim_Süresi" data-thousands="" data-decimal="."' +
+                '                                                data-suffix=" sn" class="form-control" type="text"' +
+                '                                                placeholder="Malzeme Kesim Süresi(sn)">' +
+                '                                        </div>' +
+                '                                        <div class="col-md-4">' +
+                '                                            <label for="">Kesim Fiyatı</label>' +
+                '                                            <input id="Malzeme_Kesim_Fiyatı_İnput" data-suffix=" ₺"' +
+                '                                                class="form-control form-control" type="text"' +
+                '                                                placeholder="Kesim Fiyatı">' +
+                '                                        </div>' +
+                '                                    </div>' +
+                '                                    <div class="row" style="padding-top: 25px;">' +
+                '                                        <div class="col-md-8"></div>' +
+                '                                        <div class="col-md-4">' +
+                '                                            <label for="">Malzeme Kesim Maliyeti:</label>' +
+                '                                            <input id="Malzeme_Kesim_Maliyeti" disabled data-suffix=" ₺"' +
+                '                                                class="form-control form-control" type="text"' +
+                '                                                placeholder="Malzeme Kesim Maliyeti">' +
+                '' +
+                '                                        </div>' +
+                '                                    </div>' +
+                '                                </div>' +
+                '                            </div>' +
+                '                        </div>' +
+                '                    </div>' +
+                '';
+            $('#Maliyetler').append(variable);
+
+
+            var $select = $('#Kesim_Select')
+
+            $('#Malzeme_Kalınlığı').val(Malzeme_Kalınlığı)
+            $('#Malzeme_Kalınlığı').maskMoney()
+            $('#Malzeme_Kalınlığı').trigger('mask.maskMoney');
+
+            //Malzeme_Kesim_Süresi
+            $('#Malzeme_Kesim_Süresi').maskMoney()
+            $('#Malzeme_Kesim_Süresi').trigger('mask.maskMoney');
+            //Malzeme_Fiyatı_İnput
+            $('#Malzeme_Kesim_Fiyatı_İnput').maskMoney()
+            $('#Malzeme_Kesim_Fiyatı_İnput').trigger('mask.maskMoney');
+
+
+            $('#Malzeme_Kalınlığı').on('keyup keypress blur change', function () {
+                $('#Malzeme_Boyu_İnput').val($('#Malzeme_Kalınlığı').maskMoney('unmasked')[0].toFixed(2))
+                $('#Malzeme_Boyu_İnput').maskMoney()
+                $('#Malzeme_Boyu_İnput').trigger('mask.maskMoney');
+                $('#Malzeme_Boyu_İnput').trigger('change');
+
+
+                Uygun_Kesimi_Getir($('#Malzeme_Kalınlığı').maskMoney('unmasked')[0].toFixed(2), $('#Kesim_Select').find(':selected').attr('value'), $('#Malzeme_Kesim_Fiyatı_İnput'))
+
+
+                $('#Büküm_Malzeme_Kilo_Boyu').val($('#Malzeme_Kalınlığı').maskMoney('unmasked')[0].toFixed(2))
+                $('#Büküm_Malzeme_Kilo_Boyu').trigger('mask.maskMoney');
+                $('#Büküm_Malzeme_Kilo_Boyu').trigger('change');
+
+
+            });
+
+            $('#Malzeme_Kesim_Fiyatı_İnput,#Malzeme_Kesim_Süresi').on('keyup keypress blur change', function () {
+
+
+
+                var Result = Kesim_Maliyti_Hesapla($('#Malzeme_Kesim_Süresi').maskMoney('unmasked')[0].toFixed(2)
+                    , $('#Malzeme_Kesim_Fiyatı_İnput').maskMoney('unmasked')[0].toFixed(2))
+
+                $('#Malzeme_Kesim_Maliyeti').val(Result.toFixed(2))
+                $('#Malzeme_Kesim_Maliyeti').maskMoney()
+                $('#Malzeme_Kesim_Maliyeti').trigger('mask.maskMoney');
+
+
+
+
+
+
+
+            });
+
+
+            $('#Kesim_Select').change(function () {
+
+                console.log($(this).find(':selected').attr('value'))
+
+                var x = {
+                    Id: $(this).find(':selected').attr('value')
+                }
+                $.ajax({
+                    url: 'api/BükümYeni/Büküm_KiloHesabı_Get_By_Id',
+                    type: 'POST',
+                    async: false,
+                    dataType: "json",
+                    global: false,
+                    data: JSON.stringify(x),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        console.log(data)
+
+                    },
+                    error: function (xhr, status, error) {
+                        if (xhr.status == 200) {
+
+                        }
+                        else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Talep Esnasında Bir Hata Oluştur',
+                                text: '' + xhr.status + '   ' + error.Message,
+                            })
+                        }
+
+                    }
+                })
+
+
+
+
+            })
+
+
+
+
+
+
+            Kesim_Türü_Select_Doldu($select, $('#Kesim_Select').find(':selected').attr('value'))
+            //Büküm_Biligleri_Doldur()
+
+
+
+
+
+
+        }
+
+
+
+        function Uygun_Kesimi_Getir(Malzeme_Kalınlığı, Kesim_Türü, $Kesim_Maliyet_İnput) {
+            var x = {
+                Kesim_mm_Bas: Malzeme_Kalınlığı,
+                Kesim_Türü_Id: Kesim_Türü
+            }
+            $.ajax({
+                url: 'api/Kesim/Kesim_Uygun_Olanı_Getir',
+                type: 'POST',
+                async: false,
+                dataType: "json",
+                global: false,
+                data: JSON.stringify(x),
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+
+                    if (data.length > 0) {
+                        $Kesim_Maliyet_İnput.val(data[0].saat_Bası_Ucret.toFixed(2))
+                        $Kesim_Maliyet_İnput.maskMoney()
+                        $Kesim_Maliyet_İnput.trigger('mask.maskMoney');
+
+                    }
+
+                },
+                error: function (xhr, status, error) {
+                    if (xhr.status == 200) {
+
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Talep Esnasında Bir Hata Oluştur',
+                            text: '' + xhr.status + '   ' + error.Message,
+                        })
+                    }
+
+                }
+            })
+        }
+
+
+
+        $('#Malzeme_Select').change(function () {
+            Malzeme_Bilgileri_Getir($(this).find('option:selected').val())
+        })
+
+
+
+
+        function Uygun_Kilo_İle_Büküm_Getir(Kilo, Malzeme_Genel_Adı_Id) {
+
+            var x = {
+                Kilo_Bas: Kilo,
+                Malzeme_Genel_Id: Malzeme_Genel_Adı_Id
+            }
+            var Gelen_Data;
+            $.ajax({
+                url: 'api/Büküm/Uygun_Kilo_İle_Büküm_Getir',
+                type: 'POST',
+                async: false,
+                dataType: "json",
+                global: false,
+                data: JSON.stringify(x),
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    Gelen_Data = data
+
+                },
+                error: function (xhr, status, error) {
+                    if (xhr.status == 200) {
+
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Talep Esnasında Bir Hata Oluştur',
+                            text: '' + xhr.status + '   ' + error.Message,
+                        })
+                    }
+
+                }
+            })
+            return Gelen_Data
+        }
+
+        function Uygun_Adet_İle_Büküm_Getir(Malzeme_Uzunluğu, Malzeme_Kalınlığı) {
+            var x = {
+                Uzunluk_Bas: Malzeme_Uzunluğu,
+                Kalınlık: {
+                    Kalınlık_Bas: Malzeme_Kalınlığı
+                }
+            }
+            var Gelen_Data;
+            $.ajax({
+                url: 'api/Büküm/Uygun_Adet_İle_Büküm_Getir',
+                type: 'POST',
+                async: false,
+                dataType: "json",
+                global: false,
+                data: JSON.stringify(x),
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    Gelen_Data = data
+
+                },
+                error: function (xhr, status, error) {
+                    if (xhr.status == 200) {
+
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Talep Esnasında Bir Hata Oluştur',
+                            text: '' + xhr.status + '   ' + error.Message,
+                        })
+                    }
+
+                }
+            })
+            return Gelen_Data
+        }
+
+
+    })
+
+</script>
+
+
+@Html.Partial("Üretim_Maliyteti_İşlemleri/BükümMaliyeti_Hesaplama")
+@Html.Partial("Üretim_Maliyteti_İşlemleri/Parça_Idden_Item_Doldur")
+
+
+
+<div class="row ">
+    <div class="col-md-12">
+        <div class="card ">
+            <div class="card-body ">
+                <div class="row sticky-top">
+                    <div class="col-md-12">
+                        <div class="row" style="padding-top: 25px;">
+                            <div class="col">
+                                <button type="button" name="Yapılan_İşlemler" data_Name="Malzeme Maliyeti"
+                                    id="Yeni_Malzeme_Ekle" basıldımı="0" class="btn btn-warning btn-block">
+                                    <i class="fas fa-plus"></i>
+                                    Malzeme
+                                </button>
+                            </div>
+                            <div class="col">
+                                <button type="button" name="Yapılan_İşlemler" data_Name="Kesim Maliyeti"
+                                    id="Yeni_Kesim_Maliyeti" basıldımı="0" class="btn btn-dark btn-block">
+                                    <i class="fas fa-plus"></i>
+                                    Kesim
+                                </button>
+                            </div>
+                            <div class="col">
+                                <button type="button" style="background-color: rgb(164, 5, 232); "
+                                    name="Yapılan_İşlemler" data_Name="Tesfiye Maliyeti" id="Yeni_Tesfiye_Ekle"
+                                    basıldımı="0" class="btn btn-dark btn-block">
+                                    <i class="fas fa-plus"></i>
+                                    Tesfiye
+                                </button>
+                            </div>
+                            <div class="col">
+                                <button type="button" name="Yapılan_İşlemler" data_Name="Büküm Maliyeti"
+                                    id="Yeni_Büküm_Maliyeti" basıldımı="0" class="btn btn-danger btn-block">
+                                    <i class="fas fa-plus"></i>
+                                    Büküm
+                                </button>
+                            </div>
+                            <div class="col">
+                                <button type="button" name="Yapılan_İşlemler" data_Name="Kaynak Maliyeti"
+                                    id="Yeni_Kaynak_Ekle" basıldımı="0" class="btn btn-success btn-block">
+                                    <i class="fas fa-plus"></i>
+                                    Kaynak
+                                </button>
+                            </div>
+                            <div class="col">
+                                <button type="button" style="background-color: rgb(209, 80, 0);" name="Yapılan_İşlemler"
+                                    data_Name="Boya Maliyeti" id="Yeni_Boya_Ekle" basıldımı="0"
+                                    class="btn btn-secondary btn-block">
+                                    <i class="fas fa-plus"></i>
+                                    Boya
+                                </button>
+                            </div>
+                            <div class="col">
+                                <button type="button" name="Yapılan_İşlemler" data_Name="Bağlantı Elemanı Maliyeti"
+                                    id="Yeni_Bağlantı_Elemanı_Ekle" basıldımı="0" class="btn btn-secondary btn-block">
+                                    <i class="fas fa-plus"></i>
+                                    Bağlantı
+                                </button>
+                            </div>
+                            <div class="col">
+                                <button type="button" name="Yapılan_İşlemler" data_Name="Kaplama Maliyeti"
+                                    id="Yeni_Kaplama_Ekle" basıldımı="0" class="btn btn-primary btn-block">
+                                    <i class="fas fa-plus"></i>
+                                    Kaplama
+                                </button>
+                            </div>
+                            <div class="col">
+                                <button type="button" name="Yapılan_İşlemler" data_Name="Dış Operasyon Maliyeti"
+                                    id="Yeni_Dıs_Operasyon_Ekle" basıldımı="0" class="btn btn-info  btn-block">
+                                    <i class="fas fa-plus"></i>
+                                    Dış Operasyon
+                                </button>
+                            </div>
+                            <div class="col">
+                                <button type="button" name="Yapılan_İşlemler"  style="background-color: rgb(176, 2, 89);"  data_Name="Paketleme Maliyeti"
+                                    id="Yeni_Paketleme_Ekle" basıldımı="0" class="btn btn-secondary btn-block">
+                                    <i class="fas fa-plus"></i>
+                                    Paketleme
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+                <div id="Maliyetler">
+                    <div id="Malzeme_Bilgisi_Sırası">
+
+                    </div>
+                    <div id="Kesim_Maliyeti_Sırası">
+
+                    </div>
+                    <div id="Tesfiye_Maliyeti_Sırası">
+
+                    </div>
+
+                    <div id="Büküm_Maliyeti_Sırası">
+
+                    </div>
+
+                    <div id="Kaynak_Sırası">
+
+                    </div>
+                    <div id="Boya_Maliyeti_Sırası">
+
+                    </div>
+                    <div id="Bağlantı_Elemanı_Sırası">
+
+                    </div>
+                    <div id="Kaplama_Sırası">
+
+                    </div>
+                    <div id="Dıs_Operasyon_Sırası">
+
+                    </div>
+                    <div id="Paketleme_Maliyeti_Sırası">
+
+                    </div>
+
+                    <div class="row" hidden>
+                        <div class="col-md-12">
+                            <div class="card card-danger ">
+                                <div class="card-header">
+                                    <label for="">Büküm Hesabı</label>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label for="">Büküm Adeti:</label>
+                                            <input type="text" class="form-control" id="Büküm_Adeti_İnput">
+                                        </div>
+                                    </div>
+                                    <div class="row" style="padding-top: 25px;">
+                                        <div class="col-md-6">
+                                            <div class="card card-secondary">
+                                                <div class="card-header">
+                                                    <label for="">Ağırlığa Göre Büküm Hesabı</label>
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <label for="">Malzeme Ağırlığı:</label>
+                                                            <input type="text" class="form-control"
+                                                                id="Büküm_Hesabı_Malzeme_Ağırlığı_İnput" disabled>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <label for="">Katsayı:</label>
+                                                            <input type="text"
+                                                                id="Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Katsayı"
+                                                                class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <label for="">Büküm Maliyeti:</label>
+                                                            <input
+                                                                id="Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Büküm_Maliyeti"
+                                                                disabled data-thousands="" data-decimal=","
+                                                                data-suffix=" ₺" class="form-control " type="text"
+                                                                placeholder="Büküm Maliyeti">
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="card card-secondary">
+                                                <div class="card-header">
+                                                    <label for="">Büküm Adetine Göre Büküm Hesabı</label>
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <label for="">Büküm Zorluğu</label>
+                                                            <select name=""
+                                                                id="Büküm_Hesabı_Adet_İle_Büküm_Zorluğu_select"
+                                                                class="form-control"></select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <label for="">Katsayı:</label>
+                                                            <input type="text"
+                                                                id="Büküm_Hesabı_Adet_İle_Büküm_Katsayısı"
+                                                                class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <label for="">Büküm Maliyeti:</label>
+                                                            <input id="Büküm_Hesabı_Adet_İle_Büküm_Maliyeti" disabled
+                                                                data-thousands="" data-decimal="," data-suffix=" ₺"
+                                                                class="form-control " type="text"
+                                                                placeholder="Büküm Maliyeti">
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    @Html.Partial("Üretim_Maliyteti_İşlemleri/KaynakMaliyet")
+                    @Html.Partial("Üretim_Maliyteti_İşlemleri/BağlantıElemanıMaliyet")
+                    @Html.Partial("Üretim_Maliyteti_İşlemleri/KaplamaMaliyeti")
+                    @Html.Partial("Üretim_Maliyteti_İşlemleri/DısOperasyonMaliyeti")
+                    @Html.Partial("Üretim_Maliyteti_İşlemleri/Malzeme_Maliyeti")
+                    @Html.Partial("Üretim_Maliyteti_İşlemleri/KesimMaliyeti")
+                    @Html.Partial("Üretim_Maliyteti_İşlemleri/Tesfiye_Maliyeti")
+                    @Html.Partial("Üretim_Maliyteti_İşlemleri/BoyaMaliyeti")
+                    @Html.Partial("Üretim_Maliyteti_İşlemleri/PaketlemeMaliyeti")
+
+
+
+
+                </div>
+                @Html.Partial("Üretim_Maliyteti_İşlemleri/Parça_Kaydet")
+
+                <div class="row fixed-bottom" style="padding-bottom: 65px;padding-right: 65px; ">
+                    <div class="col-md-12">
+                        <div class="row  ">
+                            <div class="col-md-10">
+                            </div>
+                            <div class="col-md-2">
+                                <button type="button" id="Parçayı_Kaydet_Button" basıldımı="0"
+                                    class="btn btn-danger  btn-block">
+                                    <i class="fas fa-file"></i>
+                                    Kaydet
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@Html.Partial("Üretim_Maliyteti_İşlemleri/Parça_Kaydet_Modal")
+
+@Html.Partial("UploadModal")
+@Html.Partial("Malzeme_Bilgisi_File_Modal")
+@Html.Partial("Parça_Kaydet_Folder/Parça_Kaydet_Btn")

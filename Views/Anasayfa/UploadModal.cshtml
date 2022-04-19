@@ -1,0 +1,161 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js"></script>
+<script>
+    jQuery(document).ready(function ($) {
+        $("#upload").on("change", OnGetFile);
+        $("#drop").on("drop", OnGetFile);
+
+        function OnGetFile(e) {
+            $("#filename").html("get ready...");
+            e.stopPropagation();
+            e.preventDefault();
+            var file = null;
+            if (e.dataTransfer) {// file drag and drop
+                file = e.dataTransfer.files[0] || null;
+            } else if ($("#upload")[0].files) {// file upload
+                file = $("#upload")[0].files[0] || null;
+            }
+            if (!file) {
+                return;
+            }
+
+            var reader = new FileReader();
+            reader.readAsDataURL(file, "UTF-8");
+            console.log(reader.result)
+            reader.onload = function (e) {
+                $("#filename").html("Result: '" + file.name + "' (" + e.target.result.length + " B)");
+                $("#result").val(e.target.result);
+                console.log(e.target.result)
+            };
+            reader.onerror = function (e) {
+                $("#result").val(e.target.error);
+            };
+        }
+    });
+    $(document).ready(function () {
+
+
+
+        var f = document.getElementById('f');
+
+        if (f.files.length)
+            processFile();
+
+        f.addEventListener('change', processFile, false);
+
+
+        async function processFile(e) {
+            var file = f.files[0];
+            var Big_File = await toBase64(file); // prints the base64 string
+            console.log(Big_File)
+            var Chunk_Size = 128;
+
+            var Start_Chunk = 0;
+
+            for (var i = Start_Chunk; i < Big_File.length; i += Chunk_Size) {
+                //console.log(Big_File.slice(Start_Chunk, Start_Chunk + Chunk_Size))
+                //console.log(Start_Chunk)
+
+                Start_Chunk += Chunk_Size;
+
+
+            }
+
+            var a = document.createElement("a"); //Create <a>
+            a.href = Big_File; //Image Base64 Goes here
+            a.download = "File.rar"; //File name Here
+            a.click();
+
+
+
+        }
+        const toBase64 = file => new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    })
+
+
+
+
+
+</script>
+
+<style>
+    #drop {
+        border: 1px dashed #888;
+        width: 86%;
+        height: 25px;
+        position: relative;
+    }
+
+    #drop:hover {
+        background-color: rgba(0, 0, 0, 0.1);
+    }
+
+    #drop .title {
+        position: absolute;
+        top: 4px;
+        left: 0px;
+        text-align: center;
+        width: 100%;
+        z-index: 100;
+    }
+
+    #result {
+        width: 86%;
+        height: 25em;
+    }
+</style>
+
+<div class="modal fade" id="Upload_File_Modal" tabindex="-100" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="Upload_File_Modal_Header">Dosya Ekle</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <input type="file" class="form-control" id="f">
+                    </div>
+                </div>
+                <fieldset>
+                    <legend>File upload controls:</legend>
+                    <input id="upload" type="file" />
+                    <div id="drop">
+                        <div class="title">DRAG AND DROP ANY FILE HERE</div>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend id="filename">Result: </legend>
+                    <textarea id="result" readonly="readonly" cols="20" rows="2"></textarea>
+                </fieldset>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+            </div>
+        </div>
+    </div>
+</div>

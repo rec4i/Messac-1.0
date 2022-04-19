@@ -1,0 +1,122 @@
+@{
+    Layout = "~/Views/Shared/Anasayfa_Layout.cshtml";
+}
+<script>
+    function ajaxRequest(params) {
+
+        //var url = 'https://examples.wenzhixin.net.cn/examples/bootstrap_table/data'
+        //$.get(url + '?' + $.param(params.data)).then(function (res) {
+        //    params.success(res)
+        //})
+        console.log(params.data)
+
+        $.ajax({
+            url: "/api/UretimMaliyeti/UretimMaliyeti_Pagenation_List",
+            type: 'POST',
+            async: false,
+            dataType: "json",
+            data: '{' +
+                '"offset":"' + params.data.offset + '",' +
+                '"limit":"' + params.data.limit + '",' +
+                '"search":"' + params.data.search + '"' +
+                '}',
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                console.log(data)
+                var temp = data
+                var rows = []
+                for (i = 0; i < temp.rows.length; i++) {
+                    var  x = {
+                        'İşin_Adı': temp.rows[i].İşin_Adı,
+                        'oluşturlma_Tar':temp.rows[i].oluşturlma_Tar,
+                        'son_Düzenleme_Tar':temp.rows[i].son_Düzenleme_Tar,
+                        'Düzenle':'<button class="btn btn-warning btn-sm" value="' + temp.rows[i].id + '" id="Düzenle" style="word-break: keep-all;"><i class="fa fa-file-text "></i> Düzenle</button>'
+                    }
+                    rows.push(x)
+
+                }
+                temp.rows = rows
+                params.success(temp)
+
+
+            },
+            error: function () {
+                alert('Talep esnasında sorun oluştu.Yeniden deneyin');
+            }
+        });
+
+    }
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        var $İş_Emirleri = $('#İş_Emirleri')
+        buildTable_Hasta_Listesi($İş_Emirleri, 1, 1)
+
+        function buildTable_Hasta_Listesi($el, cells, rows) {
+
+
+            var i; var j; var row
+            var columns = [];
+            var data__ = [];
+
+            columns.push({
+                field: 'İşin_Adı',
+                title: 'İşin Adı',
+                sortable: true
+            })
+            columns.push({
+                field: 'oluşturlma_Tar',
+                title: 'Oluşturulma Tar.',
+                sortable: true
+            })
+            columns.push({
+                field: 'son_Düzenleme_Tar',
+                title: 'Son Düzenleme Tar.',
+                sortable: true
+            })
+            columns.push({
+                field: 'Düzenle',
+                title: 'Düzenle',
+                sortable: true
+            })
+
+            $el.bootstrapTable('destroy')
+
+            $el.bootstrapTable({
+                columns: columns,
+                sidePagination: "server",
+                pagination: true,
+                ajax: "ajaxRequest",
+                clickToSelect: true,
+                onPostBody: function () {
+                    $('#Düzenle').click(function () {
+                        console.log($(this).attr('value'))
+                    })
+                }
+            })
+        };
+    })
+</script>
+
+@Html.Partial("İş_Olustur_Folder/İş_Olustur")
+@Html.Partial("İş_Olustur_Folder/Evrak_Maliyeti_Modal")
+@* <div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row text-right">
+                    <div class="col-md-2 ">
+                        <button type="button" class="btn btn-block btn-default">Default</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <table data-search="true" id="İş_Emirleri"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> *@

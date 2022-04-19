@@ -1,0 +1,482 @@
+
+<script>
+    $(document).ready(function () {
+
+        $('#Yeni_Malzeme_Ekle').click(function () {
+
+            if ($(this).attr('basıldımı') == 0) {
+
+                $(this).attr('basıldımı', "1")
+                $(this).attr('readonly', "true")
+
+                $(this).attr('style', 'background-color:#ffc1079e;border-color:#ffc1079e')
+
+                var variable = '' +
+                    '<div class="row" id="Malzeme_Bilgisi_Row" style="padding-top: 25px;">' +
+                    '                        <div class="col-md-12">' +
+                    '                            <div class="card card-warning border border-warning">' +
+                    '                                <div class="card-header">' +
+                    '                                    <label>Malzeme Bilgisi</label>' +
+                    '                                </div>' +
+                    '                                <div class="card-body">' +
+                    '                                    <div class="row">' +
+                    '                                        <div class="col-md-12">' +
+                    '                                            <label for="">Malzeme Genel Adı:</label>' +
+                    '                                            <input type="text" placeholder="Malzeme Malzeme Genel Adı " disabled' +
+                    '                                                id="Malzeme_Genel_Adı_input" class="form-control">' +
+                    '                                        </div>' +
+                    '                                    </div>' +
+                    '                                    <div class="row">' +
+                    '                                        <div class="col-md-6">' +
+                    '                                            <label for="">Malzeme Fiyatı</label>' +
+                    '                                            <input id="Malzeme_Fiyatı_İnput" data-suffix=" ₺/Kg"' +
+                    '                                                class="form-control form-control" type="text"' +
+                    '                                                placeholder="Malzeme Bİrim Fiyatı">' +
+                    '                                        </div>' +
+                    '                                        <div class="col-md-6">' +
+                    '                                            <label for="">Malzeme Adı</label>' +
+                    '                                           <select id="Malzeme_Select"' +
+                    '                                                style="width: 100% ; padding-bottom: 25px;"></select>' +
+                    //'                                            <input type="text" placeholder="Malzeme Adı" disabled id="Malzeme_Adı_input"' +
+                    //'                                                class="form-control">' + 
+                    '                                        </div>' +
+                    '                                    </div>' +
+                    '                                    <div class="row">' +
+                    '                                        <div class="col-md-6">' +
+                    '                                            <label for="">Malzeme Özgül Ağırlığı</label>' +
+                    '                                            <input id="Malzeme_Özgül_Ağırlık_İnput" disabled data-thousands=""' +
+                    '                                                data-decimal="," data-suffix="  kg/m³" class="form-control" type="text"' +
+                    '                                                placeholder="Mazleme Özgül Ağırlığı">' +
+                    '                                        </div>' +
+                    '                                        <div class="col-md-6">' +
+                    '                                            <label for="">Malzeme Kesim Türü</label>' +
+                    '                                            <select class="form-control" id="Malzeme_Kesim_Select"></select>' +
+                    '                                        </div>' +
+                    '                                    </div>' +
+                    '                                    <div class="row">' +
+                    '                                        <div class="col">' +
+                    '                                            <label for="">Plaka Eni</label>' +
+                    '                                            <input id="Malzeme_Eni_İnput"  data-thousands=""' +
+                    '                                                data-decimal="," data-suffix="  mm" class="form-control" type="text"' +
+                    '                                                placeholder="Mazleme Genişliği">' +
+                    '                                        </div>' +
+                    '                                        <div class="col">' +
+                    '                                            <label for="">Plaka Boyu </label>' +
+                    '                                            <input id="Malzeme_Boyu_İnput"  data-thousands=""' +
+                    '                                                data-decimal="," data-suffix="  mm" class="form-control" type="text"' +
+                    '                                                placeholder="Mazleme Boyu">' +
+                    '                                        </div>' +
+                    '                                        <div class="col">' +
+                    '                                            <label for="">Plaka Kalınlığı</label>' +
+                    '                                            <input id="Malzeme_Genişliği_İnput"  data-thousands=""' +
+                    '                                                data-decimal="," data-suffix="  mm" class="form-control" type="text"' +
+                    '                                                placeholder="Mazleme Genişliği">' +
+                    '                                        </div>' +
+                    '                                    </div>' +
+
+
+
+                    '                                    <div class="row">' +
+                    '                                        <div class="col">' +
+                    '                                            <label for="">Parça Adeti </label>' +
+                    '                                            <input id="Malzeme_Parça_Adeti"  data-thousands=""' +
+                    '                                                data-decimal="" data-suffix="" class="form-control" type="text"' +
+                    '                                                placeholder="Parça Adeti">' +
+                    '                                        </div>' +
+                    '                                        <div class="col">' +
+                    '                                            <label for="">Parça Firesiz Ağırlığı</label>' +
+                    '                                            <input id="Malzeme_Parça_Firesiz_ağırlığı" disabled  data-thousands=""' +
+                    '                                                data-decimal="," data-suffix="  kg" class="form-control" type="text"' +
+                    '                                                placeholder="Mazleme Genişliği">' +
+                    '                                        </div>' +
+                    '                                        <div class="col">' +
+                    '                                            <label for="">Plaka Maliyeti</label>' +
+                    '                                            <input id="Malzeme_Malzeme_Birim_Fiyatı_İnput"  disabled data-thousands="."' +
+                    '                                                data-decimal="," data-suffix="  ₺.Kg" class="form-control" type="text"' +
+                    '                                                placeholder="Mazleme Birim Fiyatı">' +
+                    '                                        </div>' +
+                    '                                    </div>' +
+
+
+
+
+
+
+
+                    '                                    <div class="row" style="padding-top: 25px;">' +
+                    '                   <div class="col-md-10">   </div>                      <div class="col-md-2">' +
+                    '                                                                <button type="button" id="Malzeme_Bilgisi_Dosya_Ekle"' +
+                    '                                                                    class="btn btn-primary btn-block">' +
+                    '                                                                    <i class="fas fa-trash"></i>' +
+                    '                                                                    Dosya EKle' +
+                    '                                                                </button>' +
+
+                    '                                        </div>' +
+                    '                                    </div>' +
+                    '                                </div>' +
+                    '                            </div>' +
+                    '                        </div>' +
+                    '                    </div>' +
+                    '';
+
+                $('#Malzeme_Bilgisi_Sırası').append(variable);
+
+                $('#Malzeme_Bilgisi_Dosya_Ekle').click(function () {
+
+                    $('#Malzeme_Bilgisi_Dosya_Ekle_Modal').modal('show')
+                })
+
+                $("#Malzeme_Select").select2({
+                    ajax: {
+                        url: '/api/Malzeme/Malzeme_Get_By_Text',
+                        dataType: 'json',
+                        type: 'POST',
+                        delay: 250,
+                        global: false,
+                        contentType: "application/json; charset=utf-8",
+                        data: function (params) {
+                            var x = {
+                                Malzeme_Cinsi: params.term
+                            }
+                            return JSON.stringify(x)
+                        },
+                        processResults: function (data, params) {
+
+
+                            return {
+                                results: $.map(data, function (item) {
+                                    return {
+                                        text: item.malzeme_Cinsi,
+                                        id: item.id
+                                    }
+                                })
+                            };
+                        },
+                        cache: true
+                    },
+                    minimumInputLength: 2
+                })
+                $('#Malzeme_Select').change(function () {
+                    Malzeme_Bilgileri_Getir($(this).find('option:selected').val())
+                })
+
+
+
+
+            }
+
+            else {
+                $(this).attr('basıldımı', "0")
+                $(this).attr('readonly', "false")
+                $(this).attr('style', 'background-color:#ffc107;border-color:#ffc107')
+                $('#Malzeme_Bilgisi_Row').remove()
+
+            }
+
+        })
+
+        function Malzeme_Bilgileri_Getir(Malzeme_Id) {
+            var x = {
+                Id: Malzeme_Id
+            }
+
+            var Gelen_Data;
+
+            $.ajax({
+                url: 'api/Malzeme/malzeme_Get_By_Id',
+                type: 'POST',
+                async: false,
+                dataType: "json",
+                data: JSON.stringify(x),
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    console.log(data)
+
+
+
+                    Gelen_Data = data;
+
+                },
+                error: function (xhr, status, error) {
+                    if (xhr.status == 200) {
+
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Talep Esnasında Bir Hata Oluştur',
+                            text: '' + xhr.status + '   ' + error.Message,
+                        })
+                    }
+
+                }
+            })
+
+
+            var $select = $('#Malzeme_Kesim_Select')
+            Kesim_Türü_Select_Doldu($select, Gelen_Data.kesim_Türü.id)
+
+
+            $('#Malzeme_Adı_input').val(Gelen_Data.malzeme_Cinsi)
+            $('#Malzeme_Adı_input').attr('Malzeme_Id', Gelen_Data.id)
+            $('#Malzeme_Genel_Adı_input').val(Gelen_Data.malzeme_Genel_AdıId.malzeme_Genel_Adı_Txt)
+            $('#Malzeme_Genel_Adı_input').attr('Malzeme_Genel_Adı_Id', Gelen_Data.malzeme_Genel_AdıId.id)
+
+
+            $('#Malzeme_Özgül_Ağırlık_İnput').val(Gelen_Data.özgül_Ağırlık.toFixed(2))
+            $('#Malzeme_Özgül_Ağırlık_İnput').maskMoney()
+            $('#Malzeme_Özgül_Ağırlık_İnput').trigger('mask.maskMoney');
+
+            $('#Malzeme_Fiyatı_İnput').val(Gelen_Data.fiyat.toFixed(2))
+            $('#Malzeme_Fiyatı_İnput').maskMoney()
+            $('#Malzeme_Fiyatı_İnput').trigger('mask.maskMoney');
+
+            $('#Malzeme_Eni_İnput').maskMoney()
+            $('#Malzeme_Eni_İnput').trigger('mask.maskMoney');
+
+            $('#Malzeme_Boyu_İnput').maskMoney()
+            $('#Malzeme_Boyu_İnput').trigger('mask.maskMoney');
+
+            $('#Malzeme_Genişliği_İnput').maskMoney()
+            $('#Malzeme_Genişliği_İnput').trigger('mask.maskMoney');
+
+            $('#Malzeme_Malzeme_Birim_Fiyatı_İnput').maskMoney()
+            $('#Malzeme_Malzeme_Birim_Fiyatı_İnput').trigger('mask.maskMoney');
+
+
+            //Malzeme_Parça_Firesiz_ağırlığı
+
+            $('#Malzeme_Parça_Firesiz_ağırlığı').maskMoney({
+                precision: 4
+            })
+            $('#Malzeme_Parça_Firesiz_ağırlığı').trigger('mask.maskMoney');
+
+
+
+            $('#Malzeme_Parça_Adeti').on('keyup keypress blur change', function () {
+
+                var Malzeme_Ağırlığı = Malzeme_Ağırlığı_Hesapla(
+                    $('#Malzeme_Eni_İnput').maskMoney('unmasked')[0].toFixed(2)
+                    , $('#Malzeme_Boyu_İnput').maskMoney('unmasked')[0].toFixed(2)
+                    , $('#Malzeme_Genişliği_İnput').maskMoney('unmasked')[0].toFixed(2)
+                    , $('#Malzeme_Özgül_Ağırlık_İnput').maskMoney('unmasked')[0].toFixed(2)
+                )
+
+
+                var Parça_Ağırlığı = Parça_Ağırlığı_Hesapla(
+                    $('#Malzeme_Parça_Adeti').val()
+
+                    , Malzeme_Ağırlığı.toFixed(2)
+                )
+
+
+
+                $('#Malzeme_Parça_Firesiz_ağırlığı').val(Parça_Ağırlığı.toFixed(4))
+                $('#Malzeme_Parça_Firesiz_ağırlığı').trigger('mask.maskMoney')
+
+
+
+
+
+
+
+            })
+
+
+            //Büküm_Maliyeti_Doldur()
+
+            $('#Malzeme_Parça_Adeti').maskMoney({
+                precision: 0
+            })
+            $('#Malzeme_Parça_Adeti').trigger('mask.maskMoney');
+
+
+            $('#Malzeme_Eni_İnput,#Malzeme_Boyu_İnput,#Malzeme_Genişliği_İnput,#Malzeme_Malzeme_Birim_Fiyatı_İnput,#Malzeme_Özgül_Ağırlık_İnput,#Malzeme_Fiyatı_İnput').on('keyup keypress blur change', function () {
+
+
+                var Result = Malzeme_Fiyatı_Hesapla(
+                    $('#Malzeme_Eni_İnput').maskMoney('unmasked')[0]
+                    , $('#Malzeme_Boyu_İnput').maskMoney('unmasked')[0]
+                    , $('#Malzeme_Genişliği_İnput').maskMoney('unmasked')[0]
+                    , $('#Malzeme_Fiyatı_İnput').maskMoney('unmasked')[0]
+                    , $('#Malzeme_Özgül_Ağırlık_İnput').maskMoney('unmasked')[0]
+                ).toFixed(2)
+
+                $('#Malzeme_Malzeme_Birim_Fiyatı_İnput').val(Result)
+                $('#Malzeme_Malzeme_Birim_Fiyatı_İnput').maskMoney()
+                $('#Malzeme_Malzeme_Birim_Fiyatı_İnput').trigger('mask.maskMoney');
+
+
+                $('#Büküm_Hesabı_Uzunluğa_Malzeme_Eni').val($('#Malzeme_Eni_İnput').maskMoney('unmasked')[0].toFixed(2))
+                $('#Büküm_Hesabı_Uzunluğa_Malzeme_Eni').maskMoney()
+                $('#Büküm_Hesabı_Uzunluğa_Malzeme_Eni').trigger('mask.maskMoney');
+                $('#Büküm_Hesabı_Uzunluğa_Malzeme_Eni').trigger('blur');
+
+
+
+                $('#Büküm_Hesabı_Uzunluğa_Malzeme_Genişliği').val($('#Malzeme_Genişliği_İnput').maskMoney('unmasked')[0].toFixed(2))
+                $('#Büküm_Hesabı_Uzunluğa_Malzeme_Genişliği').maskMoney()
+                $('#Büküm_Hesabı_Uzunluğa_Malzeme_Genişliği').trigger('mask.maskMoney');
+
+                $('#Büküm_Hesabı_Uzunluğa_Malzeme_Genişliği').trigger('blur');
+
+
+
+
+
+
+
+                var Malzeme_Ağırlığı = Malzeme_Ağırlığı_Hesapla(
+                    $('#Malzeme_Eni_İnput').maskMoney('unmasked')[0].toFixed(2)
+                    , $('#Malzeme_Boyu_İnput').maskMoney('unmasked')[0].toFixed(2)
+                    , $('#Malzeme_Genişliği_İnput').maskMoney('unmasked')[0].toFixed(2)
+                    , $('#Malzeme_Özgül_Ağırlık_İnput').maskMoney('unmasked')[0].toFixed(2)
+                )
+                console.log(Malzeme_Ağırlığı)
+                $('#Büküm_Hesabı_Malzeme_Ağırlığı_İnput').val(Malzeme_Ağırlığı.toFixed(2))
+                $('#Büküm_Hesabı_Malzeme_Ağırlığı_İnput').maskMoney()
+                $('#Büküm_Hesabı_Malzeme_Ağırlığı_İnput').trigger('mask.maskMoney');
+
+                $('#Kesim_Hesabı_Malzeme_Ağırlığı_İnput').val(Malzeme_Ağırlığı.toFixed(4))
+                $('#Kesim_Hesabı_Malzeme_Ağırlığı_İnput').maskMoney({
+                    precision: 4
+                })
+                $('#Kesim_Hesabı_Malzeme_Ağırlığı_İnput').trigger('mask.maskMoney');
+
+                $('#Malzeme_Parça_Adeti').trigger('blur')
+
+
+                //Kesim_Hesabı_Malzeme_Ağırlığı_İnput
+
+                if (Malzeme_Ağırlığı > 0) {
+
+
+                    $('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Katsayı').val(Ugun_Kilo_KatSayısı_Getir(Malzeme_Ağırlığı).katSayı.toFixed(2))
+                    $('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Katsayı').maskMoney()
+                    $('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Katsayı').trigger('mask.maskMoney');
+
+
+                    $('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Katsayı').trigger('change')
+
+                }
+
+
+
+            });
+
+
+
+            //Kesim_Türü_Getir(Gelen_Data.kesim_Türü.id, $('#Malzeme_Boyu_İnput').maskMoney('unmasked')[0], Gelen_Data.kesim_Türü.id)
+
+
+
+
+
+
+
+
+        }
+
+
+    })
+    function Ugun_Kilo_KatSayısı_Getir(Malzeme_Ağırlığı) {
+
+        var Retrun_value;
+
+        var x = {
+            Kilo_Bas: Malzeme_Ağırlığı,
+        }
+        $.ajax({
+            url: 'api/BükümYeni/Uygun_Büküm_Kilo_Getir',
+            type: 'POST',
+            async: false,
+            dataType: "json",
+            global: false,
+            data: JSON.stringify(x),
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+
+                Retrun_value = data;
+            },
+            error: function (xhr, status, error) {
+                if (xhr.status == 200) {
+
+                }
+                else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Talep Esnasında Bir Hata Oluştur',
+                        text: '' + xhr.status + '   ' + error.Message,
+                    })
+                }
+
+            }
+        })
+
+        return Retrun_value;
+
+
+
+    }
+    function Parça_Ağırlığı_Hesapla(Adet, Malzeme_Ağırlığı) {
+
+        return Malzeme_Ağırlığı / Adet
+
+    }
+    function Malzeme_Ağırlığı_Hesapla(En, Boy, Genişlik, Özgül_Ağırlık) {
+
+
+        return (parseFloat(En) / 100) * (parseFloat(Boy) / 100) * (parseFloat(Genişlik) / 100) * parseFloat(Özgül_Ağırlık)
+
+
+    }
+    function Malzeme_Fiyatı_Hesapla(En, Boy, Genişlik, Birim_Fiyat, Özgül_Ağırlık) {
+
+
+        try {
+            $('#Malzeme_Kalınlığı').val(Boy.toFixed(2))
+            $('#Malzeme_Kalınlığı').maskMoney()
+            $('#Malzeme_Kalınlığı').trigger('mask.maskMoney');
+        }
+        catch (err) {
+        }
+
+        try {
+            $('#Büküm_Malzeme_Kilo_Boyu').val($('#Malzeme_Kalınlığı').maskMoney('unmasked')[0].toFixed(2))
+            $('#Büküm_Malzeme_Kilo_Boyu').trigger('mask.maskMoney');
+        }
+        catch (err) {
+        }
+
+
+        //$('#Büküm_Malzeme_Kilo_Boyu').trigger('change'); 
+
+        $('#Büküm_Malzeme_Kilo_Eni').val(En.toFixed(2))
+        $('#Büküm_Malzeme_Kilo_Eni').maskMoney()
+        $('#Büküm_Malzeme_Kilo_Eni').trigger('mask.maskMoney');
+        // $('#Büküm_Malzeme_Kilo_Eni').trigger('change');   
+
+        $('#Büküm_Malzeme_Kilo_Genişliği').val(Genişlik.toFixed(2))
+        $('#Büküm_Malzeme_Kilo_Genişliği').maskMoney()
+        $('#Büküm_Malzeme_Kilo_Genişliği').trigger('mask.maskMoney');
+        //$('#Büküm_Malzeme_Kilo_Genişliği').trigger('change'); 
+
+        //Büküm_Hesabı_Uzunluğa_Malzeme_Eni
+
+        $('#Büküm_Hesabı_Uzunluğa_Malzeme_Eni').val(En.toFixed(2))
+        $('#Büküm_Hesabı_Uzunluğa_Malzeme_Eni').maskMoney()
+        $('#Büküm_Hesabı_Uzunluğa_Malzeme_Eni').trigger('mask.maskMoney');
+
+
+        $('#Büküm_Hesabı_Uzunluğa_Malzeme_Genişliği').val(Genişlik.toFixed(2))
+        $('#Büküm_Hesabı_Uzunluğa_Malzeme_Genişliği').maskMoney()
+        $('#Büküm_Hesabı_Uzunluğa_Malzeme_Genişliği').trigger('mask.maskMoney');
+
+
+
+        return (parseFloat(En) / 100) * (parseFloat(Boy) / 100) * (parseFloat(Genişlik) / 100) * parseFloat(Birim_Fiyat) * parseFloat(Özgül_Ağırlık)
+
+
+    }
+
+</script>

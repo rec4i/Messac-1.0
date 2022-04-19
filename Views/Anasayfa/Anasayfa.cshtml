@@ -1,0 +1,169 @@
+@{
+    Layout = "~/Views/Shared/Anasayfa_Layout.cshtml";
+}
+<script>
+    $(document).ready(function () {
+        var $table = $('#Kaplama_Table')
+        Kaplama_Build_Table($table, 0, 0)
+        function Kaplama_Build_Table($el, cells, rows) {
+
+            $el.bootstrapTable('destroy');
+
+
+            var i; var j; var row
+            var columns = [];
+            var data__ = [];
+            columns.push({
+                field: 'ID',
+                title: 'ID',
+                sortable: true
+            })
+            columns.push({
+                field: 'Malzeme_Türü',
+                title: 'Malzeme Türü',
+                sortable: true
+            })
+            columns.push({
+                field: 'Malzeme_Adı',
+                title: 'Malzeme Adı',
+                sortable: true
+            })
+
+
+            columns.push({
+                field: 'Malzeme_Eski_Fiyatı',
+                title: 'Malzeme Eski Fiyatı',
+                sortable: true
+            })
+            columns.push({
+                field: 'Malzeme_Yeni_Fiyatı',
+                title: 'Malzeme Yeni Fiyatı',
+                sortable: true
+            })
+
+
+            $.ajax({
+                url: 'api/Kaplama/kaplama_Get_All',
+                type: 'POST',
+                async: false,
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+
+                    var temp = data
+
+                    console.log(data)
+                    for (i = 0; i < temp.length; i++) {
+                        row = {}
+                  
+
+
+
+                        //ALÜMİNYUM //AL6082-T6
+                        row['ID'] = temp[i].id
+                        row['Malzeme_Türü'] = "ALÜMİNYUM"
+                        row['Malzeme_Adı'] = "AL6082-T6"
+                        row['Malzeme_Eski_Fiyatı'] = "15.00"
+                        row['Malzeme_Yeni_Fiyatı'] = "150.00"
+
+
+                        data__.push(row)
+
+
+                    }
+                },
+                error: function () {
+                    alert('Talep esnasında sorun oluştu.Yeniden deneyin');
+                }
+            });
+
+
+
+            $el.bootstrapTable({
+                columns: columns,
+                data: data__,
+                onPostBody: function (data) {
+                    console.log(data)
+
+
+                }
+
+            })
+
+
+
+
+
+
+
+
+
+        }
+    })
+    function rowStyle(row, index) {
+        var classes = [
+            'bg-blue',
+            'bg-green',
+            'bg-orange',
+            'bg-yellow',
+            'bg-red'
+        ]
+        console.log(row)
+        if (row.Malzeme_Eski_Fiyatı > row.Malzeme_Yeni_Fiyatı) {
+            return {
+                classes: classes[1]
+            }
+        }
+        else if (row.Malzeme_Eski_Fiyatı = row.Malzeme_Yeni_Fiyatı) {
+            return {
+                css: {
+                    color: ''
+                }
+            }
+        }
+        else {
+            return {
+                classes: classes[4]
+            }
+        }
+      
+
+
+
+    }
+</script>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+
+                        <iframe
+                            src="https://www.genelpara.com/embed/?symbol=para-birimleri&pb=USD,EUR,BTC,GA,EUR/USD,GA&stil=stil-1&renk=beyaz"
+                            frameborder="0" width="100%" height="%100"></iframe>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-primary">
+            <div class="card-header">
+                <label for="">Fiyatı Değişen Ürünler</label>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table id="Kaplama_Table" data-row-style="rowStyle"></table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

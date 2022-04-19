@@ -1,0 +1,504 @@
+<script>
+    $(document).ready(function () {
+
+        $('#Malzeme_Select').change(function () {
+            //Büküm_Maliyeti_Doldur()
+        })
+
+
+        $('#Yeni_Büküm_Maliyeti').click(function () {
+            if ($(this).attr('basıldımı') == 0) {
+                $(this).attr('basıldımı', "1")
+                $(this).attr('readonly', "true")
+                $(this).attr('style', 'background-color:#dc354594;border-color:#dc354594')
+
+                Büküm_Maliyeti_Doldur()
+
+
+            }
+            else {
+                $(this).attr('basıldımı', "0")
+                $(this).attr('readonly', "false")
+                $(this).attr('style', 'background-color:#dc3545;border-color:#dc3545')
+
+                $('#Büküm_Row').remove()
+            }
+
+
+        })
+
+
+
+
+
+
+    })
+
+
+    function Kilo_İle_Büküm_Maliyet_Hesapla(Malzeme_Ağırlığı, KatSayı) {
+
+        return parseFloat(Malzeme_Ağırlığı) * parseFloat(KatSayı)
+    }
+
+    function Büküm_Maliyeti_Doldur() {
+
+        var variable = '' +
+            '<div class="row" id="Büküm_Row">' +
+            '                        <div class="col-md-12">' +
+            '                            <div class="card card-danger border border-danger">' +
+            '                                <div class="card-header">' +
+            '                                    <label for="">Büküm Hesabı</label>' +
+            '                                </div>' +
+            '                                <div class="card-body">' +
+            '                                    <div class="row">' +
+            '                                        <div class="col-md-12">' +
+            '                                            <label for="">Büküm Adeti:</label>' +
+            '                                            <input type="text" class="form-control" id="Büküm_Yeni_Adeti_İnput">' +
+            '                                        </div>' +
+            '                                    </div>' +
+            '                                    <div class="row" style="padding-top: 25px;">' +
+            '                                        <div class="col-md-6">' +
+            '                                            <div class="card card-secondary">' +
+            '                                                <div class="card-header">' +
+            '                                                    <label for="">Ağırlığa Göre Büküm Hesabı</label>' +
+            '                                                </div>' +
+            '                                                <div class="card-body">' +
+            '                                                    <div class="row">' +
+            '                                                        <div class="col-md-12">' +
+            '                                                            <label for="">Malzeme Ağırlığı:</label>' +
+            '                                                            <input type="text" class="form-control"' +
+            '                                                                id="Büküm_Hesabı_Malzeme_Ağırlığı_İnput" data-thousands="" placeholder="Malzeme Ağırlığı" data-suffix=" kg" data-decimal="," disabled>' +
+            '                                                        </div>' +
+            '                                                    </div>' +
+            '                                                    <div class="row">' +
+            '                                                        <div class="col-md-12">' +
+            '                                                            <label for="">Katsayı:</label>' +
+            '                                                            <input type="text"' +
+            '                                                           disabled     id="Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Katsayı"' +
+            '                                                                class="form-control">' +
+            '                                                        </div>' +
+            '                                                    </div>' +
+            '                                                    <div class="row">' +
+            '                                                        <div class="col-md-12">' +
+            '                                                            <label for="">Büküm Maliyeti:</label>' +
+            '                                                            <input' +
+            '                                                              name="Malzeme_Büküm_Fiyatı_İnput"  Büküm_Tipi="0" id="Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Büküm_Maliyeti"' +
+            '                                                                disabled data-thousands="." data-decimal=","' +
+            '                                                                data-suffix=" ₺" class="form-control " type="text"' +
+            '                                                                placeholder="Büküm Maliyeti">' +
+            '' +
+            '                                                        </div>' +
+            '                                                    </div>' +
+            '                                                </div>' +
+            '                                            </div>' +
+            '                                        </div>' +
+            '                                        <div class="col-md-6">' +
+            '                                            <div class="card card-secondary">' +
+            '                                                <div class="card-header">' +
+            '                                                    <label for="">Büküm Adetine Göre Büküm Hesabı</label>' +
+            '                                                </div>' +
+            '                                                <div class="card-body">' +
+            '                                                    <div class="row">' +
+            '                                                        <div class="col-md-12">' +
+            '                                                            <label for="">Büküm Zorluğu</label>' +
+            '                                                            <select name=""' +
+            '                                                                id="Büküm_Hesabı_Adet_İle_Büküm_Zorluğu_select"' +
+            '                                                                class="form-control"></select>' +
+            '                                                        </div>' +
+            '                                                    </div>' +
+            '                                                    <div class="row">' +
+            '                                                        <div class="col-md-12">' +
+            '                                                            <label for="">Katsayı:</label>' +
+            '                                                            <input type="text"' +
+            '                                                       disabled         id="Büküm_Yeni_Hesabı_Adet_İle_Büküm_Katsayısı"' +
+            '                                                                class="form-control">' +
+            '                                                        </div>' +
+            '                                                    </div>' +
+            '                                                    <div class="row">' +
+            '                                                        <div class="col-md-12">' +
+            '                                                            <label for="">Büküm Maliyeti:</label>' +
+            '                                                            <input id="Büküm_Hesabı_Adet_İle_Büküm_Maliyeti" disabled' +
+            '                                                           name="Malzeme_Büküm_Fiyatı_İnput"  Büküm_Tipi="1"     data-thousands="." data-decimal="," data-suffix=" ₺"' +
+            '                                                                class="form-control " type="text"' +
+            '                                                                placeholder="Büküm Maliyeti">' +
+            '' +
+            '                                                        </div>' +
+            '                                                    </div>' +
+            '                                                </div>' +
+            '                                            </div>' +
+            '' +
+            '                                        </div>' +
+            '' +
+            '                                    </div>' +
+            '                                    <div class="row">' +
+            '                                        <div class="col-md-12">' +
+            '                                            <div class="card card-secondary">' +
+            '                                                <div class="card-header">' +
+            '                                                    <label for="">Uzunluk / Genişliğe Göre Büküm Hesabı</label>' +
+            '                                                </div>' +
+            '                                                <div class="card-body">' +
+            '                                                    <div class="row">' +
+            '                                                        <div class="col-md-2">' +
+            '                                                            <label for="">Hesap Çeşiti:</label>' +
+            '                                                            <select selected_option="0" name="" id="Eninemi_Uzunluğa_Boyunamı_Select"' +
+            '                                                                class="form-control">' +
+            '                                                                <option value="0">Enine göre </option>' +
+            '                                                                <option value="1">Boyuna göre </option>' +
+            '                                                            </select>' +
+            '                                                        </div>' +
+            '                                                        <div class="col-md-2">' +
+            '                                                            <label for="">Malzeme Eni:</label>' +
+            '                                                            <input id="Büküm_Hesabı_Uzunluğa_Malzeme_Eni" disabled' +
+            '                                                                data-thousands="" data-decimal="," data-suffix=" mm"' +
+            '                                                                class="form-control " type="text"' +
+            '                                                                placeholder="Malzeme Eni">' +
+            '                                                        </div>' +
+            '                                                        <div class="col-md-2">' +
+            '                                                            <label for="">Malzeme Boyu:</label>' +
+            '                                                            <input id="Büküm_Hesabı_Uzunluğa_Malzeme_Genişliği" disabled' +
+            '                                                                data-thousands="" data-decimal="," data-suffix=" mm"' +
+            '                                                                class="form-control " type="text"' +
+            '                                                                placeholder="Malzeme Boyu">' +
+            '                                                        </div>' +
+            '                                                        <div class="col-md-6">' +
+            '                                                            <label for="">Katsayı:</label>' +
+            '                                                            <input id="Büküm_Hesabı_Uzunluğa_Malzeme_Katayısı"' +
+            '                                                       disabled         data-thousands="" data-decimal="." data-suffix=""' +
+            '                                                                class="form-control " type="text"' +
+            '                                                                placeholder="Katsayı ">' +
+            '                                                        </div>' +
+            '                                                    </div>' +
+            '                                                    <div class="row">' +
+            '                                                        <div class="col-md-6">' +
+            '                                                            <label for="">Büküm Zorluğu:</label>' +
+            '                                                            <select name="" id="Malzeme_Büküm_Uzunluk_Zorluk_Hesabı"' +
+            '                                                                class="form-control"></select>' +
+            '                                                        </div>' +
+            '                                                        <div class="col-md-6">' +
+            '                                                            <label for="">Katsayı:</label>' +
+            '                                                            <input id="Büküm_Hesabı_Uzunluğa_Malzeme_Zorluk_Katayısı"' +
+            '                                                                data-thousands="" data-decimal="," data-suffix=""' +
+            '                                                    disabled            class="form-control " type="text"' +
+            '                                                                placeholder="Katsayı ">' +
+            '                                                        </div>' +
+            '                                                    </div>' +
+            '                                                    <div class="row">' +
+            '                                                        <div class="col-md-12">' +
+            '                                                            <label for="">Büküm Maliyeti:</label>' +
+            '                                                            <input id="Büküm_Hesabı_Uzunluk_İle_Büküm_Maliyeti" disabled' +
+            '                                                           name="Malzeme_Büküm_Fiyatı_İnput"  Büküm_Tipi="2"     data-thousands="." data-decimal="," data-suffix=" ₺"' +
+            '                                                                class="form-control " type="text"' +
+            '                                                                placeholder="Büküm Maliyeti">' +
+            '                                                        </div>' +
+            '                                                    </div>' +
+            '                                                </div>' +
+            '                                            </div>' +
+            '                                        </div>' +
+            '                                    </div>' +
+            '                                </div>' +
+            '                            </div>' +
+            '                        </div>' +
+            '                    </div>' +
+            '';
+
+
+        $('#Büküm_Maliyeti_Sırası').append(variable)
+
+        $('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Katsayı').maskMoney()
+        $('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Katsayı').trigger('mask.maskMoney');
+
+        $('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Katsayı').on('keyup keypress blur change', function () {
+            var Result = Kilo_İle_Büküm_Maliyet_Hesapla(
+                $('#Büküm_Hesabı_Malzeme_Ağırlığı_İnput').maskMoney('unmasked')[0].toFixed(2)
+                , $(this).maskMoney('unmasked')[0].toFixed(2)
+            ).toFixed(2)
+            $('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Büküm_Maliyeti').val(Result)
+            $('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Büküm_Maliyeti').maskMoney()
+            $('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Büküm_Maliyeti').trigger('mask.maskMoney');
+
+        })
+
+        $('#Büküm_Yeni_Adeti_İnput').maskMoney({
+          
+        });
+        $('#Büküm_Yeni_Adeti_İnput').trigger('mask.maskMoney');
+
+
+
+        
+
+
+
+        $.ajax({
+            url: 'api/BükümYeni/Büküm_AdetHesabı_Get_All',
+            type: 'POST',
+            async: false,
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+
+                $('#Büküm_Hesabı_Adet_İle_Büküm_Zorluğu_select').empty()
+                $('#Büküm_Yeni_Hesabı_Adet_İle_Büküm_Katsayısı').val(data[0].zorluk_Katsayısı.toFixed(2))
+
+
+                $('#Büküm_Yeni_Hesabı_Adet_İle_Büküm_Katsayısı').maskMoney()
+                $('#Büküm_Yeni_Hesabı_Adet_İle_Büküm_Katsayısı').trigger('mask.maskMoney')
+                $('#Büküm_Yeni_Hesabı_Adet_İle_Büküm_Katsayısı').trigger('blur')
+
+                for (var i = 0; i < data.length; i++) {
+                    $('#Büküm_Hesabı_Adet_İle_Büküm_Zorluğu_select').append('<option Kat_Sayı="' + data[i].zorluk_Katsayısı + '" value="' + data[i].id + '">' + data[i].zorluk_Adı + '</option>')
+                }
+
+            },
+            error: function (xhr, status, error) {
+                if (xhr.status == 200) {
+
+                }
+                else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Talep Esnasında Bir Hata Oluştur',
+                        text: '' + xhr.status + '   ' + error.Message,
+                    })
+                }
+
+            }
+        })
+
+        $('#Büküm_Yeni_Adeti_İnput,#Büküm_Yeni_Hesabı_Adet_İle_Büküm_Katsayısı').on('keyup keypress blur change', function () {
+
+            var Result = Adet_İle_Büküm_Hesapla(
+                $('#Büküm_Yeni_Adeti_İnput').maskMoney('unmasked')[0]
+                , $('input[id=Büküm_Yeni_Hesabı_Adet_İle_Büküm_Katsayısı]').maskMoney('unmasked')[0]
+            ).toFixed(2);
+
+
+            $('#Büküm_Hesabı_Adet_İle_Büküm_Maliyeti').val(Result)
+            $('#Büküm_Hesabı_Adet_İle_Büküm_Maliyeti').maskMoney()
+            $('#Büküm_Hesabı_Adet_İle_Büküm_Maliyeti').trigger('mask.maskMoney')
+
+
+
+
+        })
+
+        $('#Büküm_Hesabı_Adet_İle_Büküm_Zorluğu_select').change(function () {
+            $('#Büküm_Yeni_Hesabı_Adet_İle_Büküm_Katsayısı').val($(this).find('option:selected').attr('Kat_Sayı'))
+            $('#Büküm_Yeni_Hesabı_Adet_İle_Büküm_Katsayısı').maskMoney()
+            $('#Büküm_Yeni_Hesabı_Adet_İle_Büküm_Katsayısı').trigger('mask.maskMoney')
+            $('#Büküm_Yeni_Hesabı_Adet_İle_Büküm_Katsayısı').trigger('blur')
+
+
+        })
+
+
+        $('#Büküm_Hesabı_Uzunluğa_Malzeme_Eni,#Büküm_Hesabı_Uzunluğa_Malzeme_Genişliği').on('blur', function () {
+
+
+            var x;
+            if ($('#Eninemi_Uzunluğa_Boyunamı_Select').find('option:selected').attr('value') == 0) {
+                x = {
+                    Uzunluk_Bas: $('#Büküm_Hesabı_Uzunluğa_Malzeme_Eni').maskMoney('unmasked')[0].toFixed(2)
+                }
+            }
+            if ($('#Eninemi_Uzunluğa_Boyunamı_Select').find('option:selected').attr('value') == 1) {
+                x = {
+                    Uzunluk_Bas: $('#Büküm_Hesabı_Uzunluğa_Malzeme_Genişliği').maskMoney('unmasked')[0].toFixed(2)
+                }
+            }
+
+
+            $.ajax({
+                url: 'api/BükümYeni/Malzeme_Uzunuğuna_Göre_Katsayı_Getir',
+                type: 'POST',
+                async: false,
+                global: false,
+                dataType: "json",
+                data: JSON.stringify(x),
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+
+
+                    if (data != undefined) {
+                        $('#Büküm_Hesabı_Uzunluğa_Malzeme_Katayısı').val(data.zorluk_Katsayısı.toFixed(2))
+                        $('#Büküm_Hesabı_Uzunluğa_Malzeme_Katayısı').maskMoney()
+                        $('#Büküm_Hesabı_Uzunluğa_Malzeme_Katayısı').trigger('mask.maskMoney')
+
+                        getUzunlukZorluk(data.id)
+                    }
+
+
+                },
+                error: function (xhr, status, error) {
+                    if (xhr.status == 200) {
+
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Talep Esnasında Bir Hata Oluştur',
+                            text: '' + xhr.status + '   ' + error.Message,
+                        })
+                    }
+
+                }
+            })
+
+
+        })
+
+
+        $('#Malzeme_Büküm_Uzunluk_Zorluk_Hesabı').change(function () {
+            $('#Büküm_Hesabı_Uzunluğa_Malzeme_Zorluk_Katayısı').val($(this).find(':selected').attr('zorluk_katsayısı'))
+            $('#Büküm_Hesabı_Uzunluğa_Malzeme_Zorluk_Katayısı').maskMoney()
+            $('#Büküm_Hesabı_Uzunluğa_Malzeme_Zorluk_Katayısı').trigger('mask.maskMoney')
+            $('#Büküm_Hesabı_Uzunluğa_Malzeme_Katayısı').trigger('change')
+
+        })
+
+
+        $('#Büküm_Hesabı_Uzunluğa_Malzeme_Katayısı,#Büküm_Hesabı_Uzunluğa_Malzeme_Zorluk_Katayısı,#Büküm_Yeni_Adeti_İnput,#Büküm_Hesabı_Uzunluğa_Malzeme_Zorluk_Katayısı').on('keyup keypress blur change', function () {
+
+
+            var rv = Uzunluk_Büküm_Maliyeti_Hesapla(
+
+                $('#Büküm_Hesabı_Uzunluğa_Malzeme_Katayısı').maskMoney('unmasked')[0].toFixed(2),
+                $('#Büküm_Hesabı_Uzunluğa_Malzeme_Zorluk_Katayısı').maskMoney('unmasked')[0].toFixed(2),
+                $('#Büküm_Yeni_Adeti_İnput').maskMoney('unmasked')[0].toFixed(2)
+
+            )
+            console.log(rv)
+
+
+            $('#Büküm_Hesabı_Uzunluk_İle_Büküm_Maliyeti').val(rv.toFixed(2))
+            $('#Büküm_Hesabı_Uzunluk_İle_Büküm_Maliyeti').maskMoney()
+            $('#Büküm_Hesabı_Uzunluk_İle_Büküm_Maliyeti').trigger('mask.maskMoney')
+        })
+
+
+
+        $('#Büküm_Hesabı_Uzunluğa_Malzeme_Katayısı').maskMoney()
+        $('#Büküm_Hesabı_Uzunluğa_Malzeme_Zorluk_Katayısı').maskMoney()
+
+
+
+        $('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Katsayı,#Büküm_Yeni_Hesabı_Adet_İle_Büküm_Katsayısı,#Büküm_Hesabı_Uzunluğa_Malzeme_Katayısı,Büküm_Hesabı_Uzunluğa_Malzeme_Zorluk_Katayısı').on('keyup keypress blur change', function () {
+
+            var Ağırlık = $('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Büküm_Maliyeti').maskMoney('unmasked')[0].toFixed(2)
+            var Adet = $('#Büküm_Hesabı_Adet_İle_Büküm_Maliyeti').maskMoney('unmasked')[0].toFixed(2)
+            var Uzunluk = $('#Büküm_Hesabı_Uzunluk_İle_Büküm_Maliyeti').maskMoney('unmasked')[0].toFixed(2)
+
+
+            var arr = [parseFloat(Ağırlık), parseFloat(Adet), parseFloat(Uzunluk)];
+
+            var max = Math.max(...arr);
+
+            var indexes = [];
+
+            for (let index = 0; index < arr.length; index++) {
+                if (arr[index] === max) {
+                    indexes.push(index);
+                }
+            }
+
+            //console.log(indexes)
+
+            if (indexes[0] == 0) {
+                $('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Büküm_Maliyeti').attr('class', 'form-control is-valid')
+                $('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Büküm_Maliyeti').attr('En_Büyük_Olan', '1')
+
+            }
+            else {
+                $('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Büküm_Maliyeti').attr('class', 'form-control')
+                $('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Büküm_Maliyeti').attr('En_Büyük_Olan', '0')
+            }
+
+            if (indexes[0] == 1) {
+                $('#Büküm_Hesabı_Adet_İle_Büküm_Maliyeti').attr('class', 'form-control is-valid')
+                $('#Büküm_Hesabı_Adet_İle_Büküm_Maliyeti').attr('En_Büyük_Olan', '1')
+            }
+            else {
+                $('#Büküm_Hesabı_Adet_İle_Büküm_Maliyeti').attr('class', 'form-control')
+                $('#Büküm_Hesabı_Adet_İle_Büküm_Maliyeti').attr('En_Büyük_Olan', '0')
+            }
+
+            if (indexes[0] == 2) {
+                $('#Büküm_Hesabı_Uzunluk_İle_Büküm_Maliyeti').attr('class', 'form-control is-valid')
+                $('#Büküm_Hesabı_Uzunluk_İle_Büküm_Maliyeti').attr('En_Büyük_Olan', '1')
+            }
+            else {
+                $('#Büküm_Hesabı_Uzunluk_İle_Büküm_Maliyeti').attr('class', 'form-control')
+                $('#Büküm_Hesabı_Uzunluk_İle_Büküm_Maliyeti').attr('En_Büyük_Olan', '0')
+
+
+            }
+
+
+        })
+
+
+
+
+
+
+
+    }
+
+
+
+    function Uzunluk_Büküm_Maliyeti_Hesapla(Uzunluk_katsayı, Zorluk_Katsayı, Büküm_Adeti) {
+        console.log(Uzunluk_katsayı)
+
+        return parseFloat(Uzunluk_katsayı) * parseFloat(Zorluk_Katsayı) * parseFloat(Büküm_Adeti)
+    }
+    function getUzunlukZorluk(Uzunluk_Id) {
+        var x = {
+            id: Uzunluk_Id
+        }
+
+        $.ajax({
+            url: 'api/BükümYeni/Büküm_Uzunluk_Hesabı_Zorluk_Get_By_Uzunluk_Hesabı_Id',
+            type: 'POST',
+            async: false,
+            global: false,
+            dataType: "json",
+            data: JSON.stringify(x),
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+
+
+                //Malzeme_Büküm_Uzunluk_Zorluk_Hesabı
+                $('#Malzeme_Büküm_Uzunluk_Zorluk_Hesabı').empty();
+                $('#Büküm_Hesabı_Uzunluğa_Malzeme_Zorluk_Katayısı').val(data[0].zorluk_Katsayısı.toFixed(2))
+                $('#Büküm_Hesabı_Uzunluğa_Malzeme_Zorluk_Katayısı').maskMoney()
+                $('#Büküm_Hesabı_Uzunluğa_Malzeme_Zorluk_Katayısı').trigger('mask.maskMoney')
+                for (var i = 0; i < data.length; i++) {
+
+                    $('#Malzeme_Büküm_Uzunluk_Zorluk_Hesabı').append('<option zorluk_Katsayısı="' + data[i].zorluk_Katsayısı + '" value="' + data[i].id + '">' + data[i].zorluk_Adı + '</option>')
+
+                }
+
+
+            },
+            error: function (xhr, status, error) {
+                if (xhr.status == 200) {
+
+                }
+                else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Talep Esnasında Bir Hata Oluştur',
+                        text: '' + xhr.status + '   ' + error.Message,
+                    })
+                }
+
+            }
+        })
+
+    }
+
+    function Adet_İle_Büküm_Hesapla(Büküm_Adeti, Katsayı) {
+
+        return parseFloat(Büküm_Adeti) * parseFloat(Katsayı)
+    }
+</script>
