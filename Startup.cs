@@ -16,6 +16,10 @@ using KaynakKod.Services;
 using System.Text.Json.Serialization;
 using Newtonsoft.Json;
 using Microsoft.Extensions.Logging;
+using DataAccess;
+using AspNetCoreFileUploadFileTable;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 
 namespace WebApi
 {
@@ -94,17 +98,36 @@ namespace WebApi
             services.AddScoped<IPaketlemeService, PaketlemeService>();
             services.AddScoped<IPaketlemeSavedService, PaketlemeSavedService>();
             services.AddScoped<IBoyaSavedService, BoyaSavedService>();
+            services.AddScoped<IFileRepository, FileService>();
+
+
+            services.AddScoped<ValidateMimeMultipartContentFilter>();
 
 
 
+            services.Configure<FormOptions>(x =>
+                {
+                    x.MultipartBodyLengthLimit = 209715200;
+                });
 
+            services.Configure<IISServerOptions>(options =>
+            {
+                options.MaxRequestBodySize = int.MaxValue;
+            });
 
-
-
+            services.Configure<KestrelServerOptions>(options =>
+            {
+                options.Limits.MaxRequestBodySize = int.MaxValue; // if don't set default value is: 30 MB
+            });
 
             //IDısOperasyonMaliyetiSavedService
 
-
+            services.Configure<FormOptions>(options =>
+            {
+                options.ValueLengthLimit = int.MaxValue;
+                options.MultipartBodyLengthLimit = int.MaxValue; // if don't set default value is: 128 MB
+                options.MultipartHeadersLengthLimit = int.MaxValue;
+            });
 
             //IKesimMaliyetiSavedService
 

@@ -1,4 +1,3 @@
-
 <script>
     $(document).ready(function () {
 
@@ -125,6 +124,9 @@
 
                     $('#Malzeme_Bilgisi_Dosya_Ekle_Modal').modal('show')
                 })
+                //Malzeme_Genişliği_İnput
+
+
 
                 $("#Malzeme_Select").select2({
                     ajax: {
@@ -190,7 +192,6 @@
                 data: JSON.stringify(x),
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
-                    console.log(data)
 
 
 
@@ -244,7 +245,6 @@
             $('#Malzeme_Malzeme_Birim_Fiyatı_İnput').trigger('mask.maskMoney');
 
 
-            //Malzeme_Parça_Firesiz_ağırlığı
 
             $('#Malzeme_Parça_Firesiz_ağırlığı').maskMoney({
                 precision: 4
@@ -253,37 +253,12 @@
 
 
 
-            $('#Malzeme_Parça_Adeti').on('keyup keypress blur change', function () {
-
-                var Malzeme_Ağırlığı = Malzeme_Ağırlığı_Hesapla(
-                    $('#Malzeme_Eni_İnput').maskMoney('unmasked')[0].toFixed(2)
-                    , $('#Malzeme_Boyu_İnput').maskMoney('unmasked')[0].toFixed(2)
-                    , $('#Malzeme_Genişliği_İnput').maskMoney('unmasked')[0].toFixed(2)
-                    , $('#Malzeme_Özgül_Ağırlık_İnput').maskMoney('unmasked')[0].toFixed(2)
-                )
-
-
-                var Parça_Ağırlığı = Parça_Ağırlığı_Hesapla(
-                    $('#Malzeme_Parça_Adeti').val()
-
-                    , Malzeme_Ağırlığı.toFixed(2)
-                )
-
-
-
-                $('#Malzeme_Parça_Firesiz_ağırlığı').val(Parça_Ağırlığı.toFixed(4))
-                $('#Malzeme_Parça_Firesiz_ağırlığı').trigger('mask.maskMoney')
 
 
 
 
 
 
-
-            })
-
-
-            //Büküm_Maliyeti_Doldur()
 
             $('#Malzeme_Parça_Adeti').maskMoney({
                 precision: 0
@@ -291,7 +266,18 @@
             $('#Malzeme_Parça_Adeti').trigger('mask.maskMoney');
 
 
-            $('#Malzeme_Eni_İnput,#Malzeme_Boyu_İnput,#Malzeme_Genişliği_İnput,#Malzeme_Malzeme_Birim_Fiyatı_İnput,#Malzeme_Özgül_Ağırlık_İnput,#Malzeme_Fiyatı_İnput').on('keyup keypress blur change', function () {
+
+            var Malzeme_Eni_Boy_Change = _.debounce(function () {
+
+
+
+
+
+
+
+
+
+
 
 
                 var Result = Malzeme_Fiyatı_Hesapla(
@@ -326,24 +312,39 @@
 
 
 
+
                 var Malzeme_Ağırlığı = Malzeme_Ağırlığı_Hesapla(
                     $('#Malzeme_Eni_İnput').maskMoney('unmasked')[0].toFixed(2)
                     , $('#Malzeme_Boyu_İnput').maskMoney('unmasked')[0].toFixed(2)
                     , $('#Malzeme_Genişliği_İnput').maskMoney('unmasked')[0].toFixed(2)
                     , $('#Malzeme_Özgül_Ağırlık_İnput').maskMoney('unmasked')[0].toFixed(2)
                 )
-                console.log(Malzeme_Ağırlığı)
-                $('#Büküm_Hesabı_Malzeme_Ağırlığı_İnput').val(Malzeme_Ağırlığı.toFixed(2))
-                $('#Büküm_Hesabı_Malzeme_Ağırlığı_İnput').maskMoney()
+
+
+                var Parça_Ağırlığı = Parça_Ağırlığı_Hesapla(
+                    $('#Malzeme_Parça_Adeti').val()
+
+                    , Malzeme_Ağırlığı.toFixed(2)
+                )
+
+
+                $('#Malzeme_Parça_Firesiz_ağırlığı').val(Parça_Ağırlığı.toFixed(4))
+                $('#Malzeme_Parça_Firesiz_ağırlığı').trigger('mask.maskMoney')
+
+                $('#Büküm_Hesabı_Malzeme_Ağırlığı_İnput').val(Parça_Ağırlığı.toFixed(4))
+                $('#Büküm_Hesabı_Malzeme_Ağırlığı_İnput').maskMoney({
+                    precision: 4
+
+                })
                 $('#Büküm_Hesabı_Malzeme_Ağırlığı_İnput').trigger('mask.maskMoney');
 
-                $('#Kesim_Hesabı_Malzeme_Ağırlığı_İnput').val(Malzeme_Ağırlığı.toFixed(4))
+                $('#Kesim_Hesabı_Malzeme_Ağırlığı_İnput').val(Parça_Ağırlığı.toFixed(4))
                 $('#Kesim_Hesabı_Malzeme_Ağırlığı_İnput').maskMoney({
                     precision: 4
                 })
                 $('#Kesim_Hesabı_Malzeme_Ağırlığı_İnput').trigger('mask.maskMoney');
 
-                $('#Malzeme_Parça_Adeti').trigger('blur')
+                // $('#Malzeme_Parça_Adeti').trigger('blur')
 
 
                 //Kesim_Hesabı_Malzeme_Ağırlığı_İnput
@@ -362,7 +363,16 @@
 
 
 
-            });
+            }, 100); //Wait seconds after he stops
+
+
+            $('#Malzeme_Parça_Adeti,#Malzeme_Eni_İnput,#Malzeme_Boyu_İnput,#Malzeme_Genişliği_İnput,#Malzeme_Malzeme_Birim_Fiyatı_İnput,#Malzeme_Özgül_Ağırlık_İnput,#Malzeme_Fiyatı_İnput').on('keyup keypress blur change', Malzeme_Eni_Boy_Change)
+
+
+
+
+
+
 
 
 

@@ -25,6 +25,10 @@ namespace KaynakKod.Services
 
         List<Takım_Return_Value> Takım_Get_By_İş_Id(İş x);
 
+        Takım_Return_Value Takım_Set_Evrak_Maliyteti(Takım x);
+
+
+
 
     }
     public class TakımService : ITakımService
@@ -141,6 +145,8 @@ namespace KaynakKod.Services
                             x.Id,
                             x.İş_Id,
                             x.Olusturlma_Tarihi,
+                            x.Evrak_Maliyeti,
+
                             x.Takım_Adı
                         }
          );
@@ -151,6 +157,22 @@ namespace KaynakKod.Services
                 İş_Id = o.İş_Id,
                 Olusturlma_Tarihi = o.Olusturlma_Tarihi,
                 Takım_Adı = o.Takım_Adı,
+                Evrak_Maliyeti = o.Evrak_Maliyeti,
+                Toplam_Maliyet = (from x in _context.Toplam_Maliyet_Saveds
+
+                                  join _Parça in _context.Parças
+                                  on o.Id equals _Parça.Takım_Id
+
+
+                                  join _revises in _context.Revizes
+                                  on x.Revize_Id equals _revises.Id
+
+
+                                  orderby _revises.Id descending
+                                  where _revises.Parça_Id == _Parça.Id
+
+                                  select (x.Malzeme_Karlı_Toplam + x.İşçilik_Karlı_Toplam - x.Fire_Maliyeti)
+                ).FirstOrDefault(),
                 İş = (from x in _context.İşs
                       where x.Id == o.İş_Id
                       select x
@@ -164,12 +186,13 @@ namespace KaynakKod.Services
         {
 
             var temp = (from x in _context.Takıms
-                        where x.Is_Deleted == 0 && x.İş_Id==y.Id
+                        where x.Is_Deleted == 0 && x.İş_Id == y.Id
                         select new
                         {
                             x.Id,
                             x.İş_Id,
                             x.Olusturlma_Tarihi,
+                            x.Evrak_Maliyeti,
                             x.Takım_Adı
                         }
          );
@@ -180,14 +203,89 @@ namespace KaynakKod.Services
                 İş_Id = o.İş_Id,
                 Olusturlma_Tarihi = o.Olusturlma_Tarihi,
                 Takım_Adı = o.Takım_Adı,
+                Evrak_Maliyeti = o.Evrak_Maliyeti,
+                Toplam_Maliyet = (from x in _context.Toplam_Maliyet_Saveds
+
+                                  join _Parça in _context.Parças
+                                  on o.Id equals _Parça.Takım_Id
+
+
+                                  join _revises in _context.Revizes
+                                  on x.Revize_Id equals _revises.Id
+
+
+                                  orderby _revises.Id descending
+                                  where _revises.Parça_Id == _Parça.Id
+
+                                  select (x.Malzeme_Karlı_Toplam + x.İşçilik_Karlı_Toplam - x.Fire_Maliyeti) * _Parça.Parça_Adeti
+                ).Sum() + o.Evrak_Maliyeti,
                 İş = (from x in _context.İşs
                       where x.Id == o.İş_Id
                       select x
-             ).FirstOrDefault()
+                    ).FirstOrDefault()
+
 
 
             });
             return rv.ToList();
+
+        }
+
+        public Takım_Return_Value Takım_Set_Evrak_Maliyteti(Takım y)
+        {
+            var temp_ = _context.Takıms;
+            var Değer = temp_.FirstOrDefault(o => o.Id == y.Id);
+            Değer.Evrak_Maliyeti = y.Evrak_Maliyeti;
+
+
+
+            _context.SaveChanges();
+
+            var temp = (from x in _context.Takıms
+                        where x.Is_Deleted == 0 && y.Id == x.Id
+                        select new
+                        {
+                            x.Id,
+                            x.İş_Id,
+                            x.Olusturlma_Tarihi,
+                            x.Evrak_Maliyeti,
+                            x.Takım_Adı
+                        }
+              );
+
+            IEnumerable<Takım_Return_Value> rv = temp.Select(o => new Takım_Return_Value
+            {
+                Id = o.Id,
+                İş_Id = o.İş_Id,
+                Olusturlma_Tarihi = o.Olusturlma_Tarihi,
+                Takım_Adı = o.Takım_Adı,
+                Evrak_Maliyeti = o.Evrak_Maliyeti,
+                Toplam_Maliyet = (from x in _context.Toplam_Maliyet_Saveds
+
+                                  join _Parça in _context.Parças
+                                  on o.Id equals _Parça.Takım_Id
+
+
+                                  join _revises in _context.Revizes
+                                  on x.Revize_Id equals _revises.Id
+
+
+                                  orderby _revises.Id descending
+                                  where _revises.Parça_Id == _Parça.Id
+
+                                  select (x.Malzeme_Karlı_Toplam + x.İşçilik_Karlı_Toplam - x.Fire_Maliyeti) * _Parça.Parça_Adeti
+                ).Sum() + o.Evrak_Maliyeti,
+                İş = (from x in _context.İşs
+                      where x.Id == o.İş_Id
+                      select x
+                    ).FirstOrDefault()
+
+
+
+            });
+
+
+            return rv.FirstOrDefault();
 
         }
     }

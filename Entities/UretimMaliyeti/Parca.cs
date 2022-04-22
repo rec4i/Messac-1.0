@@ -45,8 +45,11 @@ namespace KaynakKod.Entities
 
         public decimal Parça_Adeti { get; set; }
         public decimal Birim_Maliyet { get; set; }
+        public decimal Evrak_Maliyeti { get; set; }
+        public decimal Toplam_Maliyet { get; set; }
 
 
+        
         public int Takım_Id { get; set; }
 
 

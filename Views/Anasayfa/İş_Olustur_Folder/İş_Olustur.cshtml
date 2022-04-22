@@ -306,11 +306,25 @@
                     for (i = 0; i < temp.length; i++) {
                         row__ = {}
 
+                        var Toplam_Maliyet = '' +
+                            '<input   id="Toplam_Maliyet" class="form-control" data-thousands="." data-decimal=","' +
+                            '                                           value="' + temp[i].toplam_Maliyet.toFixed(2) + '"         data-suffix=" ₺" type="text"' +
+                            '                                                      />' +
+                            '';
+
+                        var Evrak_Maliyeti = '' +
+                            '<input   id="Evrak_Maliyeti" class="form-control" data-thousands="." data-decimal=","' +
+                            '                                           value="' + temp[i].evrak_Maliyeti.toFixed(2) + '"         data-suffix=" ₺" type="text"' +
+                            '                                                      />' +
+                            '';
 
                         row__['ID'] = temp[i].id
                         row__['Takım_Adı'] = temp[i].takım_Adı
+                        row__['Toplam_Evrak_Maliyeti'] = Evrak_Maliyeti
+                        row__['Toplam_Maliyet'] = Toplam_Maliyet
+
                         row__['Oluşturulma_Tarihi'] = getFormattedDate(temp[i].olusturlma_Tarihi);
-                        row__['Evrak_Maliyeti'] = '<button class="btn btn-primary btn-sm" value="' + temp[i].id + '" id="Takım_Evrak_Maliyeti_Ekle" style="word-break: keep-all;"><i class="fa fa-file-text "></i> Evrak Maliyeti</button>'
+                        row__['Evrak_Maliyeti'] = '<button class="btn btn-primary btn-sm" Table_Id="' + row.ID + '"  Row_Index="' + i + '" value="' + temp[i].id + '" id="Takım_Evrak_Maliyeti_Ekle" style="word-break: keep-all;"><i class="fa fa-file-text "></i> Evrak Maliyeti</button>'
                         row__['Düzenle'] = '<button class="btn btn-warning btn-sm" value="' + temp[i].id + '" id="Takım_Düzenle_Button" style="word-break: keep-all;"><i class="fa fa-file-text "></i> Düzenle</button>'
 
 
@@ -332,14 +346,21 @@
                     Parça_Bilgileri_Tablo_Doldur(index, row, detail)
                 },
             })
+            $('*#Toplam_Maliyet').maskMoney();
+            $('*#Toplam_Maliyet').trigger('mask.maskMoney');
+            $('*#Toplam_Maliyet').attr('disabled', 'disabled');
 
+            $('*#Evrak_Maliyeti').maskMoney();
+            $('*#Evrak_Maliyeti').trigger('mask.maskMoney');
+            $('*#Evrak_Maliyeti').attr('disabled', 'disabled');
+            //Evrak_Maliyeti
 
             $('button[id=Takım_Evrak_Maliyeti_Ekle]').click(function () {
-                //Evrak_Maliyeti_Modal
-                console.log("asdsasaddas0990")
                 $('#Evrak_Maliyeti_Modal').modal('show')
-                $('#Evrak_maliyeti_Modal_Kaydet').attr('value', $(this).attr('value'))
 
+                $('#Evrak_maliyeti_Modal_Kaydet').attr('value', $(this).attr('value'))
+                $('#Evrak_maliyeti_Modal_Kaydet').attr('Table_Id', $(this).attr('Table_Id'))
+                $('#Evrak_maliyeti_Modal_Kaydet').attr('Row_Index', $(this).attr('Row_Index'))
 
             })
 
@@ -503,10 +524,33 @@
                         row__ = {}
 
 
+                        var Birim_Maliyet = '' +
+                            '<input   id="Birim_Maliyet_" class="form-control" data-thousands="." data-decimal=","' +
+                            '                                           value="' + temp[i].birim_Maliyet.toFixed(2) + '"         data-suffix=" ₺" type="text"' +
+                            '                                                      />' +
+                            '';
+
+                        var Evrak_Maliyeti = '' +
+                            '<input   id="Evrak_Maliyeti_" class="form-control" data-thousands="." data-decimal=","' +
+                            '                                           value="' + temp[i].evrak_Maliyeti.toFixed(2) + '"         data-suffix=" ₺" type="text"' +
+                            '                                                      />' +
+                            '';
+
+                        var Toplam_Maliyet = '' +
+                            '<input   id="Toplam_Maliyet_" class="form-control" data-thousands="." data-decimal=","' +
+                            '                                           value="' + temp[i].toplam_Maliyet.toFixed(2) + '"         data-suffix=" ₺" type="text"' +
+                            '                                                      />' +
+                            '';
+
                         row__['ID'] = temp[i].id
                         row__['Parça_Adı'] = temp[i].parça_Adı
                         row__['Parça_Adet'] = temp[i].parça_Adeti
-                        row__['Birim_Maliyet'] = temp[i].birim_Maliyet
+                        row__['Birim_Maliyet'] = Birim_Maliyet
+                        row__['Evrak_Maliyeti'] = Evrak_Maliyeti
+                        row__['Toplam_Maliyet'] = Toplam_Maliyet
+
+
+                        //Evrak_Maliyeti  Toplam_Maliyet
                         row__['Oluşturulma_Tarihi'] = getFormattedDate(temp[i].olusturlma_Tarihi)
                         row__['Düzenle'] = '<button class="btn btn-warning btn-sm" value="' + temp[i].id + '" id="Parça_Düzenle_Button" style="word-break: keep-all;"><i class="fa fa-file-text "></i> Düzenle</button>'
                         row__['Revize'] = '<button class="btn btn-danger btn-sm" value="' + temp[i].id + '" id="Parça_Revize_Button" style="word-break: keep-all;"><i class="fa fa-file-text "></i> Revize</button>'
@@ -533,7 +577,20 @@
             })
 
 
+            $('*#Toplam_Maliyet_').maskMoney();
+            $('*#Toplam_Maliyet_').trigger('mask.maskMoney');
+            $('*#Toplam_Maliyet_').attr('disabled', 'disabled');
 
+            $('*#Evrak_Maliyeti_').maskMoney();
+            $('*#Evrak_Maliyeti_').trigger('mask.maskMoney');
+            $('*#Evrak_Maliyeti_').attr('disabled', 'disabled');
+
+
+            $('*#Birim_Maliyet_').maskMoney();
+            $('*#Birim_Maliyet_').trigger('mask.maskMoney');
+            $('*#Birim_Maliyet_').attr('disabled', 'disabled');
+
+            //Birim_Maliyet
             //Parça_Revize_Button
 
 

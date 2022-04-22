@@ -3,12 +3,92 @@
 
 <script>
     $(document).ready(function () {
-        
         $('#Evrak_Maliyeti_İnput').maskMoney()
 
-        $('#Evrak_maliyeti_Modal_Kaydet').click(function(){
+        $('#Evrak_maliyeti_Modal_Kaydet').click(function () {
+            var x = {
+                Id: $(this).attr('value'),
+                Evrak_Maliyeti: $('#Evrak_Maliyeti_İnput').maskMoney('unmasked')[0].toFixed(2)
+            }
 
-            
+
+            var Row_Index = $(this).attr('Row_Index')
+            var Table_Id = $(this).attr('Table_Id')
+
+            $.ajax({
+                url: 'api/Takım/Takım_Set_Evrak_Maliyteti',
+                type: 'POST',
+                async: false,
+                global: false,
+                dataType: "json",
+                data: JSON.stringify(x),
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    console.log(data)
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'İşlem Başarı İşe Kaydedildi',
+                    })
+                    var Toplam_Maliyet = '' +
+                        '<input   id="Toplam_Maliyet" class="form-control" data-thousands="." data-decimal=","' +
+                        '                                           value="' + data.toplam_Maliyet.toFixed(2) + '"         data-suffix=" ₺" type="text"' +
+                        '                                                      />' +
+                        '';
+
+                    var Evrak_Maliyeti = '' +
+                        '<input   id="Evrak_Maliyeti" class="form-control" data-thousands="." data-decimal=","' +
+                        '                                           value="' + data.evrak_Maliyeti.toFixed(2) + '"         data-suffix=" ₺" type="text"' +
+                        '                                                      />' +
+                        '';
+
+                    $('#Takım_Table_' + Table_Id).bootstrapTable('updateCell', {
+                        index: Row_Index,
+                        field: 'Toplam_Evrak_Maliyeti',
+                        value: Evrak_Maliyeti
+                    })
+                    $('#Takım_Table_' + Table_Id).bootstrapTable('updateCell', {
+                        index: Row_Index,
+                        field: 'Toplam_Maliyet',
+                        value: Toplam_Maliyet
+                    })
+
+                    $('*#Toplam_Maliyet').maskMoney();
+                    $('*#Toplam_Maliyet').trigger('mask.maskMoney');
+                    $('*#Toplam_Maliyet').attr('disabled', 'disabled');
+
+                    $('*#Evrak_Maliyeti').maskMoney();
+                    $('*#Evrak_Maliyeti').trigger('mask.maskMoney');
+                    $('*#Evrak_Maliyeti').attr('disabled', 'disabled');
+                    //Evrak_Maliyeti
+
+
+                },
+                error: function (xhr, status, error) {
+                    if (xhr.status == 200) {
+
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Talep Esnasında Bir Hata Oluştur',
+                            text: '' + xhr.status + '   ' + error.Message,
+                        })
+                    }
+
+                }
+            })
+            $('button[id=Takım_Evrak_Maliyeti_Ekle]').click(function () {
+                $('#Evrak_Maliyeti_Modal').modal('show')
+
+                $('#Evrak_maliyeti_Modal_Kaydet').attr('value', $(this).attr('value'))
+                $('#Evrak_maliyeti_Modal_Kaydet').attr('Table_Id', $(this).attr('Table_Id'))
+                $('#Evrak_maliyeti_Modal_Kaydet').attr('Row_Index', $(this).attr('Row_Index'))
+
+            })
+
+
+
+
         })
 
     })
@@ -26,13 +106,12 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">    
+            <div class="modal-body">
                 <div class="row">
                     <div class="col-md-12">
                         <label for="">Evrak Maliyeti:</label>
-                        <input id="Evrak_Maliyeti_İnput"  
-                            Büküm_Tipi="2" data-thousands="." data-decimal="," data-suffix=" ₺" class="form-control "
-                            type="text" placeholder="Evrak Maliyeti">
+                        <input id="Evrak_Maliyeti_İnput" Büküm_Tipi="2" data-thousands="." data-decimal=","
+                            data-suffix=" ₺" class="form-control " type="text" placeholder="Evrak Maliyeti">
                     </div>
                 </div>
             </div>

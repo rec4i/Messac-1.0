@@ -11,6 +11,8 @@ namespace KaynakKod.Entities
 
         public string Takım_Adı { get; set; }
 
+        public decimal Evrak_Maliyeti { get; set; }
+
         public int İş_Id { get; set; }
 
         [DefaultValue(0)]
@@ -38,6 +40,9 @@ namespace KaynakKod.Entities
         public int Id { get; set; }
 
         public string Takım_Adı { get; set; }
+        public decimal Evrak_Maliyeti { get; set; }
+
+        public decimal Toplam_Maliyet { get; set; }
 
         public int İş_Id { get; set; }
 

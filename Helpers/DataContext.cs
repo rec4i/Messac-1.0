@@ -1,3 +1,4 @@
+using DataAccess.Model;
 using KaynakKod.Entities;
 using KaynakKod.Entities.UretimMaliyeti.İşlemler;
 using Microsoft.EntityFrameworkCore;
@@ -113,6 +114,10 @@ namespace WebApi.Helpers
         public DbSet<Boya_Maliyeti_Saved> Boya_Maliyeti_Saveds { get; set; }
 
         public DbSet<Boya_Maliyeti_Saved_Row> Boya_Maliyeti_Saved_Rows { get; set; }
+
+
+        public DbSet<FileDescription> FileDescriptions { get; set; }
+
 
 
 

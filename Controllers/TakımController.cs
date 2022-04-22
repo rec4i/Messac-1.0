@@ -87,6 +87,13 @@ namespace KaynakKod.Controllers
             return Ok(a);
         }
 
+        [Authorize(Role.Admin)]
+        [HttpPost("Takım_Set_Evrak_Maliyteti")]
+        public IActionResult Takım_Set_Evrak_Maliyteti(Takım x)
+        {
+            var a = _ITakımService.Takım_Set_Evrak_Maliyteti(x);
+            return Ok(a);
+        }
 
     }
 }

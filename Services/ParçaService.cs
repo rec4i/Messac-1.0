@@ -127,6 +127,29 @@ namespace qrmenu.Services
                                  orderby x.Id descending
                                  select x.Malzeme_Karlı_Toplam + x.İşçilik_Karlı_Toplam - x.Fire_Maliyeti
                 ).FirstOrDefault(),
+
+                Evrak_Maliyeti = (from x in _context.Takıms
+                                  where o.Takım_Id == x.Id
+                                  select x.Evrak_Maliyeti
+                ).FirstOrDefault() / (from x in _context.Parças
+                                      where x.Takım_Id == o.Takım_Id
+                                      select x.Parça_Adeti
+
+                ).Sum() * o.Parça_Adeti,
+
+                Toplam_Maliyet = (from x in _context.Takıms
+                                  where o.Takım_Id == x.Id
+                                  select x.Evrak_Maliyeti
+                ).FirstOrDefault() / (from x in _context.Parças
+                                      where x.Takım_Id == o.Takım_Id
+                                      select x.Parça_Adeti
+
+                ).Sum() * o.Parça_Adeti + (from x in _context.Toplam_Maliyet_Saveds
+                                           where x.Revize_Id == x.Id
+                                           orderby x.Id descending
+                                           select x.Malzeme_Karlı_Toplam + x.İşçilik_Karlı_Toplam - x.Fire_Maliyeti
+                ).FirstOrDefault(),
+
                 Takım_Id = o.Takım_Id,
                 Olusturlma_Tarihi = o.Olusturlma_Tarihi
 
@@ -161,8 +184,35 @@ namespace qrmenu.Services
                                  orderby _revises.Id descending
                                  where _revises.Parça_Id == o.Id
 
-                                 select (x.Malzeme_Karlı_Toplam+x.İşçilik_Karlı_Toplam-x.Fire_Maliyeti)
+                                 select (x.Malzeme_Karlı_Toplam + x.İşçilik_Karlı_Toplam - x.Fire_Maliyeti)
                 ).FirstOrDefault(),
+
+                Evrak_Maliyeti = (from x in _context.Takıms
+                                  where o.Takım_Id == x.Id
+                                  select x.Evrak_Maliyeti
+                ).FirstOrDefault() / (from x in _context.Parças
+                                      where x.Takım_Id == o.Takım_Id
+                                      select x.Parça_Adeti
+
+                ).Sum() * o.Parça_Adeti,
+                Toplam_Maliyet = (from x in _context.Takıms
+                                  where o.Takım_Id == x.Id
+                                  select x.Evrak_Maliyeti
+                ).FirstOrDefault() / (from x in _context.Parças
+                                      where x.Takım_Id == o.Takım_Id
+                                      select x.Parça_Adeti
+
+                ).Sum() * o.Parça_Adeti + ((from x in _context.Toplam_Maliyet_Saveds
+
+                                 join _revises in _context.Revizes
+                                on x.Revize_Id equals _revises.Id
+                                 orderby _revises.Id descending
+                                 where _revises.Parça_Id == o.Id
+
+                                 select (x.Malzeme_Karlı_Toplam + x.İşçilik_Karlı_Toplam - x.Fire_Maliyeti)
+                ).FirstOrDefault()*o.Parça_Adeti),
+
+
                 Takım_Id = o.Takım_Id,
                 Olusturlma_Tarihi = o.Olusturlma_Tarihi
 

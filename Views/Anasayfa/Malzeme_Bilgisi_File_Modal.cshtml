@@ -22,6 +22,76 @@
 
 
         })
+
+        $('#Dosya_Kaydet_Malzeme_Bilgisi').click(function () {
+            var form = new FormData();
+
+
+
+
+            $('#Malzeme_Bilgisi_Dosya_İnputları').each(function () {
+
+
+                var form = new FormData();
+                form.append("file", this.files[0]);
+                form.append("description", "123");
+
+                var settings = {
+                    "url": "api/FileUpload/UploadFiles",
+                    "method": "POST",
+                    "timeout": 0,
+                    "processData": false,
+                    "mimeType": "multipart/form-data",
+                    "contentType": false,
+                    "data": form
+                };
+
+
+                var bar = $('.bar');
+                var percent = $('.percent');
+                var status = $('#status');
+
+                $.ajax({
+                    "url": "api/FileUpload/UploadFiles",
+                    "method": "POST",
+                    "timeout": 0,
+                    "processData": false,
+                    "mimeType": "multipart/form-data",
+                    "contentType": false,
+                    "data": form,
+                    xhr: function () {
+                        var xhr = new window.XMLHttpRequest();
+
+                        xhr.upload.addEventListener("progress", function (evt) {
+                            if (evt.lengthComputable) {
+                                var percentComplete = evt.loaded / evt.total;
+                                percentComplete = parseInt(percentComplete * 100);
+                                console.log(percentComplete);
+
+                                if (percentComplete === 100) {
+
+                                }
+
+                            }
+                        }, false);
+
+                        return xhr;
+                    },
+
+                    success: function (data) {
+
+
+
+
+                    },
+                    error: function (xhr, status, error) {
+
+
+                    }
+                })
+                console.log(this.files)
+            })
+        })
     })
 </script>
 <style>
@@ -65,11 +135,16 @@
                             <div class="row" style="padding-top: 25px;">
                                 <div class="col-md-12">
                                     <div id="previews">
-                                       
+
 
                                     </div>
                                 </div>
                             </div>
+                            <div class="progress">
+                                <div class="bar"></div>
+                                <div class="percent">0%</div>
+                            </div>
+                            <div id="status"></div>
 
                         </div>
                     </div>
@@ -81,6 +156,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+                <button type="button" class="btn btn-secondary" id="Dosya_Kaydet_Malzeme_Bilgisi">Kaydet</button>
             </div>
         </div>
     </div>
