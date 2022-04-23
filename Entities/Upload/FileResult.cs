@@ -7,6 +7,10 @@ namespace DataAccess.Model
     {
         public List<string> FileNames { get; set; }
         public string Description { get; set; }
+        public string FileGuid { get; set; }
+        public int Revize_Id { get; set; }
+
+
         public DateTime CreatedTimestamp { get; set; }
         public DateTime UpdatedTimestamp { get; set; }
         public List<string> ContentTypes { get; set; }

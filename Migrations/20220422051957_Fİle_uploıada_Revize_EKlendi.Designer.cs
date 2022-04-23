@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApi.Helpers;
 
 namespace WebApi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220422051957_Fİle_uploıada_Revize_EKlendi")]
+    partial class Fİle_uploıada_Revize_EKlendi
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -815,9 +817,6 @@ namespace WebApi.Migrations
                     b.Property<decimal>("Malzeme_Maliyeti")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("O_Günki_Kur")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("Olusturlma_Tarihi")
                         .HasColumnType("datetime2");
 
@@ -825,9 +824,6 @@ namespace WebApi.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("Parça_Toplam_Maliyeti")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("Parça_Toplam_Maliyeti_Güncel_Kur")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("Revize_Id")

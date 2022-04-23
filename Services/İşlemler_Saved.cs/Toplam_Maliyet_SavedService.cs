@@ -115,6 +115,9 @@ namespace qrmenu.Services
                 Parça_Genel_Kar_Oranı = o.Parça_Genel_Kar_Oranı,
                 Parça_Toplam_Maliyeti = o.Parça_Toplam_Maliyeti,
 
+                O_Günki_Kur = o.O_Günki_Kur,
+                Parça_Toplam_Maliyeti_Güncel_Kur = o.Parça_Toplam_Maliyeti_Güncel_Kur,
+
                 İşçilik_Maliyeti_Selecteds = (from x in _context.İşçilik_Maliyeti_Selecteds
                                               where x.Toplam_Maliyet_Saved_Id == o.Id
                                               select x
@@ -162,6 +165,9 @@ namespace qrmenu.Services
 
                 Parça_Genel_Kar_Oranı = o.Parça_Genel_Kar_Oranı,
                 Parça_Toplam_Maliyeti = o.Parça_Toplam_Maliyeti,
+
+                O_Günki_Kur = o.O_Günki_Kur,
+                Parça_Toplam_Maliyeti_Güncel_Kur = o.Parça_Toplam_Maliyeti_Güncel_Kur,
 
                 İşçilik_Maliyeti_Selecteds = (from x in _context.İşçilik_Maliyeti_Selecteds
                                               where x.Toplam_Maliyet_Saved_Id == o.Id

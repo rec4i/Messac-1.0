@@ -1,13 +1,193 @@
+<style>
+    .photo-gallery {
+        color: #313437;
+        background-color: #fff;
+    }
+
+    .photo-gallery p {
+        color: #7d8285;
+    }
+
+    .photo-gallery h2 {
+        font-weight: bold;
+        margin-bottom: 40px;
+        padding-top: 40px;
+        color: inherit;
+    }
+
+
+
+    .photo-gallery .intro {
+        font-size: 16px;
+        max-width: 500px;
+        margin: 0 auto 40px;
+    }
+
+    .photo-gallery .intro p {
+        margin-bottom: 0;
+    }
+
+    .photo-gallery .photos {
+        padding-bottom: 20px;
+    }
+
+    .photo-gallery .item {
+        padding-bottom: 30px;
+    }
+</style>
+
+
 <script>
     $(document).ready(function () {
 
+        $('#Malzeme_Bilgisi_Dosya_Ekle_Modal').on('hidden.bs.modal', function () {
+            $('#Parça_Kaydet_Modal').modal('show')
+        });
+
+        $('#Parça_Modal_Dosyalar_Aç_Btn').click(function () {
+            $('#Parça_Kaydet_Modal').modal('hide')
+            $('#Malzeme_Bilgisi_Dosya_Ekle_Modal').modal('show')
+
+        })
+
+
+        $('#Parça_Modal_Dosyalar_Aç_Btn').click(function () {
+            $('#previews').empty()
+            var x = {
+                Id: $(this).attr('revize_id')
+            }
+            $.ajax({
+                url: '/api/FileUpload/Get_Files_With_Revize_Id',
+                type: 'POST',
+                async: false,
+                dataType: "json",
+                global: false,
+                data: JSON.stringify(x),
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    console.log(data)
+
+
+
+
+                    var Image_Types = ['apng', 'gif', 'ico', 'cur', 'jpg', 'jpeg', 'jfif', 'pjpeg', 'pjp', 'png', 'svg']
+                    $('#Photo_Div').empty()
+                    $('#İndirilecek_Dosyalar_Modal').empty()
+                    for (let i = 0; i < data.length; i++) {
+
+
+
+                        if (Image_Types.includes(data[i].contentType.split('/')[1])) {
+                            var variable = '' +
+                                '<div class="col-sm-6 col-md-4 col-lg-3 item"><a href="/api/FileUpload/Download/' + data[i].id + '"' +
+                                '                                            data-lightbox="photos"><img class="img-fluid"' +
+                                '                                                src="/api/FileUpload/Download/' + data[i].id + '"></a>' +
+                                '                                    </div>' +
+                                '';
+                            $('#Photo_Div').append(variable)
+                            console.log("ddsadas")
+                        }
+                        var variable = '' +
+                            ' <div class="row" style="padding-top: 25px;" >' +
+                            '                                    <div class="col-md-9">' +
+                            '                                        <label for="" id="Dosya_Adı">' + data[i].fileName + '</label>' +
+                            '                                    </div>' +
+                            '                                    <div class="col-md-2">' +
+                            '                                        <a href="/api/FileUpload/Download/' + data[i].id + '" type="button" class="btn btn-block btn-success" id="Dosyayı_İndir">' +
+                            '                                            <i class="fa fa-fw fa-download"></i> indir</a>' +
+                            '                                    </div>' +
+                            '                                    <div class="col-md-1">' +
+                            '                                        <button type="button" dosya_Id="' + data[i].id + '" class="btn btn-block btn-danger" id="Dosyayı_Sil"><i class="fa fa-fw fa-trash"></i></button>' +
+                            '                                           ' +
+                            '                                    </div>' +
+                            '                                </div>' +
+                            '';
+                        $('#İndirilecek_Dosyalar_Modal').append(variable)
+
+
+                    }
+
+
+                    $('button[id=Dosyayı_Sil]').click(function () {
+                        var Dosya_Id = $(this).attr('dosya_Id')
+                        Swal.fire({
+                            title: 'Dosyayı Silmek İstiyormusunuz? ',
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            cancelButtonText: 'Vazgeç',
+                            confirmButtonText: 'SİL'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                var x = {
+                                    Id: Dosya_Id
+                                }
+                                $.ajax({
+                                    url: '/api/FileUpload/Delete_File_By_Id',
+                                    type: 'POST',
+                                    async: false,
+                                    dataType: "json",
+                                    data: JSON.stringify(x),
+                                    contentType: "application/json; charset=utf-8",
+                                    success: function (data) {
+                                        Swal.fire(
+                                            'Silindi',
+                                            'Başlık Başarı İle Silindi',
+                                            'success'
+                                        )
+
+                                    },
+                                    error: function (xhr, status, error) {
+                                        if (xhr.status == 200) {
+
+                                        }
+                                        else {
+                                            Swal.fire({
+                                                icon: 'error',
+                                                title: 'Talep Esnasında Bir Hata Oluştur',
+                                                text: '' + xhr.status + '   ' + error.Message,
+                                            })
+                                        }
+
+                                    }
+                                })
+
+                            }
+                        }).then(() => {
+                            $('button[id=Dosyayı_Sil][dosya_Id=' + Dosya_Id + ']').parent().parent().remove()
+
+                        })
+
+
+
+                    })
+
+                },
+                error: function (xhr, status, error) {
+                    if (xhr.status == 200) {
+
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Talep Esnasında Bir Hata Oluştur',
+                            text: '' + xhr.status + '   ' + error.Message,
+                        })
+                    }
+
+                }
+            })
+
+        })
+        //Parça_Modal_Kaydet_Btn
 
         var File_Id = 0;
         $('#Malzeme_Bilgisi_Dosya_Ekle_İnput_Button').click(function () {
             var variable = '' +
                 '<form style="padding-top: 25px;">' +
                 '  <div class="custom-file">' +
-                '    <input type="file" class="custom-file-input" id="Malzeme_Bilgisi_Dosya_İnputları">' +
+                '    <input type="file" class="custom-file-input" yeni_Dosyamı="1" id="Malzeme_Bilgisi_Dosya_İnputları">' +
                 '    <label class="custom-file-label" for="customFile">Choose file</label>' +
                 '  </div>' +
                 '</form>' +
@@ -29,68 +209,7 @@
 
 
 
-            $('#Malzeme_Bilgisi_Dosya_İnputları').each(function () {
 
-
-                var form = new FormData();
-                form.append("file", this.files[0]);
-                form.append("description", "123");
-
-                var settings = {
-                    "url": "api/FileUpload/UploadFiles",
-                    "method": "POST",
-                    "timeout": 0,
-                    "processData": false,
-                    "mimeType": "multipart/form-data",
-                    "contentType": false,
-                    "data": form
-                };
-
-
-                var bar = $('.bar');
-                var percent = $('.percent');
-                var status = $('#status');
-
-                $.ajax({
-                    "url": "api/FileUpload/UploadFiles",
-                    "method": "POST",
-                    "timeout": 0,
-                    "processData": false,
-                    "mimeType": "multipart/form-data",
-                    "contentType": false,
-                    "data": form,
-                    xhr: function () {
-                        var xhr = new window.XMLHttpRequest();
-
-                        xhr.upload.addEventListener("progress", function (evt) {
-                            if (evt.lengthComputable) {
-                                var percentComplete = evt.loaded / evt.total;
-                                percentComplete = parseInt(percentComplete * 100);
-                                console.log(percentComplete);
-
-                                if (percentComplete === 100) {
-
-                                }
-
-                            }
-                        }, false);
-
-                        return xhr;
-                    },
-
-                    success: function (data) {
-
-
-
-
-                    },
-                    error: function (xhr, status, error) {
-
-
-                    }
-                })
-                console.log(this.files)
-            })
         })
     })
 </script>
@@ -117,6 +236,35 @@
                 </button>
             </div>
             <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="photo-gallery">
+                            <div class="container">
+                                <div class="row photos" id="Photo_Div">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-body" id="İndirilecek_Dosyalar_Modal">
+                                <div class="row">
+                                    <div class="col-md-10">
+                                        <label for="" id="Dosya_Adı"></label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <a href="" type="button" class="btn btn-block btn-success" id="Dosyayı_İndir">
+                                            <i class="fa fa-fw fa-download"></i> indir</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="col-md-12">
                     <div class="card card-default">
                         <div class="card-header">
@@ -140,12 +288,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="progress">
-                                <div class="bar"></div>
-                                <div class="percent">0%</div>
-                            </div>
-                            <div id="status"></div>
-
                         </div>
                     </div>
 
@@ -156,7 +298,6 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
-                <button type="button" class="btn btn-secondary" id="Dosya_Kaydet_Malzeme_Bilgisi">Kaydet</button>
             </div>
         </div>
     </div>

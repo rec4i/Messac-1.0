@@ -8,7 +8,7 @@ namespace AspNetCoreFileUploadFileTable
 {
     public static class FormFileExtensions
     {
-        private static int DefaultBufferSize = 999999 * 1024;
+        private static int DefaultBufferSize = 99 * 1024;
         /// <summary>
         /// Asynchronously saves the contents of an uploaded file.
         /// </summary>

@@ -20,6 +20,7 @@ using DataAccess;
 using AspNetCoreFileUploadFileTable;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
+using System;
 
 namespace WebApi
 {
@@ -107,7 +108,7 @@ namespace WebApi
 
             services.Configure<FormOptions>(x =>
                 {
-                    x.MultipartBodyLengthLimit = 209715200;
+                    x.MultipartBodyLengthLimit = int.MaxValue;
                 });
 
             services.Configure<IISServerOptions>(options =>
@@ -115,10 +116,10 @@ namespace WebApi
                 options.MaxRequestBodySize = int.MaxValue;
             });
 
-            services.Configure<KestrelServerOptions>(options =>
-            {
-                options.Limits.MaxRequestBodySize = int.MaxValue; // if don't set default value is: 30 MB
-            });
+            // services.Configure<KestrelServerOptions>(options =>
+            // {
+            //     options.Limits.MaxRequestBodySize = int.MaxValue; // if don't set default value is: 30 MB
+            // });
 
             //IDısOperasyonMaliyetiSavedService
 

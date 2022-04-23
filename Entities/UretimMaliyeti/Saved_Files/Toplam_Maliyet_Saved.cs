@@ -46,6 +46,11 @@ namespace KaynakKod.Entities
         public decimal Parça_Toplam_Maliyeti { get; set; }
 
 
+        public string O_Günki_Kur { get; set; }
+        public decimal Parça_Toplam_Maliyeti_Güncel_Kur { get; set; }
+
+
+
 
 
 
@@ -91,6 +96,9 @@ namespace KaynakKod.Entities
 
         public decimal Parça_Genel_Kar_Oranı { get; set; }
         public decimal Parça_Toplam_Maliyeti { get; set; }
+
+        public string O_Günki_Kur { get; set; }
+        public decimal Parça_Toplam_Maliyeti_Güncel_Kur { get; set; }
 
 
         public List<İşçilik_Maliyeti_Selected> İşçilik_Maliyeti_Selecteds { get; set; }

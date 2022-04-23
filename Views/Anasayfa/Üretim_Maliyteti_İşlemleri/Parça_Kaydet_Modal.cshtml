@@ -112,14 +112,6 @@
         $('#Parça_Modal_Kaydet_Btn').click(function () {
             $('#Parça_Kaydet_Modal').modal('hide')
             $('#Parça_Kaydet_Btn_Modal').modal('show')
-
-            //
-
-
-
-
-
-
         })
 
     })
@@ -452,6 +444,8 @@
 
             }
 
+            console.log(x)
+
             return x;
         }
         catch (err) {
@@ -642,6 +636,10 @@
                 Parça_Genel_Kar_Oranı: $('#Parça_Genel_Kar_Oranı').maskMoney('unmasked')[0].toFixed(2),
                 Parça_Toplam_Maliyeti: $('#Parça_Toplam_Maliyet').maskMoney('unmasked')[0].toFixed(2),
 
+                O_Günki_Kur:$('#Para_birimi_Select').find(':selected').html(),
+                Parça_Toplam_Maliyeti_Güncel_Kur:$('#Parça_Toplam_Maliyet_Döviz').maskMoney('unmasked')[0].toFixed(2),
+
+                
                 İşçilik_Maliyeti_Selecteds: İşçilik_Maliyeti_Selecteds,
                 Malzeme_Maliyeti_Selected: Malzeme_Maliyeti_Selected,
 
@@ -1815,8 +1813,16 @@
 
         //Fire_Hesabı_Fire_Oranı_İnput
         //malzeme_Fire_Oranı
+        console.log(Toplam_Tutar_Data)
+
+        $('#Kaydedildiğindeki_Parça_Toplam_Maliyet_Döviz_Kur').val(Toplam_Tutar_Data.o_Günki_Kur)
+        $('#Kaydedildiğindeki_Parça_Toplam_Maliyet_Döviz_Kur').trigger('mask.maskMoney')
+        $('#Kaydedildiğindeki_Parça_Toplam_Maliyet_Döviz_Kur').trigger('blur')
 
 
+        $('#Kaydedildiğindeki_Parça_Toplam_Maliyet_Döviz').val(Toplam_Tutar_Data.parça_Toplam_Maliyeti_Güncel_Kur.toFixed(2))
+        $('#Kaydedildiğindeki_Parça_Toplam_Maliyet_Döviz').trigger('mask.maskMoney')
+        $('#Kaydedildiğindeki_Parça_Toplam_Maliyet_Döviz').trigger('blur')
 
 
 
@@ -2230,6 +2236,20 @@
                             class="form-control text-right" type="text" placeholder="Parça Toplam Maliyet">
                     </div>
                 </div>
+                 <div class="row">
+                    <div class="col-md-6">
+                        <label for="">Kaydedildiğindeki Döviz Birimi :</label>
+                          <input id="Kaydedildiğindeki_Parça_Toplam_Maliyet_Döviz_Kur" data-thousands="" disabled data-decimal=","
+                            data-suffix="" class="form-control text-right" type="text"
+                            placeholder="Parça Toplam Maliyet (döviz)">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="">Kaydedildiğindeki Parça Toplam Maliyet (Seçili Döviz) :</label>
+                        <input id="Kaydedildiğindeki_Parça_Toplam_Maliyet_Döviz" data-thousands="" disabled data-decimal=","
+                            data-suffix="" class="form-control text-right" type="text"
+                            placeholder="Parça Toplam Maliyet (döviz)">
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-md-6">
                         <label for="">Döviz Birimi :</label>
@@ -2246,7 +2266,10 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
-
+                <button type="button" id="Parça_Modal_Dosyalar_Aç_Btn" class="btn btn-primary">
+                    <i class="fa fa-fw fa-upload"></i>
+                    Dosya Yükle
+                </button>
                 <button type="button" id="Parça_Modal_Kaydet_Btn" class="btn btn-primary">
                     <i class="fa fa-fw fa-save"></i>
                     Kaydet

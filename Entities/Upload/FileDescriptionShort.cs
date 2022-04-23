@@ -8,6 +8,8 @@ namespace DataAccess.Model
         public int Id { get; set; }
         public string Description { get; set; }
         public string Name { get; set; }
+        public int Revize_Id { get; set; }
+
         public ICollection<IFormFile> File { get; set; }
     }
 }

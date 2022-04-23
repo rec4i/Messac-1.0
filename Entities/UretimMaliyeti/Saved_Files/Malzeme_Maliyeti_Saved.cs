@@ -34,6 +34,7 @@ namespace KaynakKod.Entities
         public decimal Plaka_Kalınlığı { get; set; }
 
         public decimal Parça_Adeti { get; set; }
+        
         [Column(TypeName = "decimal(18,4)")]
         public decimal Parça_Firesiz_Ağırlığı { get; set; }
 

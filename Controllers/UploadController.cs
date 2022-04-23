@@ -10,7 +10,8 @@ using Microsoft.Net.Http.Headers;
 using WebApi.Entities;
 using FileResult = DataAccess.Model.FileResult;
 using WebApi.Authorization;
-
+using KaynakKod.Entities;
+using WebApi.Helpers;
 
 namespace AspNetCoreFileUploadFileTable.Controllers
 {
@@ -22,24 +23,35 @@ namespace AspNetCoreFileUploadFileTable.Controllers
         private readonly IFileRepository _fileRepository;
         private readonly IOptions<ApplicationConfiguration> _optionsApplicationConfiguration;
 
-        public FileUploadController(IFileRepository fileRepository, IOptions<ApplicationConfiguration> o)
+        private readonly AppSettings _appSettings;
+
+
+
+
+        public FileUploadController(IFileRepository fileRepository, IOptions<ApplicationConfiguration> o, IOptions<AppSettings> appSettings)
         {
             _fileRepository = fileRepository;
             _optionsApplicationConfiguration = o;
+            _appSettings = appSettings.Value;
+
+
         }
 
         [Authorize(Role.Admin)]
         [HttpPost("UploadFiles")]
-        [ServiceFilter(typeof(ValidateMimeMultipartContentFilter))]
-        [RequestFormLimits(MultipartBodyLengthLimit = 209715200)]
+        [DisableRequestSizeLimit]
+        [RequestFormLimits(MultipartBodyLengthLimit = int.MaxValue)]
         public async Task<IActionResult> UploadFiles([FromForm] FileDescriptionShort fileDescriptionShort)
         {
+
+
+
             var names = new List<string>();
             var contentTypes = new List<string>();
+            Guid obj = Guid.NewGuid();
             if (ModelState.IsValid)
             {
-                // http://www.mikesdotnetting.com/article/288/asp-net-5-uploading-files-with-asp-net-mvc-6
-                // http://dotnetthoughts.net/file-upload-in-asp-net-5-and-mvc-6/
+
                 foreach (var file in fileDescriptionShort.File)
                 {
                     if (file.Length > 0)
@@ -49,8 +61,8 @@ namespace AspNetCoreFileUploadFileTable.Controllers
 
                         names.Add(fileName);
 
-                        // Extension method update RC2 has removed this 
-                        await file.SaveAsAsync(Path.Combine(@"C:\Program Files\Microsoft SQL Server\MSSQL14.MSSQLSERVER\MSSQL\DATA\WebApiUploads_Dir_", fileName));
+                        await file.SaveAsAsync(Path.Combine(_appSettings.ServerUploadFolder, obj.ToString()));
+
                     }
                 }
             }
@@ -59,6 +71,8 @@ namespace AspNetCoreFileUploadFileTable.Controllers
             {
                 FileNames = names,
                 ContentTypes = contentTypes,
+                FileGuid = obj.ToString(),
+                Revize_Id = fileDescriptionShort.Revize_Id,
                 Description = fileDescriptionShort.Description,
                 CreatedTimestamp = DateTime.UtcNow,
                 UpdatedTimestamp = DateTime.UtcNow,
@@ -68,16 +82,34 @@ namespace AspNetCoreFileUploadFileTable.Controllers
 
             return Ok(x);
         }
-
-        [Route("Download")]
+        [Authorize(Role.Admin)]
+        [Route("Download/{id}")]
         [HttpGet]
-        public FileStreamResult Download([FromForm] int id)
+        public FileStreamResult Download(int id)
         {
             var fileDescription = _fileRepository.GetFileDescription(id);
 
-            var path = @"C:\Program Files\Microsoft SQL Server\MSSQL14.MSSQLSERVER\MSSQL\DATA\WebApiUploads_Dir_" + "\\" + fileDescription.FileName;
+            var path = _appSettings.ServerUploadFolder + "\\" + fileDescription.FileGuid;
             var stream = new FileStream(path, FileMode.Open);
-            return File(stream, fileDescription.ContentType);
+            return File(stream, fileDescription.ContentType, fileDescription.FileName);
+        }
+        [Authorize(Role.Admin)]
+        [Route("Get_Files_With_Revize_Id")]
+        [HttpPost]
+        public IActionResult Get_Files_With_Revize_Id(Revize id)
+        {
+
+            var temp = _fileRepository.Get_Files_With_Revize_Id(id);
+            return Ok(temp);
+        }
+        [Authorize(Role.Admin)]
+        [Route("Delete_File_By_Id")]
+        [HttpPost]
+        public IActionResult Delete_File_By_Id(Revize id)
+        {
+
+            _fileRepository.Delete_File_By_Id(id);
+            return Ok();
         }
     }
 }

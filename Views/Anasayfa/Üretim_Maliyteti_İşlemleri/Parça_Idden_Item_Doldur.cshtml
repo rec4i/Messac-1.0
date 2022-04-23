@@ -2,6 +2,7 @@
     $(document).ready(function () {
         var Revize_Id = window.location.href.split('?')[1].split('&')[0].split('=')[1]
         $('#Parça_Kaydet_Btn_Modal_Kaydet_Btn').attr('Revize_Id', Revize_Id)
+        $('#Parça_Modal_Dosyalar_Aç_Btn').attr('Revize_Id', Revize_Id)
         console.log(Revize_Id)
         Malzeme_Maliyeti_Varmı(Revize_Id)
         Kesim_Maliyeti_Varmı(Revize_Id)
@@ -257,7 +258,7 @@
 
 
     }
-      function Boya_Satır_Ekle(Data) {
+    function Boya_Satır_Ekle(Data) {
         $("#Boya_Select").attr('son_eklenen_satır', parseInt($("#Boya_Select").attr('son_eklenen_satır')) + 1)
         var row_İndex = $("#Boya_Select").attr('son_eklenen_satır')
 
@@ -1160,6 +1161,8 @@
                 $('#Malzeme_Kesim_Maliyeti').trigger('mask.maskMoney')
 
 
+
+
                 //Malzeme_Kesim_Maliyeti
 
                 //Malzeme_Kesim_Fiyatı_İnput
@@ -1235,9 +1238,9 @@
 
 
 
+                console.log(Malzeme_Maliyet_Data)
 
-
-                $('#Malzeme_Parça_Adeti').val(Malzeme_Maliyet_Data[0].parça_Adeti.toFixed(2))
+                $('#Malzeme_Parça_Adeti').val(Malzeme_Maliyet_Data[0].parça_Adeti)
                 $('#Malzeme_Parça_Adeti').trigger('mask.maskMoney')
 
                 $('#Malzeme_Parça_Firesiz_ağırlığı').val(Malzeme_Maliyet_Data[0].parça_Firesiz_Ağırlığı.toFixed(4))

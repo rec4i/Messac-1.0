@@ -5,6 +5,9 @@ using DataAccess.Model;
 
 namespace DataAccess
 {
+    using System.IO;
+    using System.Threading;
+    using KaynakKod.Entities;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
     using WebApi.Authorization;
@@ -17,6 +20,12 @@ namespace DataAccess
         IEnumerable<FileDescriptionShort> GetAllFiles();
 
         FileDescription GetFileDescription(int id);
+
+        List<FileDescription> Get_Files_With_Revize_Id(Revize id);
+
+        void Delete_File_By_Id(Revize x);
+
+
     }
 
 
@@ -53,6 +62,8 @@ namespace DataAccess
                 {
                     ContentType = fileResult.ContentTypes[i],
                     FileName = shortName,
+                    FileGuid = fileResult.FileGuid,
+                    Revize_Id = fileResult.Revize_Id,
                     CreatedTimestamp = fileResult.CreatedTimestamp,
                     UpdatedTimestamp = fileResult.UpdatedTimestamp,
                     Description = fileResult.Description
@@ -81,6 +92,46 @@ namespace DataAccess
         public FileDescription GetFileDescription(int id)
         {
             return _context.FileDescriptions.Single(t => t.Id == id);
+        }
+
+        public List<FileDescription> Get_Files_With_Revize_Id(Revize y)
+        {
+            var temp = (from x in _context.FileDescriptions
+                        where x.Revize_Id == y.Id
+                        select x
+            );
+
+            return temp.ToList();
+
+        }
+
+        public void Delete_File_By_Id(Revize y)
+        {
+            var temp = (from x in _context.FileDescriptions
+                        where x.Id == y.Id
+                        select x
+            ).FirstOrDefault();
+
+
+            string path = _appSettings.ServerUploadFolder + "\\" + temp.FileGuid;
+
+
+
+            bool isDeleted = false;
+            while (!isDeleted)
+            {
+
+                File.Delete(path);
+                isDeleted = true;
+
+                Thread.Sleep(50);
+            }
+
+            var temp_ = _context.FileDescriptions;
+            var Değer = temp_.FirstOrDefault(o => o.Id == y.Id);
+            _context.FileDescriptions.Remove(Değer);
+            _context.SaveChanges();
+
         }
     }
 }

@@ -7,5 +7,7 @@ namespace WebApi.Helpers
         // refresh token time to live (in days), inactive tokens are
         // automatically deleted from the database after this time
         public int RefreshTokenTTL { get; set; }
+
+        public string ServerUploadFolder { get; set; }
     }
 }
