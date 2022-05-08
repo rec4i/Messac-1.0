@@ -47,7 +47,7 @@
                     '                </div>' +
                     '                <div class="row">' +
                     '                    <div class="col-md-6">' +
-            
+
                     '                    </div>' +
                     '                    <div class="col-md-3">' +
                     '                        <label for="">Malzeme Kesim Süresi(sn):</label>' +
@@ -80,7 +80,7 @@
 
                 var $select = $('#Kesim_Select')
 
-               
+
 
                 //Malzeme_Kesim_Süresi
                 $('#Malzeme_Kesim_Süresi').maskMoney()
@@ -118,11 +118,11 @@
                 })
                 $('#Kesim_Hesabı_Fire_Dahil_Ağırlık_İnput').trigger('mask.maskMoney');
 
-
+                $('#Kesim_Select').val($('#Malzeme_Kesim_Select').find(':selected').attr('value'))
 
 
                 $('#Kesim_Hesabı_Malzeme_Adeti_İnput').val($('#Malzeme_Parça_Adeti').val())
-                $('#Kesim_Hesabı_Malzeme_Adeti_İnput').linkField('#Malzeme_Parça_Adeti','#Kesim_Hesabı_Malzeme_Adeti_İnput')
+                $('#Kesim_Hesabı_Malzeme_Adeti_İnput').linkField('#Malzeme_Parça_Adeti', '#Kesim_Hesabı_Malzeme_Adeti_İnput')
 
                 //
 
@@ -132,19 +132,10 @@
 
 
 
-                $('#Malzeme_Kalınlığı').on('keyup keypress blur change', function () {
-                    $('#Malzeme_Boyu_İnput').val($('#Malzeme_Kalınlığı').maskMoney('unmasked')[0].toFixed(2))
-                    $('#Malzeme_Boyu_İnput').maskMoney()
-                    $('#Malzeme_Boyu_İnput').trigger('mask.maskMoney');
-                    $('#Malzeme_Boyu_İnput').trigger('change');
+                $('#Malzeme_Genişliği_İnput').on('keyup keypress blur change', function () {
 
-
-                    Uygun_Kesimi_Getir($('#Malzeme_Kalınlığı').maskMoney('unmasked')[0].toFixed(2), $('#Kesim_Select').find(':selected').attr('value'), $('#Malzeme_Kesim_Fiyatı_İnput'))
-
-
-                    $('#Büküm_Malzeme_Kilo_Boyu').val($('#Malzeme_Kalınlığı').maskMoney('unmasked')[0].toFixed(2))
-                    $('#Büküm_Malzeme_Kilo_Boyu').trigger('mask.maskMoney');
-                    $('#Büküm_Malzeme_Kilo_Boyu').trigger('change');
+                    console.log("Malzeme_Genişliği_İnput")
+                    Uygun_Kesimi_Getir($('#Malzeme_Genişliği_İnput').maskMoney('unmasked')[0].toFixed(2), $('#Kesim_Select').find(':selected').attr('value'), $('#Malzeme_Kesim_Fiyatı_İnput'))
 
 
                 });
@@ -180,7 +171,6 @@
                         $('#Malzeme_Kesim_Süresi').val(Kesim_Süresi.toFixed(2))
                         $('#Malzeme_Kesim_Süresi').trigger('mask.maskMoney')
                     }
-                    console.log(Kesim_Süresi)
 
                     $('#Malzeme_Kesim_Fiyatı_İnput').trigger('blur')
 
@@ -188,46 +178,18 @@
 
                 })
 
+               
 
                 $('#Kesim_Select').change(function () {
 
-                   
-                    var x = {
-                        Id: $(this).find(':selected').attr('value')
-                    }
-                    $.ajax({
-                        url: 'api/BükümYeni/Büküm_KiloHesabı_Get_By_Id',
-                        type: 'POST',
-                        async: false,
-                        dataType: "json",
-                        global: false,
-                        data: JSON.stringify(x),
-                        contentType: "application/json; charset=utf-8",
-                        success: function (data) {
-                            console.log(data)
 
-                        },
-                        error: function (xhr, status, error) {
-                            if (xhr.status == 200) {
-
-                            }
-                            else {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Talep Esnasında Bir Hata Oluştur',
-                                    text: '' + xhr.status + '   ' + error.Message,
-                                })
-                            }
-
-                        }
-                    })
-
-
-
+                    Kesim_Türü_Select_Doldu($select, $('#Kesim_Select').find(':selected').attr('value'))
 
                 })
 
-                Kesim_Türü_Select_Doldu($select, $('#Kesim_Select').find(':selected').attr('value'))
+
+
+                Kesim_Türü_Select_Doldu($select, $('#Malzeme_Kesim_Select').find(':selected').attr('value'))
 
 
 
@@ -247,11 +209,51 @@
         $('input[id=Kesim_Süresi_Saat_Dakika]').val()
 
     })
+    function Uygun_Kesimi_Getir(Malzeme_Kalınlığı, Kesim_Türü, $Kesim_Maliyet_İnput) {
+
+        var x = {
+            Kesim_mm_Bas: Malzeme_Kalınlığı,
+            Kesim_Türü_Id: Kesim_Türü
+        }
+        $.ajax({
+            url: 'api/Kesim/Kesim_Uygun_Olanı_Getir',
+            type: 'POST',
+            async: false,
+            dataType: "json",
+            global: false,
+            data: JSON.stringify(x),
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                console.log(data)
+                if (data.length > 0) {
+                    $Kesim_Maliyet_İnput.val(data[0].saat_Bası_Ucret.toFixed(2))
+                    $Kesim_Maliyet_İnput.maskMoney()
+                    $Kesim_Maliyet_İnput.trigger('mask.maskMoney');
+                }
+                else {
+                    $Kesim_Maliyet_İnput.val(0)
+                    $Kesim_Maliyet_İnput.maskMoney()
+                    $Kesim_Maliyet_İnput.trigger('mask.maskMoney');
+                }
+
+            },
+            error: function (xhr, status, error) {
+                if (xhr.status == 200) {
+
+                }
+                else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Talep Esnasında Bir Hata Oluştur',
+                        text: '' + xhr.status + '   ' + error.Message,
+                    })
+                }
+
+            }
+        })
+    }
 
     function Bir_Parçanın_Kesim_Suresini_Hesapla(Malzeme_Adet, Kesim_Verimliliği, Kesim_Süresi_Saat_Dakika) {
-        console.log(Kesim_Süresi_Saat_Dakika)
-        console.log(Kesim_Verimliliği)
-        console.log(Malzeme_Adet)
 
         try {
             return (parseFloat(convertDurationtoSeconds(Kesim_Süresi_Saat_Dakika)) * parseFloat(Kesim_Verimliliği)) / (parseFloat(Malzeme_Adet))
@@ -280,13 +282,14 @@
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: function (data) {
-                console.log(data)
                 $select.empty()
                 for (var i = 0; i < data.length; i++) {
-                    $select.append('<option  value="' + data[i].id + '">' + data[i].kesim_Türü_Txt + '</option>')
+                    $select.append('<option  value="' + data[i].id + '" >' + data[i].kesim_Türü_Txt + '</option>')
                 }
                 if (Selected_Option != null) {
                     $select.val(Selected_Option)
+                    Uygun_Kesimi_Getir($('#Malzeme_Genişliği_İnput').maskMoney('unmasked')[0].toFixed(2), $('#Kesim_Select').find(':selected').attr('value'), $('#Malzeme_Kesim_Fiyatı_İnput'))
+
                 }
 
 

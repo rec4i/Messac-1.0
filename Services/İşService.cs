@@ -105,18 +105,11 @@ namespace KaynakKod.Services
         public pagination_Request_Result<İş> İş_Get_The_List(pagenation_request request)
         {
             var temp = (from x in _context.İşs
+                        where x.Is_Deleted==0
                         select x
               ).Skip(Convert.ToInt32(request.offset)).Take(Convert.ToInt32(request.limit)).ToList();
 
 
-            // IEnumerable<İş> rt= temp.Select(o=> new İş{
-            //     Id=o.Id,
-            //     Is_Deleted=o.Is_Deleted,
-            //     İşin_Adı=o.İşin_Adı,
-            //     Olusturlma_Tarihi=o.Olusturlma_Tarihi
-                
-
-            // });
 
 
             var Result = new pagination_Request_Result<İş>

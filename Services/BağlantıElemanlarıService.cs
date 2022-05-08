@@ -83,6 +83,7 @@ namespace KaynakKod.Services
             Değer.Bağlantı_Elemanları_Türü_Id = x.Bağlantı_Elemanları_Türü_Id;
             Değer.Bağlantı_Elemanı_Text = x.Bağlantı_Elemanı_Text;
             Değer.Birim_Fiyat = x.Birim_Fiyat;
+            Değer.İşçilik_Maliyeti=x.İşçilik_Maliyeti;
             _context.SaveChanges();
 
             return Değer;
@@ -97,6 +98,7 @@ namespace KaynakKod.Services
                             x.Bağlantı_Elemanları_Türü_Id,
                             x.Bağlantı_Elemanı_Text,
                             x.Birim_Fiyat,
+                            x.İşçilik_Maliyeti,
                             x.Id
                         }
             );
@@ -106,6 +108,7 @@ namespace KaynakKod.Services
                 Id = o.Id,
                 Bağlantı_Elemanları_Türü_Id = o.Bağlantı_Elemanları_Türü_Id,
                 Bağlantı_Elemanı_Text = o.Bağlantı_Elemanı_Text,
+                İşçilik_Maliyeti=o.İşçilik_Maliyeti,
                 Birim_Fiyat = o.Birim_Fiyat,
                 Bağlantı_Elemanları_Türü = (from x in _context.bağlantı_Elemanları_Türüs
                                             where x.Id == o.Id
@@ -128,6 +131,7 @@ namespace KaynakKod.Services
                             x.Bağlantı_Elemanları_Türü_Id,
                             x.Bağlantı_Elemanı_Text,
                             x.Birim_Fiyat,
+                            x.İşçilik_Maliyeti,
                             x.Id
                         }
            ).FirstOrDefault();
@@ -138,6 +142,7 @@ namespace KaynakKod.Services
                 Id = temp.Id,
                 Bağlantı_Elemanı_Text = temp.Bağlantı_Elemanı_Text,
                 Birim_Fiyat = temp.Birim_Fiyat,
+                İşçilik_Maliyeti=temp.İşçilik_Maliyeti,
                 Bağlantı_Elemanları_Türü_Id = temp.Bağlantı_Elemanları_Türü_Id,
                 Bağlantı_Elemanları_Türü = (from x in _context.bağlantı_Elemanları_Türüs
                                             where x.Id == temp.Bağlantı_Elemanları_Türü_Id
@@ -206,6 +211,7 @@ namespace KaynakKod.Services
                             x.Bağlantı_Elemanları_Türü_Id,
                             x.Bağlantı_Elemanı_Text,
                             x.Birim_Fiyat,
+                            x.İşçilik_Maliyeti,
                             x.Id
                         }
             );
@@ -216,6 +222,7 @@ namespace KaynakKod.Services
                 Bağlantı_Elemanları_Türü_Id = o.Bağlantı_Elemanları_Türü_Id,
                 Bağlantı_Elemanı_Text = o.Bağlantı_Elemanı_Text,
                 Birim_Fiyat = o.Birim_Fiyat,
+                İşçilik_Maliyeti=o.İşçilik_Maliyeti,
                 Bağlantı_Elemanları_Türü = (from x in _context.bağlantı_Elemanları_Türüs
                                             where x.Id == o.Id
                                             select x
@@ -240,6 +247,7 @@ namespace KaynakKod.Services
                              x.Bağlantı_Elemanları_Türü_Id,
                              x.Bağlantı_Elemanı_Text,
                              x.Birim_Fiyat,
+                             x.İşçilik_Maliyeti,
                              x.Id,
                              Bağlantı_Elemanı_Türü
                          }
@@ -250,6 +258,7 @@ namespace KaynakKod.Services
                 Bağlantı_Elemanı_Text = o.Bağlantı_Elemanı_Text,
                 Id = o.Id,
                 Birim_Fiyat = o.Birim_Fiyat,
+                İşçilik_Maliyeti=o.İşçilik_Maliyeti,
                 Bağlantı_Elemanları_Türü_Id = o.Bağlantı_Elemanları_Türü_Id
 
             });

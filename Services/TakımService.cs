@@ -70,7 +70,6 @@ namespace KaynakKod.Services
             var temp = _context.Takıms;
             var Değer = temp.FirstOrDefault(o => o.Id == x.Id);
             Değer.Takım_Adı = x.Takım_Adı;
-            Değer.İş_Id = x.İş_Id;
             _context.SaveChanges();
 
             return Değer;

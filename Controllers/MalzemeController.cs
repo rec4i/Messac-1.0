@@ -120,5 +120,14 @@ namespace KaynakKod.Controllers
             return Ok(a);
         }
 
+        [Authorize(Role.Admin)]
+        [HttpPost("malzeme_Get_By_Tür_Id")]
+        public IActionResult malzeme_Get_By_Tür_Id(Malzeme x)
+        {
+            var a = _IMalzemeService.malzeme_Get_By_Tür_Id(x);
+            return Ok(a);
+        }
+
+
     }
 }

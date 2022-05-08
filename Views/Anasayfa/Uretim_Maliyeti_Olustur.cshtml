@@ -292,44 +292,7 @@
 
 
 
-        function Uygun_Kesimi_Getir(Malzeme_Kalınlığı, Kesim_Türü, $Kesim_Maliyet_İnput) {
-            var x = {
-                Kesim_mm_Bas: Malzeme_Kalınlığı,
-                Kesim_Türü_Id: Kesim_Türü
-            }
-            $.ajax({
-                url: 'api/Kesim/Kesim_Uygun_Olanı_Getir',
-                type: 'POST',
-                async: false,
-                dataType: "json",
-                global: false,
-                data: JSON.stringify(x),
-                contentType: "application/json; charset=utf-8",
-                success: function (data) {
 
-                    if (data.length > 0) {
-                        $Kesim_Maliyet_İnput.val(data[0].saat_Bası_Ucret.toFixed(2))
-                        $Kesim_Maliyet_İnput.maskMoney()
-                        $Kesim_Maliyet_İnput.trigger('mask.maskMoney');
-
-                    }
-
-                },
-                error: function (xhr, status, error) {
-                    if (xhr.status == 200) {
-
-                    }
-                    else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Talep Esnasında Bir Hata Oluştur',
-                            text: '' + xhr.status + '   ' + error.Message,
-                        })
-                    }
-
-                }
-            })
-        }
 
 
 
@@ -424,12 +387,35 @@
 
 
 
-<div class="row ">
+<div class="row">
     <div class="col-md-12">
-        <div class="card ">
+        <div class="card">
             <div class="card-body ">
+                <div class="row" style="padding-top: 25px;">
+                    <div class="col">
+                        <label for="">Revize ID:</label>
+                        <input type="text" class="form-control" disabled id="Revize_ID_İnput">
+                    </div>
+                    <div class="col">
+                        <label for="">iş Adı:</label>
+                        <input type="text" class="form-control" disabled id="iş_Adı_İnput">
+                    </div>
+                    <div class="col">
+                        <label for="">Takım Adı:</label>
+                        <input type="text" class="form-control" disabled id="Takım_Adı_İnput">
+                    </div>
+                    <div class="col">
+                        <label for="">Parça Adı:</label>
+                        <input type="text" class="form-control" disabled id="Parça_Adı_İnput">
+                    </div>
+                    <div class="col">
+                        <label for="">Parça Adeti:</label>
+                        <input type="text" class="form-control" disabled id="Parça_Adeti_İnput">
+                    </div>
+                </div>
                 <div class="row sticky-top">
                     <div class="col-md-12">
+
                         <div class="row" style="padding-top: 25px;">
                             <div class="col">
                                 <button type="button" name="Yapılan_İşlemler" data_Name="Malzeme Maliyeti"

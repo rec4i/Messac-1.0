@@ -49,6 +49,8 @@ namespace KaynakKod.Entities
         public string Bağlantı_Elemanı_Id { get; set; }
         public string Bağlantı_Elemanı_Adı { get; set; }
         public decimal Birim_Fiyat { get; set; }
+
+        public decimal İşçilik_Maliyeti { get; set; }
         public decimal Adet { get; set; }
         public decimal Toplam_Fiyat { get; set; }
 

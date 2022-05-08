@@ -68,7 +68,7 @@
                             return {
                                 results: $.map(data, function (item) {
                                     return {
-                                        text: item.bağlantı_Elemanı_Text,
+                                        text: item.bağlantı_Elemanı_Text + ' - ' + item.bağlantı_Elemanları_Türü.bağlantı_Elemanları_Türü_Text,
                                         id: item.id
                                     }
                                 })
@@ -120,19 +120,23 @@
                     })
                     var Kaynak_Satır = '' +
                         ' <div class="row" name="Bağlantı_Row" style="padding-top: 25px;" row_Id="' + row_İndex + '" >' +
-                        '                                                            <div class="col-md-3">' +
+                        '                                                            <div class="col">' +
                         '                                                                <input type="text" class="form-control" Data_Id="' + Gelen_Data.id + '" id="Bağlantı_Elemanı_Adı_' + row_İndex + '"' +
-                        '                                                                    placeholder="Bağlantı Elemanı" value="' + Gelen_Data.bağlantı_Elemanı_Text + '" disabled>' +
+                        '                                                                    placeholder="Bağlantı Elemanı" value="' + Gelen_Data.bağlantı_Elemanı_Text + " - " + Gelen_Data.bağlantı_Elemanları_Türü.bağlantı_Elemanları_Türü_Text + '" disabled>' +
                         '                                                            </div>' +
-                        '                                                            <div class="col-md-2">' +
+                        '                                                            <div class="col">' +
                         '                                                                <input type="text" class="form-control"' +
                         '                                                                    placeholder="Birim Fiyatı" value="' + Gelen_Data.birim_Fiyat.toFixed(2) + '"  data-thousands="." data-decimal="," data-suffix=" ₺" id="Bağlantı_Elemanı_Birim_Fiyatı_' + row_İndex + '">' +
                         '                                                            </div>' +
-                        '                                                            <div class="col-md-3">' +
+                        '                                                            <div class="col">' +
+                        '                                                                <input type="text" class="form-control"' +
+                        '                                                                    placeholder="İşçilik Maliyeti" value="' + Gelen_Data.İşçilik_Maliyeti.toFixed(2) + '"  data-thousands="." data-decimal="," data-suffix=" ₺" id="Bağlantı_Elemanı_İşçilik_Maliyeti_' + row_İndex + '">' +
+                        '                                                            </div>' +
+                        '                                                            <div class="col">' +
                         '                                                                <input type="text" class="form-control"' +
                         '                                                                    placeholder="Birim Adeti"   data-thousands="" data-decimal="." data-suffix="" id="Bağlantı_Elemanı_Birim_Adeti' + row_İndex + '">' +
                         '                                                            </div>' +
-                        '                                                            <div class="col-md-3">' +
+                        '                                                            <div class="col">' +
                         '                                                                <input type="text" class="form-control"' +
                         '                                                                  data-thousands="." disabled data-decimal="," data-suffix=" ₺"   placeholder="Toplam Fiyat" id="Bağlantı_Elemanı_Satır_Toplamı_' + row_İndex + '">' +
                         '                                                            </div>' +
@@ -155,10 +159,17 @@
                     $('#Bağlantı_Elemanı_Birim_Adeti' + row_İndex).trigger('mask.maskMoney')
 
 
-                    $('#Bağlantı_Elemanı_Birim_Adeti' + row_İndex + ',#Bağlantı_Elemanı_Birim_Fiyatı_' + row_İndex).on('keyup keypress blur change', function () {
+                    $('#Bağlantı_Elemanı_İşçilik_Maliyeti_' + row_İndex).maskMoney()
+                    $('#Bağlantı_Elemanı_İşçilik_Maliyeti_' + row_İndex).trigger('mask.maskMoney')
+
+                    //Bağlantı_Elemanı_İşçilik_Maliyeti_
 
 
-                        var rv = parseFloat($('#Bağlantı_Elemanı_Birim_Adeti' + row_İndex).maskMoney('unmasked')[0].toFixed(2)) * parseFloat($('#Bağlantı_Elemanı_Birim_Fiyatı_' + row_İndex).maskMoney('unmasked')[0].toFixed(2))
+                    $('#Bağlantı_Elemanı_Birim_Adeti' + row_İndex + ',#Bağlantı_Elemanı_Birim_Fiyatı_' + row_İndex+','+'#Bağlantı_Elemanı_İşçilik_Maliyeti_' + row_İndex).on('keyup keypress blur change', function () {
+
+
+                        var rv = parseFloat($('#Bağlantı_Elemanı_Birim_Adeti' + row_İndex).maskMoney('unmasked')[0].toFixed(2)) * 
+                        (parseFloat($('#Bağlantı_Elemanı_Birim_Fiyatı_' + row_İndex).maskMoney('unmasked')[0].toFixed(2))+parseFloat($('#Bağlantı_Elemanı_İşçilik_Maliyeti_' + row_İndex).maskMoney('unmasked')[0].toFixed(2)))
 
                         $('#Bağlantı_Elemanı_Satır_Toplamı_' + row_İndex).val(rv.toFixed(2))
                         $('#Bağlantı_Elemanı_Satır_Toplamı_' + row_İndex).maskMoney()
@@ -176,7 +187,7 @@
             else {
                 $(this).attr('basıldımı', "0")
                 $(this).attr('readonly', "false")
-                 $(this).attr('style', 'background-color:#6c757d;border-color:#6c757d')
+                $(this).attr('style', 'background-color:#6c757d;border-color:#6c757d')
                 $('#Bağlantı_Elemanı_Row').remove()
             }
 

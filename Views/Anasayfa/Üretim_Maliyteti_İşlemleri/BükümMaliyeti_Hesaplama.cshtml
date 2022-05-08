@@ -147,18 +147,18 @@
             '                                                            </select>' +
             '                                                        </div>' +
             '                                                        <div class="col-md-2">' +
-            '                                                            <label for="">Malzeme Eni:</label>' +
-            '                                                            <input id="Büküm_Hesabı_Uzunluğa_Malzeme_Eni" disabled' +
+            '                                                            <label for="">Parça Eni:</label>' +
+            '                                                            <input id="Büküm_Hesabı_Uzunluğa_Malzeme_Eni" ' +
             '                                                                data-thousands="" data-decimal="," data-suffix=" mm"' +
             '                                                                class="form-control " type="text"' +
-            '                                                                placeholder="Malzeme Eni">' +
+            '                                                                placeholder="Parça Eni">' +
             '                                                        </div>' +
             '                                                        <div class="col-md-2">' +
-            '                                                            <label for="">Malzeme Boyu:</label>' +
-            '                                                            <input id="Büküm_Hesabı_Uzunluğa_Malzeme_Genişliği" disabled' +
+            '                                                            <label for="">Parça Boyu:</label>' +
+            '                                                            <input id="Büküm_Hesabı_Uzunluğa_Malzeme_Genişliği" ' +
             '                                                                data-thousands="" data-decimal="," data-suffix=" mm"' +
             '                                                                class="form-control " type="text"' +
-            '                                                                placeholder="Malzeme Boyu">' +
+            '                                                                placeholder="Parça Boyu">' +
             '                                                        </div>' +
             '                                                        <div class="col-md-6">' +
             '                                                            <label for="">Katsayı:</label>' +
@@ -204,8 +204,21 @@
 
         $('#Büküm_Maliyeti_Sırası').append(variable)
 
+
+        $('#Büküm_Hesabı_Malzeme_Ağırlığı_İnput').val($('#Malzeme_Parça_Firesiz_ağırlığı').maskMoney('unmasked')[0].toFixed(4))
+        $('#Büküm_Hesabı_Malzeme_Ağırlığı_İnput').maskMoney({
+            precision: 4
+        })
+        $('#Büküm_Hesabı_Malzeme_Ağırlığı_İnput').trigger('mask.maskMoney');
+        //Ugun_Kilo_KatSayısı_Getir(Malzeme_Ağırlığı).katSayı.toFixed(2)
+
+
+        $('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Katsayı').val(Ugun_Kilo_KatSayısı_Getir($('#Malzeme_Parça_Firesiz_ağırlığı').maskMoney('unmasked')[0].toFixed(4)).katSayı.toFixed(2))
         $('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Katsayı').maskMoney()
         $('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Katsayı').trigger('mask.maskMoney');
+
+
+
 
 
 
@@ -219,6 +232,10 @@
             $('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Büküm_Maliyeti').trigger('mask.maskMoney');
 
         })
+
+
+        //Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Katsayı
+
 
         $('#Büküm_Yeni_Adeti_İnput').maskMoney({
             precision: 0
@@ -258,6 +275,11 @@
 
                         getUzunlukZorluk(data.id)
                     }
+                    else {
+                        $('#Büküm_Hesabı_Uzunluğa_Malzeme_Katayısı').val("Uygun Katsayı Bulunamadı")
+                        $('#Malzeme_Büküm_Uzunluk_Zorluk_Hesabı').append('<option >Uygun Zorluk Bulunamadı</option>')
+
+                    }
 
 
                 },
@@ -280,6 +302,26 @@
         }, 100); //Wait seconds after he stops
 
 
+
+
+        try {
+
+            $('#Büküm_Hesabı_Uzunluğa_Malzeme_Eni').val($('#Malzeme_Eni_İnput').maskMoney('unmasked')[0].toFixed(2))
+            $('#Büküm_Hesabı_Uzunluğa_Malzeme_Eni').maskMoney()
+            $('#Büküm_Hesabı_Uzunluğa_Malzeme_Eni').trigger('mask.maskMoney')
+            //Malzeme_Eni_İnput
+            //Büküm_Hesabı_Uzunluğa_Malzeme_Eni
+
+
+            $('#Büküm_Hesabı_Uzunluğa_Malzeme_Genişliği').val($('#Malzeme_Boyu_İnput').maskMoney('unmasked')[0].toFixed(2))
+            $('#Büküm_Hesabı_Uzunluğa_Malzeme_Genişliği').maskMoney()
+            $('#Büküm_Hesabı_Uzunluğa_Malzeme_Genişliği').trigger('mask.maskMoney')
+            //Malzeme_Boyu_İnput
+            //Büküm_Hesabı_Uzunluğa_Malzeme_Genişliği
+        }
+        catch (err) {
+
+        }
 
 
         Malzeme_Uzunuğuna_Göre_Katsayı_Getir()
@@ -460,6 +502,8 @@
 
         })
 
+        $('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Katsayı').trigger('blur')
+
 
 
 
@@ -495,11 +539,17 @@
                 $('#Büküm_Hesabı_Uzunluğa_Malzeme_Zorluk_Katayısı').val(data[0].zorluk_Katsayısı.toFixed(2))
                 $('#Büküm_Hesabı_Uzunluğa_Malzeme_Zorluk_Katayısı').maskMoney()
                 $('#Büküm_Hesabı_Uzunluğa_Malzeme_Zorluk_Katayısı').trigger('mask.maskMoney')
-                for (var i = 0; i < data.length; i++) {
+                if (data.length > 0) {
+                    for (var i = 0; i < data.length; i++) {
 
-                    $('#Malzeme_Büküm_Uzunluk_Zorluk_Hesabı').append('<option zorluk_Katsayısı="' + data[i].zorluk_Katsayısı + '" value="' + data[i].id + '">' + data[i].zorluk_Adı + '</option>')
+                        $('#Malzeme_Büküm_Uzunluk_Zorluk_Hesabı').append('<option zorluk_Katsayısı="' + data[i].zorluk_Katsayısı + '" value="' + data[i].id + '">' + data[i].zorluk_Adı + '</option>')
 
+                    }
                 }
+                else {
+                    $('#Malzeme_Büküm_Uzunluk_Zorluk_Hesabı').append('<option zorluk_Katsayısı="' + data[i].zorluk_Katsayısı + '" value="' + data[i].id + '">Uygun Zorluk Bulunamadı</option>')
+                }
+
 
 
             },

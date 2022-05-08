@@ -438,52 +438,7 @@
 
 
 
-        $('#Malzeme_Türü_adı_Kaydet').click(function () {
-            var Gönderilsinmi = 1;
-
-            if ($('#Malzeme_Türü_adı_İnput').val() == "") {
-                Gönderilsinmi = 0;
-                $('#Malzeme_Türü_adı_İnput').attr('class', 'form-control is-invalid')
-            }
-            else {
-                Gönderilsinmi = 1;
-                $('#Malzeme_Türü_adı_İnput').attr('class', 'form-control')
-            }
-            var x = {
-                Malzeme_Genel_Adı_Txt: $('#Malzeme_Türü_adı_İnput').val()
-            }
-            if (Gönderilsinmi == 1) {
-                $.ajax({
-                    url: 'api/Malzeme/malzeme_Genel_Adı_Add',
-                    type: 'POST',
-                    async: false,
-                    dataType: "json",
-                    data: JSON.stringify(x),
-                    contentType: "application/json; charset=utf-8",
-                    success: function (data) {
-                        $('#Malzeme_Türü_adı_İnput').val("")
-                        //Malzeme_Türü_Select
-                        malzeme_Türü_Select_Durdur()
-
-                    },
-                    error: function (xhr, status, error) {
-                        if (xhr.status == 200) {
-
-                        }
-                        else {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Talep Esnasında Bir Hata Oluştur',
-                                text: '' + xhr.status + '   ' + error.Message,
-                            })
-                        }
-
-                    }
-                })
-            }
-
-
-        })
+       
         Malzeme_Kesim_Türü_Select_Doldur()
         function Malzeme_Kesim_Türü_Select_Doldur() {
             $.ajax({
@@ -500,7 +455,7 @@
                         $('#Malzeme_Kesim_Türü_Select').append('<option value="' + data[i].id + '">' + data[i].kesim_Türü_Txt + '</option>')
                     }
 
-                     $('#Malzeme_Kesim_Türü_Select_Düzenle').empty()
+                    $('#Malzeme_Kesim_Türü_Select_Düzenle').empty()
                     for (var i = 0; i < data.length; i++) {
                         $('#Malzeme_Kesim_Türü_Select_Düzenle').append('<option value="' + data[i].id + '">' + data[i].kesim_Türü_Txt + '</option>')
                     }
@@ -525,222 +480,11 @@
 
         }
         malzeme_Türü_Select_Durdur()
-        function malzeme_Türü_Select_Durdur() {
-            $.ajax({
-                url: 'api/Malzeme/malzeme_Genel_Adı_Get_All',
-                type: 'POST',
-                async: false,
-                dataType: "json",
-                contentType: "application/json; charset=utf-8",
-                success: function (data) {
-
-                    //Malzeme_Türü_Select
-                    $('#Malzeme_Türü_Select').empty()
-                    for (var i = 0; i < data.length; i++) {
-                        $('#Malzeme_Türü_Select').append('<option value="' + data[i].id + '">' + data[i].malzeme_Genel_Adı_Txt + '</option>')
-                    }
-
-                    $('#Malzeme_Türü_Select_Düzenle').empty()
-                    for (var i = 0; i < data.length; i++) {
-                        $('#Malzeme_Türü_Select_Düzenle').append('<option value="' + data[i].id + '">' + data[i].malzeme_Genel_Adı_Txt + '</option>')
-                    }
-
-                     $('#Malzeme_Genel_Adı_Kilo_Select').empty()
-                    for (var i = 0; i < data.length; i++) {
-                        $('#Malzeme_Genel_Adı_Kilo_Select').append('<option value="' + data[i].id + '">' + data[i].malzeme_Genel_Adı_Txt + '</option>')
-                    }
+        
 
 
-                },
-                error: function (xhr, status, error) {
-                    if (xhr.status == 200) {
-
-                    }
-                    else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Talep Esnasında Bir Hata Oluştur',
-                            text: '' + xhr.status + '   ' + error.Message,
-                        })
-                    }
-
-                }
-            })
-
-        }
-
-
-        var $table = $('#table')
-        buildTable($table, 0, 0, 0)
-        function buildTable($el, cells, rows, Hasta_Id) {
-
-
-
-            $el.bootstrapTable('destroy');
-
-            var i; var j; var row
-            var columns = [];
-            var data__ = [];
-            columns.push({
-                field: 'Malzeme_Adı',
-                title: 'Malzeme Adı',
-                sortable: true
-            })
-            columns.push({
-                field: 'Fiyatı',
-                title: 'Fiyatı',
-                sortable: true
-            })
-            columns.push({
-                field: 'ID',
-                title: 'ID',
-                sortable: true
-            })
-            columns.push({
-                field: 'Özgül_Ağırlık',
-                title: 'Özgül Ağırlık',
-                sortable: true
-            })
-            columns.push({
-                field: 'Kesim_Türü',
-                title: 'Kesim Türü',
-                values: 'asd',
-                sortable: true
-            })
-            columns.push({
-                field: 'Sil',
-                title: 'Sil',
-            })
-             columns.push({
-                field: 'Düzenle',
-                title: 'Düzenle',
-            })
-            $.ajax({
-                url: 'api/Malzeme/Malzeme_Get_All',
-                type: 'POST',
-                async: false,
-                dataType: "json",
-
-                contentType: "application/json; charset=utf-8",
-                success: function (data) {
-
-                    var temp = data
-
-
-                    for (i = 0; i < temp.length; i++) {
-                        row = {}
-
-                        row['Count'] = i
-                        row['ID'] = temp[i].id
-                        row['Malzeme_Adı'] = temp[i].malzeme_Cinsi
-                        row['Fiyatı'] = temp[i].fiyat
-                        row['Özgül_Ağırlık'] = temp[i].özgül_Ağırlık
-                        row['Kesim_Türü'] = temp[i].kesim_Türü.kesim_Türü_Txt
-
-                        row['Sil'] = '<button class="btn btn-danger" Malzeme_Id="'+temp[i].id+'"  id="Malzeme_Sil"><i class="fa fa-trash"></i></button>'
-                        row['Düzenle'] = '<button class="btn btn-block btn-warning" Malzeme_Id="'+temp[i].id+'" id="Malzeme_Düzenle">Düzenle</button>'
-
-                        //Düzenle
-                        data__.push(row)
-                    }
-                },
-                error: function () {
-                    alert('Talep esnasında sorun oluştu.Yeniden deneyin');
-                }
-            });
-
-
-
-            $el.bootstrapTable({
-                columns: columns,
-                data: data__,
-                detailView: cells >= 1,
-                onExpandRow: function (index, row, $detail) {
-                    expandTable($detail, cells - 0.5, row)
-                },
-
-            })
-            $el.bootstrapTable('hideColumn', 'ID')
-
-            $('#Malzeme_Sil').click(function(){
-                var x ={
-                    id:$(this).attr('Malzeme_Id')
-                }
-                 $.ajax({
-                    url: 'api/Malzeme/malzeme_Delete',
-                    type: 'POST',
-                    async: false,
-                    dataType: "json",
-                    data: JSON.stringify(x),
-                    contentType: "application/json; charset=utf-8",
-                    success: function (data) {
-                        var $table = $('#table')
-                        buildTable($table, 0, 0, 0)
-
-
-                    },
-                    error: function (xhr, status, error) {
-                        if (xhr.status == 200) {
-
-                        }
-                        else {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Talep Esnasında Bir Hata Oluştur',
-                                text: '' + xhr.status + '   ' + error.Message,
-                            })
-                        }
-
-                    }
-                })
-
-
-            })
-
-            $('#Malzeme_Düzenle').click(function(){
-                $('#Parametre_Modal').modal('toggle')
-                $('#Malzeme_Düzenle_Modal').modal('show')
-                $('#Malzeme_Düzenle_Kaydet_button').attr('Malzeme_Id',$(this).attr('Malzeme_Id'))
-                var x ={
-                    id:$(this).attr('Malzeme_Id')
-                }
-
-                 $.ajax({
-                    url: 'api/Malzeme/malzeme_Get_By_Id',
-                    type: 'POST',
-                    async: false,
-                    dataType: "json",
-                    data: JSON.stringify(x),
-                    contentType: "application/json; charset=utf-8",
-                    success: function (data) {
-                        $('#Malzeme_Türü_Select_Düzenle').val(data.Malzeme_Genel_AdıId)
-                        $('#Malzeme_Türü_Select_Düzenle').val(data.malzeme_Genel_AdıId.id)
-                        $('#Malzeme_Cinsi_adı_İnput_Düzenle').val(data.malzeme_Cinsi)
-                        $('#Malzeme_Fiyatı_İnput_Düzenle').val(data.fiyat.toFixed(2))
-                        $('#Malzeme_Özgül_Ağırlık_İnput_Düzenle').val(data.özgül_Ağırlık.toFixed(2))
-
-                    },
-                    error: function (xhr, status, error) {
-                        if (xhr.status == 200) {
-
-                        }
-                        else {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Talep Esnasında Bir Hata Oluştur',
-                                text: '' + xhr.status + '   ' + error.Message,
-                            })
-                        }
-
-                    }
-                })
-
-
-
-            })
-
-
-        }
+        //var $table = $('#table')
+       
 
         $('#Malzeme_Düzenle_Kaydet_button').click(function(){
              var x = {
@@ -820,12 +564,12 @@
                     contentType: "application/json; charset=utf-8",
                     success: function (data) {
 
-                        var $table = $('#table')
-                        buildTable($table, 0, 0, 0)
-
-                         $('#Parametre_Modal').modal('show')
-                         $('#Malzeme_Düzenle_Modal').modal('hide')
-
+                        Malzeme_Tablo_Doldur($('#Malzemeler_Table_' +$('#Malzeme_Düzenle_Kaydet_button').attr('Eski_Malzeme_Türü')), 0, 0,$('#Malzeme_Düzenle_Kaydet_button').attr('Eski_Malzeme_Türü'))
+                        Malzeme_Tablo_Doldur($('#Malzemeler_Table_' +$('#Malzeme_Türü_Select_Düzenle').find('option:selected').attr('value'),), 0, 0,$('#Malzeme_Türü_Select_Düzenle').find('option:selected').attr('value'),)
+                       
+                       
+                        $('#Parametre_Modal').modal('show')
+                        $('#Malzeme_Düzenle_Modal').modal('hide')
 
                     },
                     error: function (xhr, status, error) {
@@ -2428,7 +2172,6 @@
 
                     var temp = data
 
-                    console.log(data)
                     for (i = 0; i < temp.length; i++) {
                         row = {}
                          var Fiyatı = '' + 
@@ -2463,7 +2206,6 @@
                 columns: columns,
                 data: data__,
                 onPostBody:function(data){
-                        console.log(data)
                         $('#Kaynak_Maliyet_Tablo_İnput').maskMoney();
                         $('#Kaynak_Maliyet_Tablo_İnput').trigger('mask.maskMoney');
                         $('#Kaynak_Maliyet_Tablo_İnput').attr("disabled",'true');
@@ -2473,7 +2215,6 @@
             })
        
             $('button[id=Kayak_Sil_Btn]').click(function(){
-                console.log("sdadsa")
                 Swal.fire({
                 title: 'Silmek İstediğinizden Eminmisiniz ?',
                 icon: 'warning',
@@ -3051,7 +2792,6 @@
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
                     $('#Bağlantı_Elemanları_Div').empty()
-                    console.log("asdasdoopppğğğsğğs")
                     for(var i = 0; i<data.length;i++){
                         var Bağlantı_Elemanı_Türü_Sil_Düzenle_Buttons = '<div class="row" style="padding-top:25px">' +
                             '                        <div class="col-md-8"></div>' +
@@ -3064,17 +2804,24 @@
                             '                    </div>';
                         var Ekleme_Buttons = '' + 
                         '<div class="row">' + 
-                        '                                    <div class="col-md-5"  >' + 
+                        '                                    <div class="col"  >' + 
                         '                                        <div class="form-group">' + 
                         '                                            <input id="Bağlantı_Elemanı_Text_'+data[i].id+'" class="form-control form-control" type="text"' + 
                         '                                                   placeholder="Bağlantı Elemanı">' + 
                         '                                        </div>' + 
                         '                                    </div>' + 
-                        '                                    <div class="col-md-5">' + 
+                        '                                    <div class="col">' + 
                         '                                        <div class="form-group">' + 
                         '                                                        <input id="Bağlantı_Elemanı_Birim_Fiyat_'+data[i].id+'" data-thousands="." data-decimal=","' + 
                         '                                                        data-suffix=" ₺" class="form-control form-control" type="text"' + 
                         '                                                        placeholder="Birim Fiyatı">' + 
+                        '                                        </div>' + 
+                        '                                    </div>' + 
+                        '                                    <div class="col">' + 
+                        '                                        <div class="form-group">' + 
+                        '                                                        <input id="Bağlantı_Elemanı_İşçilik_Maliyeti_'+data[i].id+'" data-thousands="." data-decimal=","' + 
+                        '                                                        data-suffix=" ₺" class="form-control form-control" type="text"' + 
+                        '                                                        placeholder="İşçilik Maliyeti">' + 
                         '                                        </div>' + 
                         '                                    </div>' + 
                         '                                    <div class="col-md-2">' + 
@@ -3160,18 +2907,19 @@
                         Bağlantı_Elemanları_Tablo_Doldur($Kaynak_Table, 0,0,data[i].id)
 
                         $('#Bağlantı_Elemanı_Birim_Fiyat_'+data[i].id).maskMoney();
+                        $('#Bağlantı_Elemanı_İşçilik_Maliyeti_'+data[i].id).maskMoney();
+
 
                         $('#Bağlantı_Elemanı_Ekle_Btn').once('click',function(){
-                            console.log($(this).attr('Bağlantı_Türü_Id'))
                             var Bağlantı_Türü_Id=$(this).attr('Bağlantı_Türü_Id')
 
                             var x = {
                                 Bağlantı_Elemanı_Text:$('#Bağlantı_Elemanı_Text_'+Bağlantı_Türü_Id).val(),
                                 Bağlantı_Elemanları_Türü_Id:Bağlantı_Türü_Id,
-                                Birim_Fiyat:$('#Bağlantı_Elemanı_Birim_Fiyat_'+Bağlantı_Türü_Id).maskMoney('unmasked')[0].toFixed(2)
+                                Birim_Fiyat:$('#Bağlantı_Elemanı_Birim_Fiyat_'+Bağlantı_Türü_Id).maskMoney('unmasked')[0].toFixed(2),
+                                İşçilik_Maliyeti:$('#Bağlantı_Elemanı_İşçilik_Maliyeti_'+Bağlantı_Türü_Id).maskMoney('unmasked')[0].toFixed(2)
                             }
 
-                            console.log(x)
 
             
                             var Gönderilsinmi=1;
@@ -3182,6 +2930,14 @@
                             else {
                                 Gönderilsinmi = 1;
                                 $('#Bağlantı_Elemanı_Text_'+Bağlantı_Türü_Id).attr('class', 'form-control')
+                            }
+                            if (x.İşçilik_Maliyeti == "") {
+                                Gönderilsinmi = 0;
+                                $('#Bağlantı_Elemanı_İşçilik_Maliyeti_'+Bağlantı_Türü_Id).attr('class', 'form-control is-invalid')
+                            }
+                            else {
+                                Gönderilsinmi = 1;
+                                $('#Bağlantı_Elemanı_İşçilik_Maliyeti_'+Bağlantı_Türü_Id).attr('class', 'form-control')
                             }
 
                             if (x.Bağlantı_Elemanları_Türü_Id == "") {
@@ -3273,13 +3029,18 @@
             })
             columns.push({
                 field: 'Bağlantı_Elemanı_Text',
-                title: 'Kaynak Türü',
+                title: 'Bağlantı Elemanı Adı',
                 sortable: true
             })
            
             columns.push({
                 field: 'Birim_Maliyet',
-                title: 'Birim',
+                title: 'Birim Maliyet',
+                sortable: true
+            })
+             columns.push({
+                field: 'İşçilik_Maliyeti',
+                title: 'İşçilik_Maliyeti',
                 sortable: true
             })
             columns.push({
@@ -3305,7 +3066,6 @@
 
                     var temp = data
 
-                    console.log(data)
                     for (i = 0; i < temp.length; i++) {
                         row = {}
                         var Fiyatı = '' + 
@@ -3314,15 +3074,22 @@
                         '                                                      />' + 
                         '';
                        
+                        var İşçilik_Maliyeti = '' + 
+                        '<input   id="Bağlantı_Elemanı_İşçilik_Maliyet_Masked" class="form-control" data-thousands="." data-decimal=","' + 
+                        '                                           value="'+temp[i].İşçilik_Maliyeti.toFixed(2)+'"         data-suffix=" ₺" type="text"' + 
+                        '                                                      />' + 
+                        '';
                      
             
 
                         row['ID'] = temp[i].id
                         row['Bağlantı_Elemanı_Text'] = temp[i].bağlantı_Elemanı_Text
+                        row['İşçilik_Maliyeti'] = İşçilik_Maliyeti
+
                         row['Birim_Maliyet'] = Fiyatı
                         row['Sil'] = '<button class="btn btn-danger"  Bağlantı_Id="'+temp[i].id+'"  id="Bağlantı_Sil"><i class="fa fa-trash"></i></button>'
                         row['Düzenle'] = '<button class="btn btn-block btn-warning" Bağlantı_Türü_Id="'+data[i].bağlantı_Elemanları_Türü_Id+'" Bağlantı_Id="'+temp[i].id+'" id="Bağlantı_Düzenle">Düzenle</button>'  
-
+                        //İşçilik_Maliyeti
                         data__.push(row)
 
 
@@ -3339,17 +3106,19 @@
                 columns: columns,
                 data: data__,
                 onPostBody:function(data){
-                        console.log(data)
                         $('#Bağlantı_Elemanı_Birim_Maliyet_Masked').maskMoney();
                         $('#Bağlantı_Elemanı_Birim_Maliyet_Masked').trigger('mask.maskMoney');
                         $('#Bağlantı_Elemanı_Birim_Maliyet_Masked').attr("disabled",'true');
+
+                         $('#Bağlantı_Elemanı_İşçilik_Maliyet_Masked').maskMoney();
+                        $('#Bağlantı_Elemanı_İşçilik_Maliyet_Masked').trigger('mask.maskMoney');
+                        $('#Bağlantı_Elemanı_İşçilik_Maliyet_Masked').attr("disabled",'true');
 
                 }
 
             })
        
             $('button[id=Bağlantı_Sil]').click(function(){
-                console.log("sdadsa")
                 Swal.fire({
                 title: 'Silmek İstediğinizden Eminmisiniz ?',
                 icon: 'warning',
@@ -3437,7 +3206,6 @@
 
 
 
-            console.log($(this).attr('Bağlantı_Id'))
             var x ={
                 id:$(this).attr('Bağlantı_Id'),
                 Bağlantı_Elemanı_Text:$('#Bağlantı_Elemanı_Adı_İnput_Düzenle').val(),
@@ -3498,7 +3266,6 @@
         })
 
         $('#Bağlantı_Elemanı_Türü_Düzenle_Kaydet_Button').click(function(){
-            console.log($(this).attr('bağlantı_türü_id'))
             var x ={
                 id:$(this).attr('bağlantı_türü_id'),
                 Bağlantı_Elemanları_Türü_Text:$('#Bağlantı_Elemanı_Türü_Adı_İnput_Düzenle').val(),
@@ -3621,7 +3388,6 @@
         Kaplama_Build_Table($table,0,0)
         function Kaplama_Build_Table($el, cells, rows) {
             
-            console.log("KaplamaBuildTablessssss")
 
             $el.bootstrapTable('destroy');
            
@@ -3669,7 +3435,6 @@
 
                     var temp = data
 
-                    console.log(data)
                     for (i = 0; i < temp.length; i++) {
                         row = {}
                         var Fiyatı = '' + 
@@ -3704,7 +3469,6 @@
                 columns: columns,
                 data: data__,
                 onPostBody:function(data){
-                        console.log(data)
                         $('#Kaplama_Birim_Maliyet_İnput_Mask').maskMoney();
                         $('#Kaplama_Birim_Maliyet_İnput_Mask').trigger('mask.maskMoney');
                         $('#Kaplama_Birim_Maliyet_İnput_Mask').attr("disabled",'true');
@@ -3714,7 +3478,6 @@
             })
        
             $('button[id=Kaplama_Sil]').click(function(){
-                console.log("sdadsa")
                 Swal.fire({
                 title: 'Silmek İstediğinizden Eminmisiniz ?',
                 icon: 'warning',
@@ -3969,8 +3732,6 @@
                 success: function (data) {
 
                     var temp = data
-                    console.log("Dısoperasyon birim ")
-                    console.log(data)
                     for (i = 0; i < temp.length; i++) {
                         row = {}
                         var Fiyatı = '' + 
@@ -4005,7 +3766,6 @@
                 columns: columns,
                 data: data__,
                 onPostBody:function(data){
-                        console.log(data)
                         $('#Operasyon_Maliyet_İnput_Mask').maskMoney();
                         $('#Operasyon_Maliyet_İnput_Mask').trigger('mask.maskMoney');
                         $('#Operasyon_Maliyet_İnput_Mask').attr("disabled",'true');
@@ -4015,7 +3775,6 @@
             })
        
             $('button[id=Dıs_Operasyon_Sil]').click(function(){
-                console.log("sdadsa")
                 Swal.fire({
                 title: 'Silmek İstediğinizden Eminmisiniz ?',
                 icon: 'warning',
@@ -4096,7 +3855,6 @@
         })
         $('#Dıs_Operasyon_Düzenle_Kaydet_Btn').click(function(){
 
-            console.log($(this).attr('Operasyon_ıd'))
 
             var x ={
                 id:$(this).attr('Operasyon_ıd'),
@@ -4891,120 +4649,10 @@
                 </button>
             </div>
             <div class="modal-body">
-                
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="card card-danger collapsed-card">
-                            <div class="card-header">
-                                <h3 class="card-title">Malzemeler</h3>
-                                <div class="card-tools">
-                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                        <i class="fas fa-plus"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <label for="">Malzeme Türü:</label>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-8">
-                                        <select class="form-control" id="Malzeme_Türü_Select">
-                                        </select>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <button type="button" id="Malzeme_Türü_adı_Ekle" Basıldımı="0"
-                                                class="btn btn-secondary btn-block">
-                                            Malzeme Türü Ekle
-                                        </button>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <button type="button" id="Yeni_Malzeme_Ekle" Basıldımı="0"
-                                                class="btn btn-secondary btn-block">
-                                            Yeni Malzeme Ekle
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="row" style="padding-top: 25px;" hidden id="Malzeme_Türü_Row">
-                                    <div class="col-md-10">
-                                        <div class="form-group">
-                                            <input id="Malzeme_Türü_adı_İnput" class="form-control form-control"
-                                                   type="text" placeholder="Mazleme Türü">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <button type="button" id="Malzeme_Türü_adı_Kaydet" İşlem="0"
-                                                class="btn btn-primary btn-block">
-                                            EKLE
-                                        </button>
-                                    </div>
-                                </div>
-                                <div id="Malzeme_Cinsi_Ekle_Div" style="padding-top: 25px;" hidden>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label for="">Malzeme Cinsi:</label>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="">Malzeme Fiyatı:</label>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <input id="Malzeme_Cinsi_adı_İnput" class="form-control form-control"
-                                                   type="text" placeholder="Mazleme Cinsi">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <input id="Malzeme_Fiyatı_İnput" data-suffix=" ₺"
-                                                   class="form-control form-control" type="text"
-                                                   placeholder="Mazleme Fiyatı">
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label for="">Özgül Ağırlığı:</label>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="">Malzeme Kesim Türü:</label>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <input id="Malzeme_Özgül_Ağırlık_İnput" data-thousands="" data-decimal=","
-                                                   data-suffix="  kg/m³" class="form-control form-control" type="text"
-                                                   placeholder="Mazleme Özgül Ağırlığı">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <select class="form-control" id="Malzeme_Kesim_Türü_Select">
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="row" style="padding-top:25px">
-                                        <div class="col-md-10"></div>
-                                        <div class="col-md-2">
-                                            <button type="button" id="Malzeme_Ekle_Kaydet" İşlem="0"
-                                                    class="btn btn-primary btn-block">
-                                                Kaydet
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row" style="padding-top: 25px;">
-                                    <div class="col-md-12">
-                                        <table id="table" data-detail-view="true"
-                                               data-classes="table table-bordered table-hover table-striped"></table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
+                @Html.Partial("Ayarlar/Malzeme_Ayarları")
                 @Html.Partial("Ayarlar/Kesim_Ayarları")
                 @Html.Partial("Ayarlar/Tesfiye_Ayarları")
-            @Html.Partial("Ayarlar/Paketleme_Ayarları")
+                @Html.Partial("Ayarlar/Paketleme_Ayarları")
                 @Html.Partial("Ayarlar/Boya_Ayarları")
                 @Html.Partial("Üretim_Maliyteti_İşlemleri/Bükümİslemler")
              

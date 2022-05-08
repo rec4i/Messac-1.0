@@ -1,0 +1,73 @@
+<script>
+    $(document).ready(function () {
+        $('#Takım_Düzenle_Kaydet_Button').click(function () {
+            var x = {
+                Id: $(this).attr('value'),
+                Takım_Adı: $('#Takımin_Adı_İnput_Düzenle').val()
+            }
+            $.ajax({
+                url: 'api/Takım/Takım_Edit',
+                type: 'POST',
+                async: false,
+                dataType: "json",
+                data: JSON.stringify(x),
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    $('#Takımin_Adı_İnput_Düzenle').val(data.Takımin_Adı)
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'İşlem Başarı ile Kaydedildi',
+                    })
+                    var İş_Tablosu = $('#İş_Table')
+                    İş_Tablosu_Build(İş_Tablosu, 1, 1)
+                },
+                error: function (xhr, status, error, title) {
+                    if (xhr.status == 200) {
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Talep Esnasında Bir Hata Oluştur',
+                            text: 'Hata Kodu:' + xhr.status + '  Hata İçeriği: ' + title,
+                        })
+                    }
+
+                }
+            });
+
+        })
+
+
+    })
+
+
+</script>
+
+<div class="modal fade" id="Takım_Düzenle_Modal" tabindex="-100" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="Malzeme_Bilgisi_Dosya_Ekle_Modal_Header">Evrak Maliyeti</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <label for="">Takımin Adı:</label>
+                        <input id="Takımin_Adı_İnput_Düzenle" class="form-control " type="text"
+                            placeholder="Takımin Adı">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+                <button type="button" class="btn btn-primary" id="Takım_Düzenle_Kaydet_Button"
+                    data-dismiss="modal">Kaydet</button>
+            </div>
+        </div>
+    </div>
+</div>

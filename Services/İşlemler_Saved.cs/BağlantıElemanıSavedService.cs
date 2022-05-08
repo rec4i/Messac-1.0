@@ -192,7 +192,7 @@ namespace qrmenu.Services
             Değer.Bağlantı_Elemanı_Saved_Id = x.Bağlantı_Elemanı_Saved_Id;
             Değer.Birim_Fiyat = x.Birim_Fiyat;
             Değer.Toplam_Fiyat = x.Toplam_Fiyat;
-
+            
             _context.SaveChanges();
 
             return Değer;

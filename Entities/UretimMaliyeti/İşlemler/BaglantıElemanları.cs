@@ -9,6 +9,7 @@ namespace KaynakKod.Entities.UretimMaliyeti.İşlemler
         public int Id { get; set; }
         public string Bağlantı_Elemanı_Text { get; set; }
         public decimal Birim_Fiyat { get; set; }
+        public decimal İşçilik_Maliyeti { get; set; }
         public int Bağlantı_Elemanları_Türü_Id { get; set; }
 
         [DefaultValue(0)]
@@ -21,6 +22,8 @@ namespace KaynakKod.Entities.UretimMaliyeti.İşlemler
         public int Id { get; set; }
         public string Bağlantı_Elemanı_Text { get; set; }
         public decimal Birim_Fiyat { get; set; }
+        public decimal İşçilik_Maliyeti { get; set; }
+
 
         public int Bağlantı_Elemanları_Türü_Id { get; set; }
 

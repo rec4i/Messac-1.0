@@ -38,7 +38,9 @@
                         'İşin_Adı': temp.rows[i].İşin_Adı,
                         'oluşturlma_Tar': getFormattedDate(temp.rows[i].olusturlma_Tarihi),
                         'son_Düzenleme_Tar': temp.rows[i].son_Düzenleme_Tar,
-                        'Düzenle': '<button class="btn btn-warning btn-sm" value="' + temp.rows[i].id + '" id="Düzenle" style="word-break: keep-all;"><i class="fa fa-file-text "></i> Düzenle</button>'
+                        'Düzenle': '<button class="btn btn-warning btn-sm" value="' + temp.rows[i].id + '" id="İşi_Düzenle" style="word-break: keep-all;"><i class="fa fa-file-text "></i> Düzenle</button>',
+                        'Sil': '<button class="btn btn-danger btn-sm" value="' + temp.rows[i].id + '" id="İşi_Sil" style="word-break: keep-all;"><i class="fa fa-trash "></i></button>'
+
                     }
                     rows.push(x)
 
@@ -61,56 +63,6 @@
         var İş_Tablosu = $('#İş_Table')
         İş_Tablosu_Build(İş_Tablosu, 1, 1)
 
-        function İş_Tablosu_Build($el, cells, rows) {
-
-
-            var i; var j; var row
-            var columns = [];
-            var data__ = [];
-
-            columns.push({
-                field: 'ID',
-                title: 'ID',
-                sortable: true
-            })
-            columns.push({
-                field: 'İşin_Adı',
-                title: 'İşin Adı',
-                sortable: true
-            })
-            columns.push({
-                field: 'oluşturlma_Tar',
-                title: 'Oluşturulma Tar.',
-                sortable: true
-            })
-            columns.push({
-                field: 'Düzenle',
-                title: 'Düzenle',
-                sortable: true
-            })
-
-            $el.bootstrapTable('destroy')
-
-            $el.bootstrapTable({
-                columns: columns,
-                sidePagination: "server",
-                pagination: true,
-                ajax: "ajaxRequest",
-                clickToSelect: true,
-                detailView: true,
-                onExpandRow: function (index, row, detail) {
-                    Takım_Bilgileri_Tablo_Doldur(index, row, detail)
-
-
-                    console.log("sasadasd")
-                },
-                onPostBody: function () {
-                    $('#Düzenle').click(function () {
-                        console.log($(this).attr('value'))
-                    })
-                }
-            })
-        };
 
 
 
@@ -161,608 +113,922 @@
         })
 
 
-        function Takım_Bilgileri_Tablo_Doldur(index, row, detail) {
-            detail.empty()
-            console.log(index)
-            console.log(row)
-            console.log(row.ID)
-
-            var variable = '' +
-                '<div class="row">' +
-                '                    <div class="col-md-10">' +
-                '                        <input type="text" class="form-control" placeholder="Takım Adı" Data_Id="' + row.ID + '" id="Takım_Adı_İnput_' + row.ID + '">' +
-                '                    </div>' +
-                '                    <div class="col-md-2">' +
-                '                        <button type="button" Data_Id="' + row.ID + '" id="Yeni_Takım_Ekle_' + row.ID + '" class="btn btn-block btn-secondary">' +
-                '                            <i class="fas fa-plus"></i>' +
-                '                            Ekle' +
-                '                        </button>' +
-                '                    </div>' +
-                '                </div>' +
-
-                '';
 
 
-
-            detail.append(variable)
-
-
-            $('#Yeni_Takım_Ekle_' + row.ID).click(function () {
-                try {
-                    var x = {
-                        Takım_Adı: $('#Takım_Adı_İnput_' + row.ID).val(),
-                        İş_Id: $(this).attr('Data_Id')
-                    }
-
-                }
-                catch (err) {
-                    Swal.fire(
-                        'Lütfen Tüm Alanları Doldurunuz !',
-                        'error'
-                    )
-                }
+    })
 
 
-                var Gönderilsinmi = 1;
-                if (x.Takım_Adı == "") {
-                    Gönderilsinmi = 0;
-                    $('#Takım_Adı_İnput').attr('class', 'form-control is-invalid')
-                }
-                else {
-                    Gönderilsinmi = 1;
-                    $('#Takım_Adı_İnput').attr('class', 'form-control')
-                }
+    function Revize_Bilgileri_Doldur(index, row, detail) {
+        detail.empty()
+        var Takım_Table = '' +
+            '  <div class="row"  >' +
+            '                    <div class="col">' +
+            '                        <table id="Revize_Table_' + row.ID + '"></table>' +
+            '                    </div>' +
+            '                </div>' +
+            '';
 
+        detail.append(Takım_Table)
 
+        var i; var j; var row__
+        var columns = [];
+        var data__ = [];
+        columns.push({
+            field: 'ID',
+            title: 'ID',
+        })
 
-                if (Gönderilsinmi == 1) {
-
-                    $.ajax({
-                        url: 'api/Takım/Takım_Add',
-                        type: 'POST',
-                        async: false,
-                        dataType: "json",
-                        data: JSON.stringify(x),
-                        contentType: "application/json; charset=utf-8",
-                        success: function (data) {
-                            $('#Takım_Adı_Div').attr('hidden', 'hidden')
-                            Swal.fire(
-                                'İşlem Başarı İle Veri Tabanına İşlendi',
-                                'İşlem Başarılı',
-                                'success'
-                            )
-                            Takım_Bilgileri_Tablo_Doldur(index, row, detail)
-
-                        },
-                        error: function () {
-                            alert('Talep esnasında sorun oluştu.Yeniden deneyin');
-                        }
-                    });
-
-                }
-
-            })
-
-            var Takım_Table = '' +
-                '  <div class="row" style="padding-top: 25px;">' +
-                '                    <div class="col">' +
-                '                        <table id="Takım_Table_' + row.ID + '"></table>' +
-                '                    </div>' +
-                '                </div>' +
-                '';
-
-            detail.append(Takım_Table)
-
-
-            var i; var j; var row__
-            var columns = [];
-            var data__ = [];
-            columns.push({
-                field: 'ID',
-                title: 'ID',
-            })
-            columns.push({
-                field: 'Takım_Adı',
-                title: 'Takım Adı',
-            })
-            columns.push({
-                field: 'Oluşturulma_Tarihi',
-                title: 'Oluşturulma Tarihi',
-            })
-            columns.push({
-                field: 'Toplam_Evrak_Maliyeti',
-                title: 'Toplam Evrak Maliyeti',
-            })
-            columns.push({
-                field: 'Toplam_Maliyet',
-                title: 'Toplam Maliyet',
-            })
-            columns.push({
-                field: 'Evrak_Maliyeti',
-                title: 'Evrak Maliyeti',
-            })
-            columns.push({
-                field: 'Düzenle',
-                title: 'Düzenle',
-            })
-            var x = {
-                id: row.ID
-            }
-            console.log(x)
-
-            $.ajax({
-                url: '/api/Takım/Takım_Get_By_İş_Id',
-                type: 'POST',
-                async: false,
-                dataType: "json",
-                data: JSON.stringify(x),
-                contentType: "application/json; charset=utf-8",
-                success: function (data) {
-
-                    var temp = data
-                    console.log(data)
-
-
-                    for (i = 0; i < temp.length; i++) {
-                        row__ = {}
-
-                        var Toplam_Maliyet = '' +
-                            '<input   id="Toplam_Maliyet" class="form-control" data-thousands="." data-decimal=","' +
-                            '                                           value="' + temp[i].toplam_Maliyet.toFixed(2) + '"         data-suffix=" ₺" type="text"' +
-                            '                                                      />' +
-                            '';
-
-                        var Evrak_Maliyeti = '' +
-                            '<input   id="Evrak_Maliyeti" class="form-control" data-thousands="." data-decimal=","' +
-                            '                                           value="' + temp[i].evrak_Maliyeti.toFixed(2) + '"         data-suffix=" ₺" type="text"' +
-                            '                                                      />' +
-                            '';
-
-                        row__['ID'] = temp[i].id
-                        row__['Takım_Adı'] = temp[i].takım_Adı
-                        row__['Toplam_Evrak_Maliyeti'] = Evrak_Maliyeti
-                        row__['Toplam_Maliyet'] = Toplam_Maliyet
-
-                        row__['Oluşturulma_Tarihi'] = getFormattedDate(temp[i].olusturlma_Tarihi);
-                        row__['Evrak_Maliyeti'] = '<button class="btn btn-primary btn-sm" Table_Id="' + row.ID + '"  Row_Index="' + i + '" value="' + temp[i].id + '" id="Takım_Evrak_Maliyeti_Ekle" style="word-break: keep-all;"><i class="fa fa-file-text "></i> Evrak Maliyeti</button>'
-                        row__['Düzenle'] = '<button class="btn btn-warning btn-sm" value="' + temp[i].id + '" id="Takım_Düzenle_Button" style="word-break: keep-all;"><i class="fa fa-file-text "></i> Düzenle</button>'
-
-
-                        data__.push(row__)
-                    }
-                },
-                error: function () {
-                    alert('Talep esnasında sorun oluştu.Yeniden deneyin');
-                }
-            });
-
-
-
-            $('#Takım_Table_' + row.ID).bootstrapTable({
-                columns: columns,
-                data: data__,
-                detailView: true,
-                onExpandRow: function (index, row, detail) {
-                    Parça_Bilgileri_Tablo_Doldur(index, row, detail)
-                },
-            })
-            $('*#Toplam_Maliyet').maskMoney();
-            $('*#Toplam_Maliyet').trigger('mask.maskMoney');
-            $('*#Toplam_Maliyet').attr('disabled', 'disabled');
-
-            $('*#Evrak_Maliyeti').maskMoney();
-            $('*#Evrak_Maliyeti').trigger('mask.maskMoney');
-            $('*#Evrak_Maliyeti').attr('disabled', 'disabled');
-            //Evrak_Maliyeti
-
-            $('button[id=Takım_Evrak_Maliyeti_Ekle]').click(function () {
-                $('#Evrak_Maliyeti_Modal').modal('show')
-
-                $('#Evrak_maliyeti_Modal_Kaydet').attr('value', $(this).attr('value'))
-                $('#Evrak_maliyeti_Modal_Kaydet').attr('Table_Id', $(this).attr('Table_Id'))
-                $('#Evrak_maliyeti_Modal_Kaydet').attr('Row_Index', $(this).attr('Row_Index'))
-
-            })
-
-
-
-
-
-
-
-
-
-
-
+        columns.push({
+            field: 'Oluşturulma_Tarihi',
+            title: 'Oluşturulma Tarihi',
+        })
+        columns.push({
+            field: 'Düzenle',
+            title: 'Düzenle',
+        })
+        columns.push({
+            field: 'Sil',
+            title: 'Sil',
+        })
+        var x = {
+            id: row.ID
         }
+        console.log(x)
 
-        function Parça_Bilgileri_Tablo_Doldur(index, row, detail) {
-            detail.empty()
-            var variable = '' +
-                '<div class="row">' +
-                '                    <div class="col">' +
-                '                        <input type="text" class="form-control" placeholder="Parça Adı" Data_Id="' + row.ID + '" id="Parça_Adı_İnput' + row.ID + '">' +
-                '                    </div>' +
-                '                    <div class="col">' +
-                '                        <input type="number" class="form-control" placeholder="Parça Adeti" Data_Id="' + row.ID + '" id="Parça_Adeti_İnput' + row.ID + '">' +
-                '                    </div>' +
-                '                    <div class="col-md-2">' +
-                '                        <button type="button" Data_Id="' + row.ID + '" id="Yeni_Parça_Ekle_Btn' + row.ID + '" class="btn btn-block btn-secondary">' +
-                '                            <i class="fas fa-plus"></i>' +
-                '                            Ekle' +
-                '                        </button>' +
-                '                    </div>' +
-                '                </div>' +
+        $.ajax({
+            url: '/api/Revize/Revize_Get_By_Parça_Id',
+            type: 'POST',
+            async: false,
+            dataType: "json",
+            data: JSON.stringify(x),
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
 
-                '';
+                var temp = data
+                for (i = 0; i < temp.length; i++) {
+                    row__ = {}
 
-            detail.append(variable)
 
-            $('#Yeni_Parça_Ekle_Btn' + row.ID).click(function () {
-                //Parça_Adeti_İnput
-                try {
-                    var x = {
-                        Parça_Adı: $('#Parça_Adı_İnput' + row.ID).val(),
-                        Parça_Adeti: $('#Parça_Adeti_İnput' + row.ID).val(),
-                        Takım_Id: $(this).attr('Data_Id')
-                    }
+                    row__['ID'] = temp[i].id
+                    row__['Oluşturulma_Tarihi'] = getFormattedDate(temp[i].olusturlma_Tarihi)
+                    row__['Düzenle'] = '<button class="btn btn-warning btn-sm" value="' + temp[i].id + '" id="Revize_Düzenle_Button" style="word-break: keep-all;"><i class="fa fa-file-text "></i> Düzenle</button>'
+                    row__['Sil'] = '<button class="btn btn-danger btn-sm" value="' + temp[i].id + '" id="Revize_Sil_Button" style="word-break: keep-all;"><i class="fa fa-trash "></i></button>'
 
+                    data__.push(row__)
                 }
-                catch (err) {
-                    Swal.fire(
-                        'Lütfen Tüm Alanları Doldurunuz !',
-                        'error'
-                    )
-                }
-
-
-                var Gönderilsinmi = 1;
-                if (x.Parça_Adı == "") {
-                    Gönderilsinmi = 0;
-                    $('#Parça_Adı_İnput' + row.ID).attr('class', 'form-control is-invalid')
-                }
-                else {
-                    Gönderilsinmi = 1;
-                    $('#Parça_Adı_İnput' + row.ID).attr('class', 'form-control')
-                }
-
-
-
-                if (Gönderilsinmi == 1) {
-
-                    $.ajax({
-                        url: 'api/Parça/Parça_Add',
-                        type: 'POST',
-                        async: false,
-                        dataType: "json",
-                        data: JSON.stringify(x),
-                        contentType: "application/json; charset=utf-8",
-                        success: function (data) {
-                            $('#Takım_Adı_Div').attr('hidden', 'hidden')
-                            Swal.fire(
-                                'İşlem Başarı İle Veri Tabanına İşlendi',
-                                'İşlem Başarılı',
-                                'success'
-                            )
-                            Parça_Bilgileri_Tablo_Doldur(index, row, detail)
-
-                        },
-                        error: function () {
-                            alert('Talep esnasında sorun oluştu.Yeniden deneyin');
-                        }
-                    });
-
-                }
-
-            })
-
-            var Takım_Table = '' +
-                '  <div class="row" style="padding-top: 25px;" >' +
-                '                    <div class="col">' +
-                '                        <table id="Parça_Table_' + row.ID + '"></table>' +
-                '                    </div>' +
-                '                </div>' +
-                '';
-
-            detail.append(Takım_Table)
-
-            var i; var j; var row__
-            var columns = [];
-            var data__ = [];
-            columns.push({
-                field: 'ID',
-                title: 'ID',
-            })
-            columns.push({
-                field: 'Parça_Adı',
-                title: 'Parça Adı',
-            })
-            columns.push({
-                field: 'Oluşturulma_Tarihi',
-                title: 'Oluşturulma Tarihi',
-            })
-            columns.push({
-                field: 'Parça_Adet',
-                title: 'Parça Adet',
-            })
-            columns.push({
-                field: 'Birim_Maliyet',
-                title: 'Birim Maliyet',
-            })
-            columns.push({
-                field: 'Evrak_Maliyeti',
-                title: 'Evrak Maliyeti',
-            })
-            columns.push({
-                field: 'Toplam_Maliyet',
-                title: 'Toplam Maliyet',
-            })
-
-            columns.push({
-                field: 'Düzenle',
-                title: 'Düzenle',
-            })
-
-            var x = {
-                id: row.ID
+            },
+            error: function () {
+                alert('Talep esnasında sorun oluştu.Yeniden deneyin');
             }
-            console.log(x)
+        });
 
+
+
+        $('#Revize_Table_' + row.ID).bootstrapTable({
+            columns: columns,
+            data: data__,
+            onExpandRow: function (index, row, detail) {
+                Revize_Bilgileri_Doldur(index, row, detail)
+            },
+
+        })
+
+        $('button[id=Revize_Düzenle_Button]').click(function () {
+
+
+            console.log($(this).attr('value'))
+            let timerInterval
+            Swal.fire({
+                title: 'Sayfa Yönlendiriliyor',
+                timer: 500,
+                timerProgressBar: true,
+                didOpen: () => {
+                    Swal.showLoading()
+                    timerInterval = setInterval(() => {
+                    }, 100)
+                },
+                willClose: () => {
+                    window.location = "/Uretim_Maliyeti_Olustur?" + "Parça_Id=" + $(this).attr('value') + "&İşlem=Revize"
+                    clearInterval(timerInterval)
+                }
+            }).then((result) => {
+                /* Read more about handling dismissals below */
+                if (result.dismiss === Swal.DismissReason.timer) {
+                    console.log('I was closed by the timer')
+                }
+            })
+
+        })
+
+        $('button[id=Revize_Sil_Button]').click(function () {
+            var x = {
+                Id: $(this).attr('value')
+            }
             $.ajax({
-                url: '/api/Parça/Parça_Get_By_Takım_Id',
+                url: 'api/Revize/Revize_Delete',
                 type: 'POST',
                 async: false,
                 dataType: "json",
                 data: JSON.stringify(x),
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
-
-                    var temp = data
-                    console.log("ParçaDatatata")
-                    console.log(data)
-                    for (i = 0; i < temp.length; i++) {
-                        row__ = {}
-
-
-                        var Birim_Maliyet = '' +
-                            '<input   id="Birim_Maliyet_" class="form-control" data-thousands="." data-decimal=","' +
-                            '                                           value="' + temp[i].birim_Maliyet.toFixed(2) + '"         data-suffix=" ₺" type="text"' +
-                            '                                                      />' +
-                            '';
-
-                        var Evrak_Maliyeti = '' +
-                            '<input   id="Evrak_Maliyeti_" class="form-control" data-thousands="." data-decimal=","' +
-                            '                                           value="' + temp[i].evrak_Maliyeti.toFixed(2) + '"         data-suffix=" ₺" type="text"' +
-                            '                                                      />' +
-                            '';
-
-                        var Toplam_Maliyet = '' +
-                            '<input   id="Toplam_Maliyet_" class="form-control" data-thousands="." data-decimal=","' +
-                            '                                           value="' + temp[i].toplam_Maliyet.toFixed(2) + '"         data-suffix=" ₺" type="text"' +
-                            '                                                      />' +
-                            '';
-
-                        row__['ID'] = temp[i].id
-                        row__['Parça_Adı'] = temp[i].parça_Adı
-                        row__['Parça_Adet'] = temp[i].parça_Adeti
-                        row__['Birim_Maliyet'] = Birim_Maliyet
-                        row__['Evrak_Maliyeti'] = Evrak_Maliyeti
-                        row__['Toplam_Maliyet'] = Toplam_Maliyet
-
-
-                        //Evrak_Maliyeti  Toplam_Maliyet
-                        row__['Oluşturulma_Tarihi'] = getFormattedDate(temp[i].olusturlma_Tarihi)
-                        row__['Düzenle'] = '<button class="btn btn-warning btn-sm" value="' + temp[i].id + '" id="Parça_Düzenle_Button" style="word-break: keep-all;"><i class="fa fa-file-text "></i> Düzenle</button>'
-                        row__['Revize'] = '<button class="btn btn-danger btn-sm" value="' + temp[i].id + '" id="Parça_Revize_Button" style="word-break: keep-all;"><i class="fa fa-file-text "></i> Revize</button>'
-
-
-                        data__.push(row__)
-                    }
-                },
-                error: function () {
-                    alert('Talep esnasında sorun oluştu.Yeniden deneyin');
-                }
-            });
-
-
-
-            $('#Parça_Table_' + row.ID).bootstrapTable({
-                columns: columns,
-                data: data__,
-                detailView: true,
-                onExpandRow: function (index, row, detail) {
                     Revize_Bilgileri_Doldur(index, row, detail)
                 },
-
-            })
-
-
-            $('*#Toplam_Maliyet_').maskMoney();
-            $('*#Toplam_Maliyet_').trigger('mask.maskMoney');
-            $('*#Toplam_Maliyet_').attr('disabled', 'disabled');
-
-            $('*#Evrak_Maliyeti_').maskMoney();
-            $('*#Evrak_Maliyeti_').trigger('mask.maskMoney');
-            $('*#Evrak_Maliyeti_').attr('disabled', 'disabled');
-
-
-            $('*#Birim_Maliyet_').maskMoney();
-            $('*#Birim_Maliyet_').trigger('mask.maskMoney');
-            $('*#Birim_Maliyet_').attr('disabled', 'disabled');
-
-            //Birim_Maliyet
-            //Parça_Revize_Button
-
-
-
-        }
-
-        function Revize_Bilgileri_Doldur(index, row, detail) {
-            detail.empty()
-            var Takım_Table = '' +
-                '  <div class="row"  >' +
-                '                    <div class="col">' +
-                '                        <table id="Revize_Table_' + row.ID + '"></table>' +
-                '                    </div>' +
-                '                </div>' +
-                '';
-
-            detail.append(Takım_Table)
-
-            var i; var j; var row__
-            var columns = [];
-            var data__ = [];
-            columns.push({
-                field: 'ID',
-                title: 'ID',
-            })
-
-            columns.push({
-                field: 'Oluşturulma_Tarihi',
-                title: 'Oluşturulma Tarihi',
-            })
-            columns.push({
-                field: 'Düzenle',
-                title: 'Düzenle',
-            })
-            var x = {
-                id: row.ID
-            }
-            console.log(x)
-
-            $.ajax({
-                url: '/api/Revize/Revize_Get_By_Parça_Id',
-                type: 'POST',
-                async: false,
-                dataType: "json",
-                data: JSON.stringify(x),
-                contentType: "application/json; charset=utf-8",
-                success: function (data) {
-
-                    var temp = data
-                    for (i = 0; i < temp.length; i++) {
-                        row__ = {}
-
-
-                        row__['ID'] = temp[i].id
-                        row__['Oluşturulma_Tarihi'] = getFormattedDate(temp[i].olusturlma_Tarihi),
-                            row__['Düzenle'] = '<button class="btn btn-warning btn-sm" value="' + temp[i].id + '" id="Parça_Düzenle_Button" style="word-break: keep-all;"><i class="fa fa-file-text "></i> Düzenle</button>'
-
-                        data__.push(row__)
+                error: function (xhr, status, error, title) {
+                    if (xhr.status == 200) {
                     }
-                },
-                error: function () {
-                    alert('Talep esnasında sorun oluştu.Yeniden deneyin');
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Talep Esnasında Bir Hata Oluştur',
+                            text: 'Hata Kodu:' + xhr.status + '  Hata İçeriği: ' + title,
+                        })
+                    }
+
                 }
             });
 
+        })
+
+        var variable = '' +
+            '<div class="row" style="padding-top: 25px;" >' +
+            '                    <div class="col-md-10">' +
+            '                    </div>' +
+            '                    <div class="col-md-2">' +
+            '                        <button type="button" Data_Id="' + row.ID + '" id="Yeni_Revize_Ekle_Button' + row.ID + '" class="btn btn-block btn-secondary">' +
+            '                            <i class="fas fa-plus"></i>' +
+            '                            Ekle' +
+            '                        </button>' +
+            '                    </div>' +
+            '                </div>' +
+
+            '';
+
+        detail.append(variable)
 
 
-            $('#Revize_Table_' + row.ID).bootstrapTable({
-                columns: columns,
-                data: data__,
-                onExpandRow: function (index, row, detail) {
-                    Revize_Bilgileri_Doldur(index, row, detail)
-                },
+        $('#Yeni_Revize_Ekle_Button' + row.ID).click(function () {
+            try {
+                var x = {
+                    Parça_Id: $('#Yeni_Revize_Ekle_Button' + row.ID).attr('Data_Id'),
+                }
 
-            })
+            }
+            catch (err) {
+                Swal.fire(
+                    'Lütfen Tüm Alanları Doldurunuz !',
+                    'error'
+                )
+            }
 
-            $('button[id=Parça_Düzenle_Button]').click(function () {
+
+            var Gönderilsinmi = 1;
 
 
-                console.log($(this).attr('value'))
-                let timerInterval
-                Swal.fire({
-                    title: 'Sayfa Yönlendiriliyor',
-                    timer: 500,
-                    timerProgressBar: true,
-                    didOpen: () => {
-                        Swal.showLoading()
-                        timerInterval = setInterval(() => {
-                        }, 100)
+
+
+            if (Gönderilsinmi == 1) {
+
+                $.ajax({
+                    url: 'api/Revize/Revize_Add',
+                    type: 'POST',
+                    async: false,
+                    dataType: "json",
+                    data: JSON.stringify(x),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        $('#Takım_Adı_Div').attr('hidden', 'hidden')
+                        Swal.fire(
+                            'İşlem Başarı İle Veri Tabanına İşlendi',
+                            'İşlem Başarılı',
+                            'success'
+                        )
+                        Revize_Bilgileri_Doldur(index, row, detail)
+
                     },
-                    willClose: () => {
-                        window.location = "/Uretim_Maliyeti_Olustur?" + "Parça_Id=" + $(this).attr('value') + "&İşlem=Revize"
-                        clearInterval(timerInterval)
+                    error: function () {
+                        alert('Talep esnasında sorun oluştu.Yeniden deneyin');
                     }
-                }).then((result) => {
-                    /* Read more about handling dismissals below */
-                    if (result.dismiss === Swal.DismissReason.timer) {
-                        console.log('I was closed by the timer')
+                });
+
+            }
+
+        })
+
+
+    }
+
+    function Parça_Bilgileri_Tablo_Doldur(index, row, detail) {
+        detail.empty()
+        var variable = '' +
+            '<div class="row">' +
+            '                    <div class="col">' +
+            '                        <input type="text" class="form-control" placeholder="Parça Adı" Data_Id="' + row.ID + '" id="Parça_Adı_İnput' + row.ID + '">' +
+            '                    </div>' +
+            '                    <div class="col">' +
+            '                        <input type="number" class="form-control" placeholder="Parça Adeti" Data_Id="' + row.ID + '" id="Parça_Adeti_İnput' + row.ID + '">' +
+            '                    </div>' +
+            '                    <div class="col-md-2">' +
+            '                        <button type="button" Data_Id="' + row.ID + '" id="Yeni_Parça_Ekle_Btn' + row.ID + '" class="btn btn-block btn-secondary">' +
+            '                            <i class="fas fa-plus"></i>' +
+            '                            Ekle' +
+            '                        </button>' +
+            '                    </div>' +
+            '                </div>' +
+
+            '';
+
+        detail.append(variable)
+
+        $('#Yeni_Parça_Ekle_Btn' + row.ID).click(function () {
+            //Parça_Adeti_İnput
+            try {
+                var x = {
+                    Parça_Adı: $('#Parça_Adı_İnput' + row.ID).val(),
+                    Parça_Adeti: $('#Parça_Adeti_İnput' + row.ID).val(),
+                    Takım_Id: $(this).attr('Data_Id')
+                }
+
+            }
+            catch (err) {
+                Swal.fire(
+                    'Lütfen Tüm Alanları Doldurunuz !',
+                    'error'
+                )
+            }
+
+
+            var Gönderilsinmi = 1;
+            if (x.Parça_Adı == "") {
+                Gönderilsinmi = 0;
+                $('#Parça_Adı_İnput' + row.ID).attr('class', 'form-control is-invalid')
+            }
+            else {
+                Gönderilsinmi = 1;
+                $('#Parça_Adı_İnput' + row.ID).attr('class', 'form-control')
+            }
+
+
+
+            if (Gönderilsinmi == 1) {
+
+                $.ajax({
+                    url: 'api/Parça/Parça_Add',
+                    type: 'POST',
+                    async: false,
+                    dataType: "json",
+                    data: JSON.stringify(x),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        $('#Takım_Adı_Div').attr('hidden', 'hidden')
+                        Swal.fire(
+                            'İşlem Başarı İle Veri Tabanına İşlendi',
+                            'İşlem Başarılı',
+                            'success'
+                        )
+                        Parça_Bilgileri_Tablo_Doldur(index, row, detail)
+
+                    },
+                    error: function () {
+                        alert('Talep esnasında sorun oluştu.Yeniden deneyin');
                     }
+                });
+
+            }
+
+        })
+
+        var Takım_Table = '' +
+            '  <div class="row" style="padding-top: 25px;" >' +
+            '                    <div class="col">' +
+            '                        <table id="Parça_Table_' + row.ID + '"></table>' +
+            '                    </div>' +
+            '                </div>' +
+            '';
+
+        detail.append(Takım_Table)
+
+        var i; var j; var row__
+        var columns = [];
+        var data__ = [];
+        columns.push({
+            field: 'ID',
+            title: 'ID',
+        })
+        columns.push({
+            field: 'Parça_Adı',
+            title: 'Parça Adı',
+        })
+        columns.push({
+            field: 'Oluşturulma_Tarihi',
+            title: 'Oluşturulma Tarihi',
+        })
+        columns.push({
+            field: 'Parça_Adet',
+            title: 'Parça Adet',
+        })
+        columns.push({
+            field: 'Birim_Maliyet',
+            title: 'Birim Maliyet',
+        })
+        columns.push({
+            field: 'Evrak_Maliyeti',
+            title: 'Evrak Maliyeti',
+        })
+        columns.push({
+            field: 'Toplam_Maliyet',
+            title: 'Toplam Maliyet',
+        })
+
+        columns.push({
+            field: 'Düzenle',
+            title: 'Düzenle',
+        })
+        columns.push({
+            field: 'Sil',
+            title: 'Sil',
+        })
+
+        var x = {
+            id: row.ID
+        }
+        console.log(x)
+
+        $.ajax({
+            url: '/api/Parça/Parça_Get_By_Takım_Id',
+            type: 'POST',
+            async: false,
+            dataType: "json",
+            data: JSON.stringify(x),
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+
+                var temp = data
+                console.log("ParçaDatatata")
+                console.log(data)
+                for (i = 0; i < temp.length; i++) {
+                    row__ = {}
+
+
+                    var Birim_Maliyet = '' +
+                        '<input   id="Birim_Maliyet_" class="form-control" data-thousands="." data-decimal=","' +
+                        '                                           value="' + temp[i].birim_Maliyet.toFixed(2) + '"         data-suffix=" ₺" type="text"' +
+                        '                                                      />' +
+                        '';
+
+                    var Evrak_Maliyeti = '' +
+                        '<input   id="Evrak_Maliyeti_" class="form-control" data-thousands="." data-decimal=","' +
+                        '                                           value="' + temp[i].evrak_Maliyeti.toFixed(2) + '"         data-suffix=" ₺" type="text"' +
+                        '                                                      />' +
+                        '';
+
+                    var Toplam_Maliyet = '' +
+                        '<input   id="Toplam_Maliyet_" class="form-control" data-thousands="." data-decimal=","' +
+                        '                                           value="' + temp[i].toplam_Maliyet.toFixed(2) + '"         data-suffix=" ₺" type="text"' +
+                        '                                                      />' +
+                        '';
+
+                    row__['ID'] = temp[i].id
+                    row__['Parça_Adı'] = temp[i].parça_Adı
+                    row__['Parça_Adet'] = temp[i].parça_Adeti
+                    row__['Birim_Maliyet'] = Birim_Maliyet
+                    row__['Evrak_Maliyeti'] = Evrak_Maliyeti
+                    row__['Toplam_Maliyet'] = Toplam_Maliyet
+
+
+                    //Evrak_Maliyeti  Toplam_Maliyet
+                    row__['Oluşturulma_Tarihi'] = getFormattedDate(temp[i].olusturlma_Tarihi)
+                    row__['Düzenle'] = '<button class="btn btn-warning btn-sm" value="' + temp[i].id + '" id="Parça_Düzenle_Button" style="word-break: keep-all;"><i class="fa fa-file-text "></i> Düzenle</button>'
+                    row__['Sil'] = '<button class="btn btn-danger btn-sm" value="' + temp[i].id + '" id="Parça_Sil_Button" style="word-break: keep-all;"><i class="fa fa-trash "></i> </button>'
+
+
+                    data__.push(row__)
+                }
+            },
+            error: function () {
+                alert('Talep esnasında sorun oluştu.Yeniden deneyin');
+            }
+        });
+
+
+
+        $('#Parça_Table_' + row.ID).bootstrapTable({
+            columns: columns,
+            data: data__,
+            detailView: true,
+            onExpandRow: function (index, row, detail) {
+                Revize_Bilgileri_Doldur(index, row, detail)
+            },
+
+        })
+
+
+        $('*#Toplam_Maliyet_').maskMoney();
+        $('*#Toplam_Maliyet_').trigger('mask.maskMoney');
+        $('*#Toplam_Maliyet_').attr('disabled', 'disabled');
+
+        $('*#Evrak_Maliyeti_').maskMoney();
+        $('*#Evrak_Maliyeti_').trigger('mask.maskMoney');
+        $('*#Evrak_Maliyeti_').attr('disabled', 'disabled');
+
+
+        $('*#Birim_Maliyet_').maskMoney();
+        $('*#Birim_Maliyet_').trigger('mask.maskMoney');
+        $('*#Birim_Maliyet_').attr('disabled', 'disabled');
+
+        //Birim_Maliyet
+        //Parça_Revize_Button
+
+
+        $('button[id=Parça_Sil_Button]').click(function () {
+
+            var x = {
+                Id: $(this).attr('value')
+            }
+            $.ajax({
+                url: 'api/Parça/Parça_Delete',
+                type: 'POST',
+                async: false,
+                dataType: "json",
+                data: JSON.stringify(x),
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+
+                },
+                error: function (xhr, status, error, title) {
+                    if (xhr.status == 200) {
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Talep Esnasında Bir Hata Oluştur',
+                            text: 'Hata Kodu:' + xhr.status + '  Hata İçeriği: ' + title,
+                        })
+                    }
+
+                }
+            });
+
+        })
+
+        $('button[id=Parça_Düzenle_Button]').click(function () {
+            $('#Parça_Düzenle_Modal').modal('show')
+            $('#Parça_Düzenle_Kaydet_Button').attr('value', $(this).attr('value'))
+
+            var x = {
+                Id: $(this).attr('value')
+            }
+            $.ajax({
+                url: 'api/Parça/Parça_By_Id',
+                type: 'POST',
+                async: false,
+                dataType: "json",
+                data: JSON.stringify(x),
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    //Parça_Adı
+                    //Parça_Adeti
+                    console.log(data)
+                    $('#Parçain_Adı_İnput_Düzenle').val(data.parça_Adı)
+                    $('#Parçain_Adeti_İnput_Düzenle').val(data.parça_Adeti)
+
+                },
+                error: function (xhr, status, error, title) {
+                    if (xhr.status == 200) {
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Talep Esnasında Bir Hata Oluştur',
+                            text: 'Hata Kodu:' + xhr.status + '  Hata İçeriği: ' + title,
+                        })
+                    }
+
+                }
+            });
+
+            //Parça_By_Id
+
+        })
+
+
+    }
+
+    function Takım_Bilgileri_Tablo_Doldur(index, row, detail) {
+        detail.empty()
+        console.log(index)
+        console.log(row)
+        console.log(row.ID)
+
+        var variable = '' +
+            '<div class="row">' +
+            '                    <div class="col-md-10">' +
+            '                        <input type="text" class="form-control" placeholder="Takım Adı" Data_Id="' + row.ID + '" id="Takım_Adı_İnput_' + row.ID + '">' +
+            '                    </div>' +
+            '                    <div class="col-md-2">' +
+            '                        <button type="button" Data_Id="' + row.ID + '" id="Yeni_Takım_Ekle_' + row.ID + '" class="btn btn-block btn-secondary">' +
+            '                            <i class="fas fa-plus"></i>' +
+            '                            Ekle' +
+            '                        </button>' +
+            '                    </div>' +
+            '                </div>' +
+
+            '';
+
+
+
+        detail.append(variable)
+
+
+        $('#Yeni_Takım_Ekle_' + row.ID).click(function () {
+            try {
+                var x = {
+                    Takım_Adı: $('#Takım_Adı_İnput_' + row.ID).val(),
+                    İş_Id: $(this).attr('Data_Id')
+                }
+
+            }
+            catch (err) {
+                Swal.fire(
+                    'Lütfen Tüm Alanları Doldurunuz !',
+                    'error'
+                )
+            }
+
+
+            var Gönderilsinmi = 1;
+            if (x.Takım_Adı == "") {
+                Gönderilsinmi = 0;
+                $('#Takım_Adı_İnput').attr('class', 'form-control is-invalid')
+            }
+            else {
+                Gönderilsinmi = 1;
+                $('#Takım_Adı_İnput').attr('class', 'form-control')
+            }
+
+
+
+            if (Gönderilsinmi == 1) {
+
+                $.ajax({
+                    url: 'api/Takım/Takım_Add',
+                    type: 'POST',
+                    async: false,
+                    dataType: "json",
+                    data: JSON.stringify(x),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        $('#Takım_Adı_Div').attr('hidden', 'hidden')
+                        Swal.fire(
+                            'İşlem Başarı İle Veri Tabanına İşlendi',
+                            'İşlem Başarılı',
+                            'success'
+                        )
+                        Takım_Bilgileri_Tablo_Doldur(index, row, detail)
+
+                    },
+                    error: function () {
+                        alert('Talep esnasında sorun oluştu.Yeniden deneyin');
+                    }
+                });
+
+            }
+
+        })
+
+        var Takım_Table = '' +
+            '  <div class="row" style="padding-top: 25px;">' +
+            '                    <div class="col">' +
+            '                        <table id="Takım_Table_' + row.ID + '"></table>' +
+            '                    </div>' +
+            '                </div>' +
+            '';
+
+        detail.append(Takım_Table)
+
+
+        var i; var j; var row__
+        var columns = [];
+        var data__ = [];
+        columns.push({
+            field: 'ID',
+            title: 'ID',
+        })
+        columns.push({
+            field: 'Takım_Adı',
+            title: 'Takım Adı',
+        })
+        columns.push({
+            field: 'Oluşturulma_Tarihi',
+            title: 'Oluşturulma Tarihi',
+        })
+        columns.push({
+            field: 'Toplam_Evrak_Maliyeti',
+            title: 'Toplam Evrak Maliyeti',
+        })
+        columns.push({
+            field: 'Toplam_Maliyet',
+            title: 'Toplam Maliyet',
+        })
+        columns.push({
+            field: 'Evrak_Maliyeti',
+            title: 'Evrak Maliyeti',
+        })
+        columns.push({
+            field: 'Düzenle',
+            title: 'Düzenle',
+        })
+        columns.push({
+            field: 'Sil',
+            title: 'Sil',
+        })
+        var x = {
+            id: row.ID
+        }
+        console.log(x)
+
+        $.ajax({
+            url: '/api/Takım/Takım_Get_By_İş_Id',
+            type: 'POST',
+            async: false,
+            dataType: "json",
+            data: JSON.stringify(x),
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+
+                var temp = data
+                console.log(data)
+
+
+                for (i = 0; i < temp.length; i++) {
+                    row__ = {}
+
+                    var Toplam_Maliyet = '' +
+                        '<input   id="Toplam_Maliyet" class="form-control" data-thousands="." data-decimal=","' +
+                        '                                           value="' + temp[i].toplam_Maliyet.toFixed(2) + '"         data-suffix=" ₺" type="text"' +
+                        '                                                      />' +
+                        '';
+
+                    var Evrak_Maliyeti = '' +
+                        '<input   id="Evrak_Maliyeti" class="form-control" data-thousands="." data-decimal=","' +
+                        '                                           value="' + temp[i].evrak_Maliyeti.toFixed(2) + '"         data-suffix=" ₺" type="text"' +
+                        '                                                      />' +
+                        '';
+
+                    row__['ID'] = temp[i].id
+                    row__['Takım_Adı'] = temp[i].takım_Adı
+                    row__['Toplam_Evrak_Maliyeti'] = Evrak_Maliyeti
+                    row__['Toplam_Maliyet'] = Toplam_Maliyet
+
+                    row__['Oluşturulma_Tarihi'] = getFormattedDate(temp[i].olusturlma_Tarihi);
+                    row__['Evrak_Maliyeti'] = '<button class="btn btn-primary btn-sm" Table_Id="' + row.ID + '"  Row_Index="' + i + '" value="' + temp[i].id + '" id="Takım_Evrak_Maliyeti_Ekle" style="word-break: keep-all;"><i class="fa fa-file-text "></i> Evrak Maliyeti</button>'
+                    row__['Düzenle'] = '<button class="btn btn-warning btn-sm" value="' + temp[i].id + '" id="Takım_Düzenle_Button" style="word-break: keep-all;"><i class="fa fa-file-text "></i> Düzenle</button>'
+                    row__['Sil'] = '<button class="btn btn-danger btn-sm" iş_Id="' + row.ID + '" value="' + temp[i].id + '" id="Takım_Sil_Button" style="word-break: keep-all;"><i class="fa fa-trash "></i></button>'
+
+
+
+                    data__.push(row__)
+                }
+            },
+            error: function () {
+                alert('Talep esnasında sorun oluştu.Yeniden deneyin');
+            }
+        });
+
+
+
+        $('#Takım_Table_' + row.ID).bootstrapTable({
+            columns: columns,
+            data: data__,
+            detailView: true,
+            onExpandRow: function (index, row, detail) {
+                Parça_Bilgileri_Tablo_Doldur(index, row, detail)
+            },
+        })
+        $('*#Toplam_Maliyet').maskMoney();
+        $('*#Toplam_Maliyet').trigger('mask.maskMoney');
+        $('*#Toplam_Maliyet').attr('disabled', 'disabled');
+
+        $('*#Evrak_Maliyeti').maskMoney();
+        $('*#Evrak_Maliyeti').trigger('mask.maskMoney');
+        $('*#Evrak_Maliyeti').attr('disabled', 'disabled');
+        //Evrak_Maliyeti
+
+        $('button[id=Takım_Evrak_Maliyeti_Ekle]').click(function () {
+            $('#Evrak_Maliyeti_Modal').modal('show')
+
+            $('#Evrak_maliyeti_Modal_Kaydet').attr('value', $(this).attr('value'))
+            $('#Evrak_maliyeti_Modal_Kaydet').attr('Table_Id', $(this).attr('Table_Id'))
+            $('#Evrak_maliyeti_Modal_Kaydet').attr('Row_Index', $(this).attr('Row_Index'))//.toFixed(2)
+            $('#Evrak_Maliyeti_İnput').val(parseFloat($(this).parent().parent().find('#Toplam_Maliyet').attr('value')).toFixed(2))
+            $('#Evrak_Maliyeti_İnput').maskMoney()
+            $('#Evrak_Maliyeti_İnput').trigger('mask.maskMoney')
+
+
+
+
+        })
+        $('button[id=Takım_Düzenle_Button]').click(function () {
+
+            $('#Takım_Düzenle_Modal').modal('show')
+
+            $('#Takım_Düzenle_Kaydet_Button').attr('value', $(this).attr('value'))
+            //İşin_Adı_İnput_Düzenle
+            var x = {
+                Id: $(this).attr('value')
+            }
+            $.ajax({
+                url: 'api/Takım/Takım_Get_By_Id',
+                type: 'POST',
+                async: false,
+                dataType: "json",
+                data: JSON.stringify(x),
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    $('#Takımin_Adı_İnput_Düzenle').val(data.takım_Adı)
+                },
+                error: function (xhr, status, error, title) {
+                    if (xhr.status == 200) {
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Talep Esnasında Bir Hata Oluştur',
+                            text: 'Hata Kodu:' + xhr.status + '  Hata İçeriği: ' + title,
+                        })
+                    }
+
+                }
+            });
+
+        })
+
+        $('button[id=Takım_Sil_Button]').click(function () {
+            var x = {
+                Id: $(this).attr('value')
+            }
+            $.ajax({
+                url: 'api/Takım/Takım_Delete',
+                type: 'POST',
+                async: false,
+                dataType: "json",
+                data: JSON.stringify(x),
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    Swal.fire(
+                        'İşlem Başarı İle Veri Tabanına İşlendi',
+                        'İşlem Başarılı',
+                        'success'
+                    )
+                    Takım_Bilgileri_Tablo_Doldur(index, row, detail)
+                },
+                error: function (xhr, status, error, title) {
+                    if (xhr.status == 200) {
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Talep Esnasında Bir Hata Oluştur',
+                            text: 'Hata Kodu:' + xhr.status + '  Hata İçeriği: ' + title,
+                        })
+                    }
+
+                }
+            });
+
+        })
+
+
+    }
+    function İş_Tablosu_Build($el, cells, rows) {
+
+
+        var i; var j; var row
+        var columns = [];
+        var data__ = [];
+
+        columns.push({
+            field: 'ID',
+            title: 'ID',
+            sortable: true
+        })
+        columns.push({
+            field: 'İşin_Adı',
+            title: 'İşin Adı',
+            sortable: true
+        })
+        columns.push({
+            field: 'oluşturlma_Tar',
+            title: 'Oluşturulma Tar.',
+            sortable: true
+        })
+        columns.push({
+            field: 'Düzenle',
+            title: 'Düzenle',
+            sortable: true
+        })
+        columns.push({
+            field: 'Sil',
+            title: 'Sil',
+            sortable: true
+        })
+
+        $el.bootstrapTable('destroy')
+
+        $el.bootstrapTable({
+            columns: columns,
+            sidePagination: "server",
+            pagination: true,
+            ajax: "ajaxRequest",
+            clickToSelect: true,
+            detailView: true,
+            onExpandRow: function (index, row, detail) {
+                Takım_Bilgileri_Tablo_Doldur(index, row, detail)
+            },
+            onPostBody: function () {
+                $('button[id=İşi_Düzenle]').click(function () {
+                    console.log($(this).attr('value'))
+                    $('#İş_Düzenle_Modal').modal('show')
+
+                    $('#İş_Düzenle_Kaydet_Button').attr('value', $(this).attr('value'))
+                    //İşin_Adı_İnput_Düzenle
+                    var x = {
+                        Id: $(this).attr('value')
+                    }
+                    $.ajax({
+                        url: 'api/İş/İş_Get_By_Id',
+                        type: 'POST',
+                        async: false,
+                        dataType: "json",
+                        data: JSON.stringify(x),
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            $('#İşin_Adı_İnput_Düzenle').val(data.İşin_Adı)
+                        },
+                        error: function (xhr, status, error, title) {
+                            if (xhr.status == 200) {
+                            }
+                            else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Talep Esnasında Bir Hata Oluştur',
+                                    text: 'Hata Kodu:' + xhr.status + '  Hata İçeriği: ' + title,
+                                })
+                            }
+
+                        }
+                    });
+
+
+
+
+
+
                 })
 
-            })
-
-            var variable = '' +
-                '<div class="row" style="padding-top: 25px;" >' +
-                '                    <div class="col-md-10">' +
-                '                    </div>' +
-                '                    <div class="col-md-2">' +
-                '                        <button type="button" Data_Id="' + row.ID + '" id="Yeni_Revize_Ekle_Button' + row.ID + '" class="btn btn-block btn-secondary">' +
-                '                            <i class="fas fa-plus"></i>' +
-                '                            Ekle' +
-                '                        </button>' +
-                '                    </div>' +
-                '                </div>' +
-
-                '';
-
-            detail.append(variable)
-
-
-            $('#Yeni_Revize_Ekle_Button' + row.ID).click(function () {
-                try {
+                $('button[id=İşi_Sil]').click(function () {
                     var x = {
-                        Parça_Id: $('#Yeni_Revize_Ekle_Button' + row.ID).attr('Data_Id'),
+                        Id: $(this).attr('value')
                     }
-
-                }
-                catch (err) {
-                    Swal.fire(
-                        'Lütfen Tüm Alanları Doldurunuz !',
-                        'error'
-                    )
-                }
-
-
-                var Gönderilsinmi = 1;
-
-
-
-
-                if (Gönderilsinmi == 1) {
-
                     $.ajax({
-                        url: 'api/Revize/Revize_Add',
+                        url: 'api/İş/İş_Delete',
                         type: 'POST',
                         async: false,
                         dataType: "json",
                         data: JSON.stringify(x),
                         contentType: "application/json; charset=utf-8",
                         success: function (data) {
-                            $('#Takım_Adı_Div').attr('hidden', 'hidden')
-                            Swal.fire(
-                                'İşlem Başarı İle Veri Tabanına İşlendi',
-                                'İşlem Başarılı',
-                                'success'
-                            )
-                            Revize_Bilgileri_Doldur(index, row, detail)
+                            var İş_Tablosu = $('#İş_Table')
+                            İş_Tablosu_Build(İş_Tablosu, 1, 1)
+
 
                         },
-                        error: function () {
-                            alert('Talep esnasında sorun oluştu.Yeniden deneyin');
+                        error: function (xhr, status, error, title) {
+                            if (xhr.status == 200) {
+                            }
+                            else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Talep Esnasında Bir Hata Oluştur',
+                                    text: 'Hata Kodu:' + xhr.status + '  Hata İçeriği: ' + title,
+                                })
+                            }
+
                         }
                     });
+                })
+            }
+        })
 
-                }
-
-            })
 
 
-        }
-    })
+    };
+
 </script>
+@Html.Partial("İş_Olustur_Folder/İşDüzenle_Modal")
+@Html.Partial("İş_Olustur_Folder/ParçaDüzenle_Modal")
+
+@Html.Partial("İş_Olustur_Folder/TakımDüzenle_Modal")
 
 <div class="row">
     <div class="col">

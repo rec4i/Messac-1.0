@@ -255,9 +255,13 @@
 
 
 
+            Kesim_Türü_Select_Doldu($('#Kesim_Select'), $('#Malzeme_Kesim_Select').find(':selected').attr('value'))
 
+            $('#Malzeme_Kesim_Select').change(function () {
 
+                Kesim_Türü_Select_Doldu($('#Kesim_Select'), $('#Malzeme_Kesim_Select').find(':selected').attr('value'))
 
+            })
 
 
             $('#Malzeme_Parça_Adeti').maskMoney({
@@ -428,6 +432,7 @@
 
 
     }
+
     function Parça_Ağırlığı_Hesapla(Adet, Malzeme_Ağırlığı) {
 
         return Malzeme_Ağırlığı / Adet

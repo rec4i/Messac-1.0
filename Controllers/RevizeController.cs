@@ -61,13 +61,13 @@ namespace qrmenu.Controllers
         }
 
 
-        // [Authorize(Role.Admin)]
-        // [HttpPost("Revize_Get_By_Id")]
-        // public IActionResult Revize_Get_By_Id(Revize x)
-        // {
-        //     var a = _IRevizeService.Revize_Get_By_Id(x);
-        //     return Ok(a);
-        // }
+        [Authorize(Role.Admin)]
+        [HttpPost("Revize_Get_By_Id")]
+        public IActionResult Revize_Get_By_Id(Revize x)
+        {
+            var a = _IRevizeService.Revize_Get_By_Id(x);
+            return Ok(a);
+        }
 
 
     }

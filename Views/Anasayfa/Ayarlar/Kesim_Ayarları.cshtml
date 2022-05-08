@@ -20,7 +20,7 @@
                 success: function (data) {
 
                     Kesim_Türleri_Doldur()
-
+                    Malzeme_Kesim_Türü_Select_Doldur() 
                 },
                 error: function (xhr, status, error) {
                     if (xhr.status == 200) {
@@ -49,8 +49,6 @@
 
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
-                    console.log("KesimTürkeri")
-                    console.log(data)
                     $('#Kesim_Türleri_Div').empty()
                     for (var i = 0; i < data.length; i++) {
                         var myvar = '<div class="row" style="padding-top:25px">' +
@@ -230,6 +228,9 @@
                             });
 
 
+                            Malzeme_Kesim_Türü_Select_Doldur()
+
+
 
 
 
@@ -307,8 +308,6 @@
                                 data: JSON.stringify(x),
                                 contentType: "application/json; charset=utf-8",
                                 success: function (data) {
-                                    console.log("KesimTürlesiisisisiisiis")
-                                    console.log(data)
                                     var temp = data
                                     Temp___ = data
 

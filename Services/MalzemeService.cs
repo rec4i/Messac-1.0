@@ -35,6 +35,8 @@ namespace KaynakKod.Services
 
         Malzeme_Return_Value malzeme_Get_By_Id(Malzeme x);
 
+        List<Malzeme_Return_Value> malzeme_Get_By_Tür_Id(Malzeme x);
+
         List<Malzeme_Return_Value> Malzeme_Get_By_Text(Malzeme x);
 
 
@@ -68,8 +70,8 @@ namespace KaynakKod.Services
         {
             var temp = _context.malzemes;
             var Değer = temp.FirstOrDefault(o => o.Id == x.Id);
-            Değer.Is_Deleted=1;
-           // _context.malzemes.Remove(Değer);
+            Değer.Is_Deleted = 1;
+            // _context.malzemes.Remove(Değer);
             _context.SaveChanges();
 
             return Değer;
@@ -103,7 +105,7 @@ namespace KaynakKod.Services
         {
             var temp = _context.Malzeme_Genel_Adıs;
             var Değer = temp.FirstOrDefault(o => o.Id == x.Id);
-            Değer.Is_Deleted=1;
+            Değer.Is_Deleted = 1;
             //_context.Malzeme_Genel_Adıs.Remove(Değer);
             _context.SaveChanges();
 
@@ -124,13 +126,14 @@ namespace KaynakKod.Services
         public List<Malzeme_Genel_Adı> malzeme_Genel_Adı_Get_All()
         {
             var temp = (from x in _context.Malzeme_Genel_Adıs
-                        where x.Is_Deleted==0
-                        select x                                   
+                        where x.Is_Deleted == 0
+                        select x
             );
 
-            IEnumerable<Malzeme_Genel_Adı> rv = temp.Select(o => new Malzeme_Genel_Adı{
-                Id=o.Id,
-                Malzeme_Genel_Adı_Txt=o.Malzeme_Genel_Adı_Txt
+            IEnumerable<Malzeme_Genel_Adı> rv = temp.Select(o => new Malzeme_Genel_Adı
+            {
+                Id = o.Id,
+                Malzeme_Genel_Adı_Txt = o.Malzeme_Genel_Adı_Txt
             });
 
 
@@ -141,7 +144,7 @@ namespace KaynakKod.Services
         public Malzeme_Genel_Adı malzeme_Genel_Adı_Get_By_Id(Malzeme_Genel_Adı x)
         {
             var temp = _context.Malzeme_Genel_Adıs;
-            var Değer = temp.FirstOrDefault(o => o.Id == x.Id &&o.Is_Deleted ==0);
+            var Değer = temp.FirstOrDefault(o => o.Id == x.Id && o.Is_Deleted == 0);
             return Değer;
         }
 
@@ -157,7 +160,7 @@ namespace KaynakKod.Services
                          join Kesim_Türü in _context.kesim_Türüs
                          on x.Kesim_TürüId equals Kesim_Türü.Id
 
-                        where x.Is_Deleted ==0
+                         where x.Is_Deleted == 0
 
                          select new
                          {
@@ -208,7 +211,7 @@ namespace KaynakKod.Services
 
                          join Kesim_Türü in _context.kesim_Türüs
                          on x.Kesim_TürüId equals Kesim_Türü.Id
-                         where x.Id == malzeme.Id && x.Is_Deleted ==0
+                         where x.Id == malzeme.Id && x.Is_Deleted == 0
                          select new
                          {
                              x.Büküm_Kriteri,
@@ -249,14 +252,14 @@ namespace KaynakKod.Services
 
         public List<Malzeme_Return_Value> Malzeme_Get_By_Text(Malzeme malzeme)
         {
-             var temp = _context.malzemes;
+            var temp = _context.malzemes;
             var Değer = (from x in temp
                          join Malzeme_Adı in _context.Malzeme_Genel_Adıs
                          on x.Kesim_TürüId equals Malzeme_Adı.Id
 
                          join Kesim_Türü in _context.kesim_Türüs
                          on x.Kesim_TürüId equals Kesim_Türü.Id
-                         where x.Malzeme_Cinsi.StartsWith(malzeme.Malzeme_Cinsi) &&  x.Is_Deleted ==0
+                         where x.Malzeme_Cinsi.StartsWith(malzeme.Malzeme_Cinsi) && x.Is_Deleted == 0
                          select new
                          {
                              x.Büküm_Kriteri,
@@ -290,6 +293,54 @@ namespace KaynakKod.Services
 
             });
             return Return_değer.ToList();
+        }
+
+        public List<Malzeme_Return_Value> malzeme_Get_By_Tür_Id(Malzeme y)
+        {
+
+            var temp = _context.malzemes;
+            var Değer = (from x in temp
+                         join Malzeme_Adı in _context.Malzeme_Genel_Adıs
+                         on x.Kesim_TürüId equals Malzeme_Adı.Id
+
+                         join Kesim_Türü in _context.kesim_Türüs
+                         on x.Kesim_TürüId equals Kesim_Türü.Id
+                         where x.Malzeme_Genel_AdıId==y.Malzeme_Genel_AdıId && x.Is_Deleted == 0
+                         select new
+                         {
+                             x.Büküm_Kriteri,
+                             x.Fiyat,
+                             x.Id,
+                             x.Kesim_TürüId,
+                             Kesim_Türü.Kesim_Türü_Txt,
+                             Malzeme_Adı.Malzeme_Genel_Adı_Txt,
+                             x.Malzeme_Genel_AdıId,
+                             x.Özgül_Ağırlık,
+                             x.Malzeme_Cinsi
+                         }
+            );
+            IEnumerable<Malzeme_Return_Value> Return_değer = Değer.Select(o => new Malzeme_Return_Value
+            {
+                Id = o.Id,
+                Malzeme_Cinsi = o.Malzeme_Cinsi,
+                Büküm_Kriteri = o.Büküm_Kriteri,
+                Fiyat = o.Fiyat,
+                Kesim_Türü = new Kesim_Türü
+                {
+                    Id = o.Kesim_TürüId,
+                    Kesim_Türü_Txt = o.Kesim_Türü_Txt
+                },
+                Malzeme_Genel_AdıId = new Malzeme_Genel_Adı
+                {
+                    Id = o.Malzeme_Genel_AdıId,
+                    Malzeme_Genel_Adı_Txt = o.Malzeme_Genel_Adı_Txt
+                },
+                Özgül_Ağırlık = o.Özgül_Ağırlık
+
+            });
+            return Return_değer.ToList();
+
+
         }
     }
 }
