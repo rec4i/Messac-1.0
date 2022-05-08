@@ -1022,7 +1022,7 @@
 
                 }
                 $.ajax({
-                    url: 'api/Büküm_Maliyeti_Saved/Büküm_Maliyeti_Saved_Ağırlık_Add',
+                    url: 'api/Büküm_Maliyeti_Saved/Büküm_Maliyeti_Saved_Adet_Add',
                     type: 'POST',
                     async: false,
                     dataType: "json",
@@ -1121,6 +1121,7 @@
                 Plaka_Maliyeti: Malzeme_Bilgileri.Malzeme_Maliyeti
                 //Parça_Firesiz_Ağırlığı
             }
+            console.log("malzeme bilgilreli clas")
             console.log(x)
             $.ajax({
                 url: 'api/Malzeme_Maliyeti_Saved/Malzeme_Maliyeti_Saved_Add',

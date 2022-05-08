@@ -133,7 +133,7 @@
                         '                              <div class="row" style="padding-top: 25px;">' +
                         '                                    <div class="col-md-8"></div>' +
                         '                                    <div class="col-md-2">' +
-                        '                                        <button type="button" id="Yeni_Zorluk_Ekle_Modal_Aç_Button_' + data[i].id + '"' +
+                        '                                        <button type="button" data_Id="' + data[i].id +'" id="Yeni_Zorluk_Ekle_Modal_Aç_Button_' + data[i].id + '"' +
                         '                                            class="btn btn-block btn-warning">' +
                         '                                            Ekle' +
                         '                                        </button>' +
@@ -178,7 +178,7 @@
                     $('#Yeni_Zorluk_Ekle_Modal_Aç_Button_' + data[i].id).click(function () {
                         $('#Parametre_Modal').modal('hide')
                         $('#Uzunul_Ve_Genişlik_Zorluk_Ekle_Modal').modal('show')
-                        $('#Uzunluk_Ve_Genişlik_Zorluk_Ekle_Kaydet_Modal_Kaydet').attr('Data_Id', Data_Id)
+                        $('#Uzunluk_Ve_Genişlik_Zorluk_Ekle_Kaydet_Modal_Kaydet').attr('Data_Id', $(this).attr('data_Id'))
 
 
                     })

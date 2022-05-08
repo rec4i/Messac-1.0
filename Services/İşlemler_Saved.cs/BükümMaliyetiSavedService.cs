@@ -75,6 +75,28 @@ namespace qrmenu.Services
             }
             catch { }
 
+            try
+            {
+                var temp = _context.Büküm_Maliyeti_Saved_Adets;
+                var Değer = temp.FirstOrDefault(o => o.Revize_Id == x.Revize_Id);
+                _context.Büküm_Maliyeti_Saved_Adets.Remove(Değer);
+                _context.SaveChanges();
+            }
+            catch { }
+            try
+            {
+                var temp = _context.Büküm_Maliyeti_Saved_Uzunluks;
+                var Değer = temp.FirstOrDefault(o => o.Revize_Id == x.Revize_Id);
+                _context.Büküm_Maliyeti_Saved_Uzunluks.Remove(Değer);
+                _context.SaveChanges();
+            }
+            catch (System.Exception)
+            {
+
+            }
+
+
+
 
 
             _context.Büküm_Maliyeti_Saved_Ağırlıks.Add(x);
@@ -153,6 +175,15 @@ namespace qrmenu.Services
 
         public Büküm_Maliyeti_Saved_Adet Büküm_Maliyeti_Saved_Adet_Add(Büküm_Maliyeti_Saved_Adet x)
         {
+              try
+            {
+                var temp = _context.Büküm_Maliyeti_Saved_Ağırlıks;
+                var Değer = temp.FirstOrDefault(o => o.Revize_Id == x.Revize_Id);
+                _context.Büküm_Maliyeti_Saved_Ağırlıks.Remove(Değer);
+                _context.SaveChanges();
+            }
+            catch { }
+
             try
             {
                 var temp = _context.Büküm_Maliyeti_Saved_Adets;
@@ -160,10 +191,19 @@ namespace qrmenu.Services
                 _context.Büküm_Maliyeti_Saved_Adets.Remove(Değer);
                 _context.SaveChanges();
             }
+            catch { }
+            try
+            {
+                var temp = _context.Büküm_Maliyeti_Saved_Uzunluks;
+                var Değer = temp.FirstOrDefault(o => o.Revize_Id == x.Revize_Id);
+                _context.Büküm_Maliyeti_Saved_Uzunluks.Remove(Değer);
+                _context.SaveChanges();
+            }
             catch (System.Exception)
             {
 
             }
+
 
             _context.Büküm_Maliyeti_Saved_Adets.Add(x);
             _context.SaveChanges();
@@ -235,6 +275,23 @@ namespace qrmenu.Services
         public Büküm_Maliyeti_Saved_Uzunluk Büküm_Maliyeti_Saved_Uzunluk_Add(Büküm_Maliyeti_Saved_Uzunluk x)
         {
 
+               try
+            {
+                var temp = _context.Büküm_Maliyeti_Saved_Ağırlıks;
+                var Değer = temp.FirstOrDefault(o => o.Revize_Id == x.Revize_Id);
+                _context.Büküm_Maliyeti_Saved_Ağırlıks.Remove(Değer);
+                _context.SaveChanges();
+            }
+            catch { }
+
+            try
+            {
+                var temp = _context.Büküm_Maliyeti_Saved_Adets;
+                var Değer = temp.FirstOrDefault(o => o.Revize_Id == x.Revize_Id);
+                _context.Büküm_Maliyeti_Saved_Adets.Remove(Değer);
+                _context.SaveChanges();
+            }
+            catch { }
             try
             {
                 var temp = _context.Büküm_Maliyeti_Saved_Uzunluks;
@@ -246,6 +303,7 @@ namespace qrmenu.Services
             {
 
             }
+
 
             _context.Büküm_Maliyeti_Saved_Uzunluks.Add(x);
             _context.SaveChanges();

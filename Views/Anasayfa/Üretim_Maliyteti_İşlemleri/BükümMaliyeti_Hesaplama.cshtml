@@ -234,7 +234,15 @@
         })
 
 
-        //Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Katsayı
+
+
+
+        // $('#Büküm_Hesabı_Uzunluğa_Malzeme_Eni').linkField('#Malzeme_Eni_İnput', '#Büküm_Hesabı_Uzunluğa_Malzeme_Eni')
+        //$('#Büküm_Hesabı_Uzunluğa_Malzeme_Genişliği').linkField('#Malzeme_Boyu_İnput', '#Büküm_Hesabı_Uzunluğa_Malzeme_Genişliği')
+
+
+
+
 
 
         $('#Büküm_Yeni_Adeti_İnput').maskMoney({
@@ -274,6 +282,7 @@
                         $('#Büküm_Hesabı_Uzunluğa_Malzeme_Katayısı').trigger('mask.maskMoney')
 
                         getUzunlukZorluk(data.id)
+                        $('#Büküm_Yeni_Adeti_İnput').trigger('blur')
                     }
                     else {
                         $('#Büküm_Hesabı_Uzunluğa_Malzeme_Katayısı').val("Uygun Katsayı Bulunamadı")
@@ -296,6 +305,7 @@
                     }
 
                 }
+                //$('#Büküm_Yeni_Adeti_İnput').trigger('blur')
             })
 
 
@@ -364,12 +374,15 @@
             }
         })
 
+
+        //,#Büküm_Hesabı_Uzunluğa_Malzeme_Eni,#Büküm_Hesabı_Uzunluğa_Malzeme_Genişliği,#Eninemi_Uzunluğa_Boyunamı_Select,#Büküm_Hesabı_Uzunluğa_Malzeme_Eni
         $('#Büküm_Yeni_Adeti_İnput').on('keyup keypress blur change', function () {
 
             var Result = Adet_İle_Büküm_Hesapla(
                 $('#Büküm_Yeni_Adeti_İnput').val()
                 , $('input[id=Büküm_Yeni_Hesabı_Adet_İle_Büküm_Katsayısı]').maskMoney('unmasked')[0].toFixed(2)
             );
+
 
 
             $('#Büküm_Hesabı_Adet_İle_Büküm_Maliyeti').val(Result.toFixed(2))
@@ -405,14 +418,23 @@
 
 
         })
+        //Eninemi_Uzunluğa_Boyunamı_Select
+
+        $('#Eninemi_Uzunluğa_Boyunamı_Select').change(function () {
+
+
+            Malzeme_Uzunuğuna_Göre_Katsayı_Getir()
+
+        })
+
+
 
         $('#Büküm_Hesabı_Adet_İle_Büküm_Zorluğu_select').change(function () {
 
-            $('#Büküm_Yeni_Hesabı_Adet_İle_Büküm_Katsayısı').val($(this).find('option:selected').attr('Kat_Sayı'))
+            $('#Büküm_Yeni_Hesabı_Adet_İle_Büküm_Katsayısı').val(parseFloat($(this).find('option:selected').attr('Kat_Sayı')).toFixed(2))
             $('#Büküm_Yeni_Hesabı_Adet_İle_Büküm_Katsayısı').maskMoney()
             $('#Büküm_Yeni_Hesabı_Adet_İle_Büküm_Katsayısı').trigger('mask.maskMoney')
-            $('#Büküm_Yeni_Hesabı_Adet_İle_Büküm_Katsayısı').trigger('blur')
-
+            $('#Büküm_Yeni_Adeti_İnput').trigger('blur')
 
 
         })
@@ -420,15 +442,14 @@
 
 
 
-        $('#Büküm_Hesabı_Uzunluğa_Malzeme_Eni,#Büküm_Hesabı_Uzunluğa_Malzeme_Genişliği').on('blur', Malzeme_Uzunuğuna_Göre_Katsayı_Getir)
+        $('#Büküm_Hesabı_Uzunluğa_Malzeme_Eni,#Büküm_Hesabı_Uzunluğa_Malzeme_Genişliği').on('keyup keypress blur change', Malzeme_Uzunuğuna_Göre_Katsayı_Getir)
 
 
         $('#Malzeme_Büküm_Uzunluk_Zorluk_Hesabı').change(function () {
-            $('#Büküm_Hesabı_Uzunluğa_Malzeme_Zorluk_Katayısı').val($(this).find(':selected').attr('zorluk_katsayısı'))
+            $('#Büküm_Hesabı_Uzunluğa_Malzeme_Zorluk_Katayısı').val(parseFloat($(this).find(':selected').attr('zorluk_katsayısı')).toFixed(2))
             $('#Büküm_Hesabı_Uzunluğa_Malzeme_Zorluk_Katayısı').maskMoney()
             $('#Büküm_Hesabı_Uzunluğa_Malzeme_Zorluk_Katayısı').trigger('mask.maskMoney')
-            $('#Büküm_Hesabı_Uzunluğa_Malzeme_Katayısı').trigger('change')
-
+            $('#Büküm_Yeni_Adeti_İnput').trigger('change')
 
         })
 
@@ -450,55 +471,7 @@
 
         $('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Katsayı,#Büküm_Yeni_Hesabı_Adet_İle_Büküm_Katsayısı,#Büküm_Hesabı_Uzunluğa_Malzeme_Katayısı,#Büküm_Hesabı_Uzunluğa_Malzeme_Zorluk_Katayısı').on('keyup keypress blur change', function () {
 
-            var Ağırlık = $('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Büküm_Maliyeti').maskMoney('unmasked')[0].toFixed(2)
-            var Adet = $('#Büküm_Hesabı_Adet_İle_Büküm_Maliyeti').maskMoney('unmasked')[0].toFixed(2)
-            var Uzunluk = $('#Büküm_Hesabı_Uzunluk_İle_Büküm_Maliyeti').maskMoney('unmasked')[0].toFixed(2)
-
-
-            var arr = [parseFloat(Ağırlık), parseFloat(Adet), parseFloat(Uzunluk)];
-
-            var max = Math.max(...arr);
-
-            var indexes = [];
-
-            for (let index = 0; index < arr.length; index++) {
-
-                if (arr[index] === max) {
-                    indexes.push(index);
-                }
-            }
-
-
-            if (indexes[0] == 0) {
-                $('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Büküm_Maliyeti').attr('class', 'form-control is-valid')
-                $('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Büküm_Maliyeti').attr('En_Büyük_Olan', '1')
-
-            }
-            else {
-                $('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Büküm_Maliyeti').attr('class', 'form-control')
-                $('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Büküm_Maliyeti').attr('En_Büyük_Olan', '0')
-            }
-
-            if (indexes[0] == 1) {
-                $('#Büküm_Hesabı_Adet_İle_Büküm_Maliyeti').attr('class', 'form-control is-valid')
-                $('#Büküm_Hesabı_Adet_İle_Büküm_Maliyeti').attr('En_Büyük_Olan', '1')
-            }
-            else {
-                $('#Büküm_Hesabı_Adet_İle_Büküm_Maliyeti').attr('class', 'form-control')
-                $('#Büküm_Hesabı_Adet_İle_Büküm_Maliyeti').attr('En_Büyük_Olan', '0')
-            }
-
-            if (indexes[0] == 2) {
-                $('#Büküm_Hesabı_Uzunluk_İle_Büküm_Maliyeti').attr('class', 'form-control is-valid')
-                $('#Büküm_Hesabı_Uzunluk_İle_Büküm_Maliyeti').attr('En_Büyük_Olan', '1')
-            }
-            else {
-                $('#Büküm_Hesabı_Uzunluk_İle_Büküm_Maliyeti').attr('class', 'form-control')
-                $('#Büküm_Hesabı_Uzunluk_İle_Büküm_Maliyeti').attr('En_Büyük_Olan', '0')
-
-
-            }
-
+            En_Büyüğü_Bul()
 
         })
 
@@ -508,6 +481,59 @@
 
 
 
+
+
+    }
+
+    function En_Büyüğü_Bul() {
+        var Ağırlık = $('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Büküm_Maliyeti').maskMoney('unmasked')[0].toFixed(2)
+        var Adet = $('#Büküm_Hesabı_Adet_İle_Büküm_Maliyeti').maskMoney('unmasked')[0].toFixed(2)
+        var Uzunluk = $('#Büküm_Hesabı_Uzunluk_İle_Büküm_Maliyeti').maskMoney('unmasked')[0].toFixed(2)
+
+
+        var arr = [parseFloat(Ağırlık), parseFloat(Adet), parseFloat(Uzunluk)];
+
+        var max = Math.max(...arr);
+
+        var indexes = [];
+
+        for (let index = 0; index < arr.length; index++) {
+
+            if (arr[index] === max) {
+                indexes.push(index);
+            }
+        }
+
+
+        if (indexes[0] == 0) {
+            $('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Büküm_Maliyeti').attr('class', 'form-control is-valid')
+            $('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Büküm_Maliyeti').attr('En_Büyük_Olan', '1')
+
+        }
+        else {
+            $('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Büküm_Maliyeti').attr('class', 'form-control')
+            $('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Büküm_Maliyeti').attr('En_Büyük_Olan', '0')
+        }
+
+        if (indexes[0] == 1) {
+            $('#Büküm_Hesabı_Adet_İle_Büküm_Maliyeti').attr('class', 'form-control is-valid')
+            $('#Büküm_Hesabı_Adet_İle_Büküm_Maliyeti').attr('En_Büyük_Olan', '1')
+        }
+        else {
+            $('#Büküm_Hesabı_Adet_İle_Büküm_Maliyeti').attr('class', 'form-control')
+            $('#Büküm_Hesabı_Adet_İle_Büküm_Maliyeti').attr('En_Büyük_Olan', '0')
+        }
+
+        if (indexes[0] == 2) {
+            $('#Büküm_Hesabı_Uzunluk_İle_Büküm_Maliyeti').attr('class', 'form-control is-valid')
+            $('#Büküm_Hesabı_Uzunluk_İle_Büküm_Maliyeti').attr('En_Büyük_Olan', '1')
+        }
+        else {
+            $('#Büküm_Hesabı_Uzunluk_İle_Büküm_Maliyeti').attr('class', 'form-control')
+            $('#Büküm_Hesabı_Uzunluk_İle_Büküm_Maliyeti').attr('En_Büyük_Olan', '0')
+
+
+        }
 
 
     }
