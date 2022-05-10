@@ -20,62 +20,62 @@ namespace qrmenu.Controllers
     [Authorize]
     [ApiController]
     [Route("api/[controller]")]
-    public class TesfiyeController : ControllerBase
+    public class TesviyeController : ControllerBase
     {
-        private ITesfiyeService _ITesfiyeService;
-        public TesfiyeController(ITesfiyeService uyeIslemleriServices)
+        private ITesviyeService _ITesviyeService;
+        public TesviyeController(ITesviyeService uyeIslemleriServices)
         {
-            _ITesfiyeService = uyeIslemleriServices;
+            _ITesviyeService = uyeIslemleriServices;
         }
 
         [Authorize(Role.Admin)]
-        [HttpPost("Tesfiye_Add")]
-        public IActionResult Tesfiye_Add(Tesfiye x)
+        [HttpPost("Tesviye_Add")]
+        public IActionResult Tesviye_Add(Tesviye x)
         {
-            var a = _ITesfiyeService.Tesfiye_Add(x);
+            var a = _ITesviyeService.Tesviye_Add(x);
             return Ok(a);
         }
 
 
         [Authorize(Role.Admin)]
-        [HttpPost("Tesfiye_Delete")]
-        public IActionResult Tesfiye_Delete(Tesfiye x)
+        [HttpPost("Tesviye_Delete")]
+        public IActionResult Tesviye_Delete(Tesviye x)
         {
-            var a = _ITesfiyeService.Tesfiye_Delete(x);
+            var a = _ITesviyeService.Tesviye_Delete(x);
             return Ok(a);
         }
 
 
         [Authorize(Role.Admin)]
-        [HttpPost("Tesfiye_Edit")]
-        public IActionResult Tesfiye_Edit(Tesfiye x)
+        [HttpPost("Tesviye_Edit")]
+        public IActionResult Tesviye_Edit(Tesviye x)
         {
-            var a = _ITesfiyeService.Tesfiye_Edit(x);
+            var a = _ITesviyeService.Tesviye_Edit(x);
             return Ok(a);
         }
 
 
         [Authorize(Role.Admin)]
-        [HttpPost("Tesfiye_Get_All")]
-        public IActionResult Tesfiye_Get_All()
+        [HttpPost("Tesviye_Get_All")]
+        public IActionResult Tesviye_Get_All()
         {
-            var a = _ITesfiyeService.Tesfiye_Get_All();
+            var a = _ITesviyeService.Tesviye_Get_All();
             return Ok(a);
         }
 
         [Authorize(Role.Admin)]
-        [HttpPost("Tesfiye_Get_By_Id")]
-        public IActionResult Tesfiye_Get_By_Id(Tesfiye x)
+        [HttpPost("Tesviye_Get_By_Id")]
+        public IActionResult Tesviye_Get_By_Id(Tesviye x)
         {
-            var a = _ITesfiyeService.Tesfiye_Get_By_Id(x);
+            var a = _ITesviyeService.Tesviye_Get_By_Id(x);
             return Ok(a);
         }
 
         [Authorize(Role.Admin)]
-        [HttpPost("Tesfiye_Get_By_Text")]
-        public IActionResult Tesfiye_Get_By_Text(Tesfiye x)
+        [HttpPost("Tesviye_Get_By_Text")]
+        public IActionResult Tesviye_Get_By_Text(Tesviye x)
         {
-            var a = _ITesfiyeService.Tesfiye_Get_By_Text(x);
+            var a = _ITesviyeService.Tesviye_Get_By_Text(x);
             return Ok(a);
         }
 

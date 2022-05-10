@@ -10,8 +10,8 @@ using WebApi.Helpers;
 namespace WebApi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220413014858_Tesfiye_Eklendi")]
-    partial class Tesfiye_Eklendi
+    [Migration("20220413014858_Tesviye_Eklendi")]
+    partial class Tesviye_Eklendi
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -723,7 +723,7 @@ namespace WebApi.Migrations
                     b.ToTable("Kaynaks");
                 });
 
-            modelBuilder.Entity("KaynakKod.Entities.UretimMaliyeti.İşlemler.Tesfiye", b =>
+            modelBuilder.Entity("KaynakKod.Entities.UretimMaliyeti.İşlemler.Tesviye", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -739,12 +739,12 @@ namespace WebApi.Migrations
                     b.Property<decimal>("Maliyet")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("Tesfiye_Türü")
+                    b.Property<string>("Tesviye_Türü")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tesfiyes");
+                    b.ToTable("Tesviyes");
                 });
 
             modelBuilder.Entity("KaynakKod.Entities.İş", b =>

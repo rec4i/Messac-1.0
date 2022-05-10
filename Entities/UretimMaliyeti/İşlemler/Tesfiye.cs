@@ -4,20 +4,20 @@ using qrmenu.Entities;
 
 namespace KaynakKod.Entities.UretimMaliyeti.İşlemler
 {
-    public class Tesfiye
+    public class Tesviye
     {
         [Key]
         public int Id { get; set; }
-        public string Tesfiye_Türü { get; set; }
+        public string Tesviye_Türü { get; set; }
         public int Birim_Id { get; set; }
         public decimal Maliyet { get; set; }
         [DefaultValue(0)]
         public int Is_Deleted { get; set; }
     }
-    public class Tesfiye_Return_Value
+    public class Tesviye_Return_Value
     {
         public int Id { get; set; }
-        public string Tesfiye_Türü { get; set; }
+        public string Tesviye_Türü { get; set; }
         public int Birim_Id { get; set; }
         public Birimler Birim { get; set; }
         public decimal Maliyet { get; set; }

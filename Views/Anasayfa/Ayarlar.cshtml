@@ -2710,9 +2710,9 @@
                     for (i = 0; i < data.length; i++) {
                         $('select[id*=Kesim_Birim_]').append('<option value="'+data[i].id+'">'+data[i].birim_Kısa_ad+'</option>')
                     }
-                     $('select[id=Tesfiye_Birim_Select]').empty()
+                     $('select[id=Tesviye_Birim_Select]').empty()
                     for (i = 0; i < data.length; i++) {
-                        $('select[id=Tesfiye_Birim_Select]').append('<option value="'+data[i].id+'">'+data[i].birim_Kısa_ad+'</option>')
+                        $('select[id=Tesviye_Birim_Select]').append('<option value="'+data[i].id+'">'+data[i].birim_Kısa_ad+'</option>')
                     }
                     $('select[id=Paketleme_Birim_Select]').empty()
                     for (i = 0; i < data.length; i++) {
@@ -2727,7 +2727,7 @@
 
                     })
                    
-                //Tesfiye_Birim_Select
+                //Tesviye_Birim_Select
                     //Kaplama_Birim
 
                     //Kaynak_Birim_Düzenle
@@ -4651,7 +4651,7 @@
             <div class="modal-body">
                 @Html.Partial("Ayarlar/Malzeme_Ayarları")
                 @Html.Partial("Ayarlar/Kesim_Ayarları")
-                @Html.Partial("Ayarlar/Tesfiye_Ayarları")
+                @Html.Partial("Ayarlar/Tesviye_Ayarları")
                 @Html.Partial("Ayarlar/Paketleme_Ayarları")
                 @Html.Partial("Ayarlar/Boya_Ayarları")
                 @Html.Partial("Üretim_Maliyteti_İşlemleri/Bükümİslemler")

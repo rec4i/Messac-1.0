@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 namespace KaynakKod.Entities
 {
-    public class Tesfiye_Maliyeti_Saved
+    public class Tesviye_Maliyeti_Saved
     {
 
         [Key]
@@ -28,7 +28,7 @@ namespace KaynakKod.Entities
 
     }
 
-    public class Tesfiye_Maliyeti_Saved_Retrun_Value
+    public class Tesviye_Maliyeti_Saved_Retrun_Value
     {
 
         [Key]
@@ -49,11 +49,11 @@ namespace KaynakKod.Entities
             set { this._DateCreated = value; }
         }
 
-        public List<Tesfiye_Maliyeti_Saved_Row> Tesfiye_Maliyeti_Saved_Row { get; set; }
+        public List<Tesviye_Maliyeti_Saved_Row> Tesviye_Maliyeti_Saved_Row { get; set; }
 
     }
 
-    public class Tesfiye_Maliyeti_Saved_Row
+    public class Tesviye_Maliyeti_Saved_Row
     {
 
         [Key]
@@ -72,10 +72,10 @@ namespace KaynakKod.Entities
             set { this._DateCreated = value; }
         }
 
-        public int Tesfiye_Maliyeti_Saved_Id { get; set; }
+        public int Tesviye_Maliyeti_Saved_Id { get; set; }
 
 
-        public string Tesfiye_Türü { get; set; }
+        public string Tesviye_Türü { get; set; }
 
         public string Birim { get; set; }
 

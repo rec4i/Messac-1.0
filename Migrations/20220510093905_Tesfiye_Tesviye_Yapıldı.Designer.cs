@@ -10,8 +10,8 @@ using WebApi.Helpers;
 namespace WebApi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220419011034_Paketleme_Eklendi")]
-    partial class Paketleme_Eklendi
+    [Migration("20220510093905_Tesfiye_Tesviye_Yapıldı")]
+    partial class Tesfiye_Tesviye_Yapıldı
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,39 @@ namespace WebApi.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.9")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("DataAccess.Model.FileDescription", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ContentType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedTimestamp")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FileGuid")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FileName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Revize_Id")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedTimestamp")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FileDescriptions");
+                });
 
             modelBuilder.Entity("KaynakKod.Entities.Bağlantı_Elemanı_Saved", b =>
                 {
@@ -73,9 +106,69 @@ namespace WebApi.Migrations
                     b.Property<decimal>("Toplam_Fiyat")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<decimal>("İşçilik_Maliyeti")
+                        .HasColumnType("decimal(18,2)");
+
                     b.HasKey("Id");
 
                     b.ToTable("Bağlantı_Elemanı_Saved_Rows");
+                });
+
+            modelBuilder.Entity("KaynakKod.Entities.Boya_Maliyeti_Saved", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Is_Deleted")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Olusturlma_Tarihi")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Revize_Id")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Boya_Maliyeti_Saveds");
+                });
+
+            modelBuilder.Entity("KaynakKod.Entities.Boya_Maliyeti_Saved_Row", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<decimal>("Adet")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Birim")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Birim_Fiyat")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("Boya_Maliyeti_Saved_Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Boya_Türü")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Is_Deleted")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Olusturlma_Tarihi")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("Toplam_Fiyat")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Boya_Maliyeti_Saved_Rows");
                 });
 
             modelBuilder.Entity("KaynakKod.Entities.Büküm_Maliyeti_Saved_Adet", b =>
@@ -504,6 +597,63 @@ namespace WebApi.Migrations
                     b.ToTable("Malzeme_Maliyeti_Selecteds");
                 });
 
+            modelBuilder.Entity("KaynakKod.Entities.Paketleme_Maliyeti_Saved", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Is_Deleted")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Olusturlma_Tarihi")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Revize_Id")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Paketleme_Maliyeti_Saveds");
+                });
+
+            modelBuilder.Entity("KaynakKod.Entities.Paketleme_Maliyeti_Saved_Row", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<decimal>("Adet")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Birim")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Birim_Fiyat")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("Is_Deleted")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Olusturlma_Tarihi")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Paketleme_Maliyeti_Saved_Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Paketleme_Türü")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Toplam_Fiyat")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Paketleme_Maliyeti_Saved_Rows");
+                });
+
             modelBuilder.Entity("KaynakKod.Entities.Parça", b =>
                 {
                     b.Property<int>("Id")
@@ -516,6 +666,9 @@ namespace WebApi.Migrations
 
                     b.Property<DateTime>("Olusturlma_Tarihi")
                         .HasColumnType("datetime2");
+
+                    b.Property<decimal>("Parça_Adeti")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Parça_Adı")
                         .HasColumnType("nvarchar(max)");
@@ -555,6 +708,9 @@ namespace WebApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<decimal>("Evrak_Maliyeti")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("Is_Deleted")
                         .HasColumnType("int");
@@ -664,6 +820,9 @@ namespace WebApi.Migrations
                     b.Property<decimal>("Malzeme_Maliyeti")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<string>("O_Günki_Kur")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("Olusturlma_Tarihi")
                         .HasColumnType("datetime2");
 
@@ -671,6 +830,9 @@ namespace WebApi.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("Parça_Toplam_Maliyeti")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("Parça_Toplam_Maliyeti_Güncel_Kur")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("Revize_Id")
@@ -708,6 +870,9 @@ namespace WebApi.Migrations
 
                     b.Property<int>("Is_Deleted")
                         .HasColumnType("int");
+
+                    b.Property<decimal>("İşçilik_Maliyeti")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 

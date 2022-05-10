@@ -78,8 +78,8 @@
             console.log(Get_Dıs_Operasyon_Maliyeti())
             Wtrite_Db_Dıs_Operasyon_Bilgileri(Get_Dıs_Operasyon_Maliyeti(), $(this).attr('Revize_Id'))
 
-            console.log(Get_Tesfiye_Bilgileri())
-            Wtrite_Db_Tesfiye_Bilgileri(Get_Tesfiye_Bilgileri(), $(this).attr('Revize_Id'))
+            console.log(Get_Tesviye_Bilgileri())
+            Wtrite_Db_Tesviye_Bilgileri(Get_Tesviye_Bilgileri(), $(this).attr('Revize_Id'))
 
 
             console.log(Get_Paketleme_Bilgileri())
@@ -335,7 +335,7 @@
 
 
     }
-    function Wtrite_Db_Tesfiye_Bilgileri(Kaplama_Bilgileri, Revize_Id) {
+    function Wtrite_Db_Tesviye_Bilgileri(Kaplama_Bilgileri, Revize_Id) {
 
         if (Kaplama_Bilgileri != []) {
             var Row_Id = "";
@@ -343,7 +343,7 @@
                 Revize_Id: Revize_Id
             }
             $.ajax({
-                url: 'api/TesfiyeSaved/Tesfiye_Maliyeti_Saved_Add',
+                url: 'api/TesviyeSaved/Tesviye_Maliyeti_Saved_Add',
                 type: 'POST',
                 async: false,
                 dataType: "json",
@@ -373,8 +373,8 @@
             for (var i = 0; i < Kaplama_Bilgileri.length; i++) {
                 var x = {
 
-                    Tesfiye_Maliyeti_Saved_Id: Row_Id,
-                    Tesfiye_Türü: Kaplama_Bilgileri[i].Tesfiye_Türü,
+                    Tesviye_Maliyeti_Saved_Id: Row_Id,
+                    Tesviye_Türü: Kaplama_Bilgileri[i].Tesviye_Türü,
                     Birim: Kaplama_Bilgileri[i].Birim,
                     Birim_Fiyat: Kaplama_Bilgileri[i].Maliyet,
                     Adet: Kaplama_Bilgileri[i].Adet,
@@ -384,7 +384,7 @@
                 //BağlantıElemanıSaved_Row_Add
 
                 $.ajax({
-                    url: 'api/TesfiyeSaved/Tesfiye_Maliyeti_Saved_Row_Add',
+                    url: 'api/TesviyeSaved/Tesviye_Maliyeti_Saved_Row_Add',
                     type: 'POST',
                     async: false,
                     dataType: "json",

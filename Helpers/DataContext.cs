@@ -96,10 +96,10 @@ namespace WebApi.Helpers
 
 
 
-        public DbSet<Tesfiye> Tesfiyes { get; set; }
-        public DbSet<Tesfiye_Maliyeti_Saved> Tesfiye_Maliyeti_Saveds { get; set; }
+        public DbSet<Tesviye> Tesviyes { get; set; }
+        public DbSet<Tesviye_Maliyeti_Saved> Tesviye_Maliyeti_Saveds { get; set; }
 
-        public DbSet<Tesfiye_Maliyeti_Saved_Row> Tesfiye_Maliyeti_Saved_Rows { get; set; }
+        public DbSet<Tesviye_Maliyeti_Saved_Row> Tesviye_Maliyeti_Saved_Rows { get; set; }
 
         public DbSet<Boya> Boyas { get; set; }
 

@@ -93,8 +93,8 @@ namespace WebApi
             services.AddScoped<IKaplamaMaliyetiServiceSavedService, KaplamaMaliyetiServiceSavedService>();
             services.AddScoped<IToplam_Maliyet_SavedService, Toplam_Maliyet_SavedService>();
             services.AddScoped<IDısOperasyonMaliyetiSavedService, DısOperasyonMaliyetiSavedService>();
-            services.AddScoped<ITesfiyeService, TesfiyeService>();
-            services.AddScoped<ITesfiyeSavedService, TesfiyeSavedService>();
+            services.AddScoped<ITesviyeService, TesviyeService>();
+            services.AddScoped<ITesviyeSavedService, TesviyeSavedService>();
             services.AddScoped<IBoyaService, BoyaService>();
             services.AddScoped<IPaketlemeService, PaketlemeService>();
             services.AddScoped<IPaketlemeSavedService, PaketlemeSavedService>();

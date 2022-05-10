@@ -1,42 +1,42 @@
 <script>
     $(document).ready(function () {
-        $('#Tesfiye_Birim_Fiyat_İnput').maskMoney()
-        var $table = $('#Tesfiye_Table')
-        Tesfiye_Tablo_Doldur($table, 0, 0, 0)
+        $('#Tesviye_Birim_Fiyat_İnput').maskMoney()
+        var $table = $('#Tesviye_Table')
+        Tesviye_Tablo_Doldur($table, 0, 0, 0)
 
-        $('#Tesfiye_Ekle_Button').click(function () {
+        $('#Tesviye_Ekle_Button').click(function () {
             var Gönderilsinmi = 1;
             var x = {
-                Tesfiye_Türü: $('#Tesfiye_Adı_İnpuıt').val(),
-                Birim_Id: $('#Tesfiye_Birim_Select').find('option:selected').attr('value'),
-                Maliyet: $('#Tesfiye_Birim_Fiyat_İnput').maskMoney('unmasked')[0].toFixed(2)
+                Tesviye_Türü: $('#Tesviye_Adı_İnpuıt').val(),
+                Birim_Id: $('#Tesviye_Birim_Select').find('option:selected').attr('value'),
+                Maliyet: $('#Tesviye_Birim_Fiyat_İnput').maskMoney('unmasked')[0].toFixed(2)
             }
-            if (x.Tesfiye_Türü == "") {
+            if (x.Tesviye_Türü == "") {
                 Gönderilsinmi = 0;
-                $('#Tesfiye_Adı_İnpuıt').attr('class', 'form-control is-invalid')
+                $('#Tesviye_Adı_İnpuıt').attr('class', 'form-control is-invalid')
             }
             else {
 
-                $('#Tesfiye_Adı_İnpuıt').attr('class', 'form-control')
+                $('#Tesviye_Adı_İnpuıt').attr('class', 'form-control')
                 Gönderilsinmi = 1;
             }
 
             if (x.Maliyet == "") {
-                $('#Tesfiye_Birim_Fiyat_İnput').attr('class', 'form-control is-invalid')
+                $('#Tesviye_Birim_Fiyat_İnput').attr('class', 'form-control is-invalid')
                 Gönderilsinmi = 0;
             }
             else {
                 Gönderilsinmi = 1;
-                $('#Tesfiye_Birim_Fiyat_İnput').attr('class', 'form-control')
+                $('#Tesviye_Birim_Fiyat_İnput').attr('class', 'form-control')
             }
 
             if (x.Birim_Id == undefined) {
                 Gönderilsinmi = 0;
-                $('#Tesfiye_Birim_Select').attr('class', 'form-control is-invalid')
+                $('#Tesviye_Birim_Select').attr('class', 'form-control is-invalid')
             }
             else {
                 Gönderilsinmi = 1;
-                $('#Tesfiye_Birim_Select').attr('class', 'form-control')
+                $('#Tesviye_Birim_Select').attr('class', 'form-control')
             }
 
 
@@ -47,7 +47,7 @@
 
             if (Gönderilsinmi == 1) {
                 $.ajax({
-                    url: 'api/Tesfiye/Tesfiye_Add',
+                    url: 'api/Tesviye/Tesviye_Add',
                     type: 'POST',
                     async: false,
                     dataType: "json",
@@ -57,8 +57,8 @@
 
 
 
-                        var $table = $('#Tesfiye_Table')
-                        Tesfiye_Tablo_Doldur($table, 0, 0, 0)
+                        var $table = $('#Tesviye_Table')
+                        Tesviye_Tablo_Doldur($table, 0, 0, 0)
                         //
 
                     },
@@ -83,7 +83,7 @@
 
     })
 
-    function Tesfiye_Tablo_Doldur($el, cells, rows) {
+    function Tesviye_Tablo_Doldur($el, cells, rows) {
 
         $el.bootstrapTable('destroy');
 
@@ -97,8 +97,8 @@
             sortable: true
         })
         columns.push({
-            field: 'Tesfiye_Türü',
-            title: 'Tesfiye Türü',
+            field: 'Tesviye_Türü',
+            title: 'Tesviye Türü',
             sortable: true
         })
 
@@ -124,7 +124,7 @@
 
 
         $.ajax({
-            url: 'api/Tesfiye/Tesfiye_Get_All',
+            url: 'api/Tesviye/Tesviye_Get_All',
             type: 'POST',
             async: false,
             dataType: "json",
@@ -137,7 +137,7 @@
                 for (i = 0; i < temp.length; i++) {
                     row = {}
                     var Fiyatı = '' +
-                        '<input   id="Tesfiye_Maliye_Tablo_İnput" class="form-control" data-thousands="." data-decimal=","' +
+                        '<input   id="Tesviye_Maliye_Tablo_İnput" class="form-control" data-thousands="." data-decimal=","' +
                         '                                           value="' + temp[i].maliyet.toFixed(2) + '"         data-suffix=" ₺" type="text"' +
                         '                                                      />' +
                         '';
@@ -146,11 +146,11 @@
 
 
                     row['ID'] = temp[i].id
-                    row['Tesfiye_Türü'] = temp[i].tesfiye_Türü
+                    row['Tesviye_Türü'] = temp[i].tesviye_Türü
                     row['Birim'] = temp[i].birim.birim_Kısa_ad
                     row['Fiyat'] = Fiyatı
-                    row['Sil'] = '<button class="btn btn-danger" Tesfiye_Id="' + temp[i].id + '"  id="Tesfiye_Sil_Btn"><i class="fa fa-trash"></i></button>'
-                    row['Düzenle'] = '<button class="btn btn-block btn-warning" Kaynak_Id="' + temp[i].id + '" id="Tesfiye_Düzenle">Düzenle</button>'
+                    row['Sil'] = '<button class="btn btn-danger" Tesviye_Id="' + temp[i].id + '"  id="Tesviye_Sil_Btn"><i class="fa fa-trash"></i></button>'
+                    row['Düzenle'] = '<button class="btn btn-block btn-warning" Kaynak_Id="' + temp[i].id + '" id="Tesviye_Düzenle">Düzenle</button>'
 
                     data__.push(row)
 
@@ -169,15 +169,15 @@
             data: data__,
             onPostBody: function (data) {
                 console.log(data)
-                $('#Tesfiye_Maliye_Tablo_İnput').maskMoney();
-                $('#Tesfiye_Maliye_Tablo_İnput').trigger('mask.maskMoney');
-                $('#Tesfiye_Maliye_Tablo_İnput').attr("disabled", 'true');
+                $('#Tesviye_Maliye_Tablo_İnput').maskMoney();
+                $('#Tesviye_Maliye_Tablo_İnput').trigger('mask.maskMoney');
+                $('#Tesviye_Maliye_Tablo_İnput').attr("disabled", 'true');
 
             }
 
         })
 
-        $('button[id=Tesfiye_Sil_Btn]').click(function () {
+        $('button[id=Tesviye_Sil_Btn]').click(function () {
             console.log("sdadsa")
             Swal.fire({
                 title: 'Silmek İstediğinizden Eminmisiniz ?',
@@ -191,10 +191,10 @@
                 if (result.isConfirmed) {
 
                     var x = {
-                        id: $(this).attr('Tesfiye_Id')
+                        id: $(this).attr('Tesviye_Id')
                     }
                     $.ajax({
-                        url: 'api/Tesfiye/Tesfiye_Delete',
+                        url: 'api/Tesviye/Tesviye_Delete',
                         type: 'POST',
                         async: false,
                         dataType: "json",
@@ -203,8 +203,8 @@
                         success: function (data) {
                             //Uzunluk_Fiyat_Table_'+data[i].id
 
-                            var $table = $('#Tesfiye_Table')
-                            Tesfiye_Tablo_Doldur($table, 0, 0, 0)
+                            var $table = $('#Tesviye_Table')
+                            Tesviye_Tablo_Doldur($table, 0, 0, 0)
 
 
                             Swal.fire(
@@ -234,7 +234,7 @@
 
 
         })
-        $('#Tesfiye_Düzenle').click(function () {
+        $('#Tesviye_Düzenle').click(function () {
             $('#Parametre_Modal').modal('hide')
             $('#Kaynak_Düzenle_modal').modal('show')
             $('#Kaynak_Düzenle_Kaydet_Button').attr('Kaynak_Id', $(this).attr('Kaynak_Id'))
@@ -258,7 +258,7 @@
     <div class="col-lg-12">
         <div class="card card-danger collapsed-card">
             <div class="card-header">
-                <h3 class="card-title">Tesfiye</h3>
+                <h3 class="card-title">Tesviye</h3>
                 <div class="card-tools">
                     <button type="button" class="btn btn-tool" data-card-widget="collapse">
                         <i class="fas fa-plus"></i>
@@ -269,24 +269,24 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-group">
-                            <input id="Tesfiye_Adı_İnpuıt" class="form-control form-control" type="text"
-                                placeholder="Tesfiye Adı">
+                            <input id="Tesviye_Adı_İnpuıt" class="form-control form-control" type="text"
+                                placeholder="Tesviye Adı">
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <select class="form-control" id="Tesfiye_Birim_Select">
+                            <select class="form-control" id="Tesviye_Birim_Select">
                             </select>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <input id="Tesfiye_Birim_Fiyat_İnput" data-thousands="." data-decimal="," data-suffix=" ₺"
+                            <input id="Tesviye_Birim_Fiyat_İnput" data-thousands="." data-decimal="," data-suffix=" ₺"
                                 class="form-control form-control" type="text" placeholder="Birim Fiyatı">
                         </div>
                     </div>
                     <div class="col-md-2">
-                        <button type="button" id="Tesfiye_Ekle_Button" İşlem="0" class="btn btn-primary btn-block">
+                        <button type="button" id="Tesviye_Ekle_Button" İşlem="0" class="btn btn-primary btn-block">
                             Ekle
                         </button>
                     </div>
@@ -294,7 +294,7 @@
                 <div id="Tesviye_Div">
                     <div class="row">
                         <div class="col-md-12">
-                            <table id="Tesfiye_Table"></table>
+                            <table id="Tesviye_Table"></table>
                         </div>
                     </div>
                 </div>

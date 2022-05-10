@@ -85,7 +85,7 @@
                         Return_Bağlantı_Elemanları_Pdf_Table(),
                         Return_Kaplama_Maliyet_Pdf_Table(),
                         Return_Dıs_Operasyonlar_Pdf_Table(),
-                        Return_Tesfiye_Pdf_Table(),
+                        Return_Tesviye_Pdf_Table(),
                         Return_Paketleme_Pdf_Table(),
                         Return_Boya_Pdf_Table(),
                         Retrun_Toplam_Maliyet_Bilgiler(),
@@ -725,14 +725,14 @@
 
 
     }
-    function Return_Tesfiye_Pdf_Table() {
-        var Bağlantı_Elemanları_Value = Get_Tesfiye_Bilgileri()
+    function Return_Tesviye_Pdf_Table() {
+        var Bağlantı_Elemanları_Value = Get_Tesviye_Bilgileri()
         var bağlantı_Elemanları
 
         if (Bağlantı_Elemanları_Value.length > 0 ) {
             var Satırlar = []
             Satırlar.push([
-                { border: [false, false, false, false], text: 'Tesfiye Maliyeti', colSpan: 5, alignment: 'center' },
+                { border: [false, false, false, false], text: 'Tesviye Maliyeti', colSpan: 5, alignment: 'center' },
                 {},
                 {},
                 {},
@@ -740,7 +740,7 @@
 
             ])
             Satırlar.push([
-                { text: 'Tesfiye Türü', style: 'tableHeader', alignment: 'center' },
+                { text: 'Tesviye Türü', style: 'tableHeader', alignment: 'center' },
                 { text: 'Birim', style: 'tableHeader', alignment: 'center' },
                 { text: 'Birim Maliyeti', style: 'tableHeader', alignment: 'center' },
                 { text: 'Birim Adet', style: 'tableHeader', alignment: 'center' },
@@ -750,7 +750,7 @@
 
             for (var i = 0; i < Bağlantı_Elemanları_Value.length; i++) {
                 var x = [
-                    { text: Bağlantı_Elemanları_Value[i].Tesfiye_Türü, alignment: 'left' },
+                    { text: Bağlantı_Elemanları_Value[i].Tesviye_Türü, alignment: 'left' },
                     { text: Bağlantı_Elemanları_Value[i].Birim + ' ₺', alignment: 'left' },
                     { text: Bağlantı_Elemanları_Value[i].Maliyet + ' ₺', alignment: 'left' },
                     { text: Bağlantı_Elemanları_Value[i].Adet, alignment: 'left' },
@@ -786,18 +786,18 @@
 
     }
 
-    function Get_Tesfiye_Bilgileri() {
+    function Get_Tesviye_Bilgileri() {
 
         var x = [];
-        $('div[name*=Tesfiye_Satır_Row]').each(function () {
+        $('div[name*=Tesviye_Satır_Row]').each(function () {
 
-            //Tesfiye_Birimi_
+            //Tesviye_Birimi_
             var y = {
-                Tesfiye_Türü: $(this).find('input[id*=Tesfiye_Türü_]').val(),
-                Maliyet: $(this).find('input[id*=Tesfiye_Maliyeti_]').maskMoney('unmasked')[0].toFixed(2),
-                Birim: $(this).find('input[id*=Tesfiye_Birimi_]').val(),
+                Tesviye_Türü: $(this).find('input[id*=Tesviye_Türü_]').val(),
+                Maliyet: $(this).find('input[id*=Tesviye_Maliyeti_]').maskMoney('unmasked')[0].toFixed(2),
+                Birim: $(this).find('input[id*=Tesviye_Birimi_]').val(),
                 Adet: $(this).find('input[id*=Tefsiye_Adeti_]').maskMoney('unmasked')[0].toFixed(2),
-                Toplam_Fiyat: $(this).find('input[id*=Tesfiye_Toplam_Fiyat]').maskMoney('unmasked')[0].toFixed(2),
+                Toplam_Fiyat: $(this).find('input[id*=Tesviye_Toplam_Fiyat]').maskMoney('unmasked')[0].toFixed(2),
             }
             x.push(y)
 
@@ -872,7 +872,7 @@
         var x = [];
         $('div[name*=Paketleme_Satır_Row]').each(function () {
 
-            //Tesfiye_Birimi_
+            //Tesviye_Birimi_
             var y = {
                 Paketleme_Türü: $(this).find('input[id*=Paketleme_Türü_]').val(),
                 Maliyet: $(this).find('input[id*=Paketleme_Maliyeti_]').maskMoney('unmasked')[0].toFixed(2),
@@ -951,7 +951,7 @@
         var x = [];
         $('div[name*=Boya_Satır_Row]').each(function () {
 
-            //Tesfiye_Birimi_
+            //Tesviye_Birimi_
             var y = {
                 Boya_Text: $(this).find('input[id*=Boya_Türü_]').val(),
                 Maliyet: $(this).find('input[id*=Boya_Maliyeti_]').maskMoney('unmasked')[0].toFixed(2),
@@ -2233,11 +2233,11 @@
 
 
         }
-        if (işlem_Adı == "Tesfiye Maliyeti") {
+        if (işlem_Adı == "Tesviye Maliyeti") {
 
             try {
                 var Toplam = 0;//Bağlantı_Elemanı_Satır_Toplamı
-                var Maliyetler = Get_Tesfiye_Bilgileri()
+                var Maliyetler = Get_Tesviye_Bilgileri()
                 for (var i = 0; i < Maliyetler.length; i++) {
                     Toplam += parseFloat(Maliyetler[i].Toplam_Fiyat)
                 }

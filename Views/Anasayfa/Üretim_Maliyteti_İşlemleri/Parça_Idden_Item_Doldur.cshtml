@@ -42,7 +42,7 @@
         console.log(Revize_Id)
         Malzeme_Maliyeti_Varmı(Revize_Id)
         Kesim_Maliyeti_Varmı(Revize_Id)
-        Tesfiye_Varmı(Revize_Id)
+        Tesviye_Varmı(Revize_Id)
         Büküm_Maliyeti_Varmı(Revize_Id)
         Kaynak_Maliyeti_Varmı(Revize_Id)
         Bağlantı_Elemanı_Maliyeti_Varmı(Revize_Id)
@@ -172,7 +172,7 @@
 
 
     }
-    function Tesfiye_Varmı(Revize_Id) {
+    function Tesviye_Varmı(Revize_Id) {
 
 
         var x = {
@@ -180,7 +180,7 @@
         }
         var Dıs_Operasyon_Data;
         $.ajax({
-            url: 'api/TesfiyeSaved/Tesfiye_Maliyeti_Saved_Get_By_Parça_Id',
+            url: 'api/TesviyeSaved/Tesviye_Maliyeti_Saved_Get_By_Parça_Id',
             type: 'POST',
             async: false,
             dataType: "json",
@@ -208,13 +208,13 @@
 
 
         try {
-            if (Dıs_Operasyon_Data[0].tesfiye_Maliyeti_Saved_Row.length > 0) {
+            if (Dıs_Operasyon_Data[0].tesviye_Maliyeti_Saved_Row.length > 0) {
                 Tesfitye_İnterval = setInterval(function (Dıs_Operasyon_Data) {
 
 
-                    $('#Yeni_Tesfiye_Ekle').trigger('click')
-                    for (var i = 0; i < Dıs_Operasyon_Data[0].tesfiye_Maliyeti_Saved_Row.length; i++) {
-                        Tesfiye_Satır_Ekle(Dıs_Operasyon_Data[0].tesfiye_Maliyeti_Saved_Row[i])
+                    $('#Yeni_Tesviye_Ekle').trigger('click')
+                    for (var i = 0; i < Dıs_Operasyon_Data[0].tesviye_Maliyeti_Saved_Row.length; i++) {
+                        Tesviye_Satır_Ekle(Dıs_Operasyon_Data[0].tesviye_Maliyeti_Saved_Row[i])
                     }
 
 
@@ -444,9 +444,9 @@
 
         })
     }
-    function Tesfiye_Satır_Ekle(Data) {
-        $("#Tesfiye_Select").attr('son_eklenen_satır', parseInt($("#Tesfiye_Select").attr('son_eklenen_satır')) + 1)
-        var row_İndex = $("#Tesfiye_Select").attr('son_eklenen_satır')
+    function Tesviye_Satır_Ekle(Data) {
+        $("#Tesviye_Select").attr('son_eklenen_satır', parseInt($("#Tesviye_Select").attr('son_eklenen_satır')) + 1)
+        var row_İndex = $("#Tesviye_Select").attr('son_eklenen_satır')
 
 
 
@@ -457,18 +457,18 @@
 
 
         var Kaynak_Satır = '' +
-            ' <div class="row" style="padding-top: 25px;" name="Tesfiye_Satır_Row" row_Id="' + row_İndex + '" >' +
+            ' <div class="row" style="padding-top: 25px;" name="Tesviye_Satır_Row" row_Id="' + row_İndex + '" >' +
             '                                                            <div class="col-md-3">' +
-            '                                                                <input type="text" class="form-control" data_Id="' + Gelen_Data.id + '" id="Tesfiye_Türü_' + row_İndex + '"' +
-            '                                                                    placeholder="Tesfiye Türü" value="' + Gelen_Data.tesfiye_Türü + '" disabled>' +
+            '                                                                <input type="text" class="form-control" data_Id="' + Gelen_Data.id + '" id="Tesviye_Türü_' + row_İndex + '"' +
+            '                                                                    placeholder="Tesviye Türü" value="' + Gelen_Data.tesviye_Türü + '" disabled>' +
             '                                                            </div>' +
             '                                                            <div class="col-md-2">' +
             '                                                                <input type="text" class="form-control"' +
-            '                                                                    placeholder="Birim Fiyatı" value="' + Gelen_Data.birim_Fiyat.toFixed(2) + '"  data-thousands="." data-decimal="," data-suffix=" ₺" id="Tesfiye_Maliyeti_' + row_İndex + '">' +
+            '                                                                    placeholder="Birim Fiyatı" value="' + Gelen_Data.birim_Fiyat.toFixed(2) + '"  data-thousands="." data-decimal="," data-suffix=" ₺" id="Tesviye_Maliyeti_' + row_İndex + '">' +
             '                                                            </div>' +
             '                                                            <div class="col-md-2">' +
             '                                                                <input type="text" class="form-control"' +
-            '                                                                    placeholder="Birim" id="Tesfiye_Birimi_' + row_İndex + '" value="' + Gelen_Data.birim + '" disabled>' +
+            '                                                                    placeholder="Birim" id="Tesviye_Birimi_' + row_İndex + '" value="' + Gelen_Data.birim + '" disabled>' +
             '                                                            </div>' +
             '                                                            <div class="col-md-2">' +
             '                                                                <input type="text" class="form-control"' +//Adet
@@ -476,10 +476,10 @@
             '                                                            </div>' +
             '                                                            <div class="col-md-2">' +
             '                                                                <input type="text" class="form-control"' +
-            '                                                                  data-thousands="." disabled data-decimal="," data-suffix=" ₺"   placeholder="Toplam Fiyat"  value="' + Gelen_Data.toplam_Fiyat.toFixed(2) + '" id="Tesfiye_Toplam_Fiyat' + row_İndex + '">' +
+            '                                                                  data-thousands="." disabled data-decimal="," data-suffix=" ₺"   placeholder="Toplam Fiyat"  value="' + Gelen_Data.toplam_Fiyat.toFixed(2) + '" id="Tesviye_Toplam_Fiyat' + row_İndex + '">' +
             '                                                            </div>' +
             '                                                            <div class="col-md-1">' +
-            '                                                                <button type="button" id="Tesfiye_Satır_Sil_' + row_İndex + '"' +
+            '                                                                <button type="button" id="Tesviye_Satır_Sil_' + row_İndex + '"' +
             '                                                                    class="btn btn-danger btn-block">' +
             '                                                                    <i class="fas fa-trash"></i>' +
             '                                                                    Sil' +
@@ -487,33 +487,33 @@
             '                                                            </div>' +
             '                                                        </div>' +
             '';
-        $('#Tesfiye_Div').append(Kaynak_Satır)
+        $('#Tesviye_Div').append(Kaynak_Satır)
 
-        $('#Tesfiye_Maliyeti_' + row_İndex).maskMoney();
-        $('#Tesfiye_Maliyeti_' + row_İndex).trigger('mask.maskMoney');
+        $('#Tesviye_Maliyeti_' + row_İndex).maskMoney();
+        $('#Tesviye_Maliyeti_' + row_İndex).trigger('mask.maskMoney');
 
         $('#Tefsiye_Adeti_' + row_İndex).maskMoney();
         $('#Tefsiye_Adeti_' + row_İndex).trigger('mask.maskMoney');
 
 
-        $('#Tesfiye_Toplam_Fiyat' + row_İndex).maskMoney();
-        $('#Tesfiye_Toplam_Fiyat' + row_İndex).trigger('mask.maskMoney');
+        $('#Tesviye_Toplam_Fiyat' + row_İndex).maskMoney();
+        $('#Tesviye_Toplam_Fiyat' + row_İndex).trigger('mask.maskMoney');
         //Kaynak_Birim_Adeti_
         //Kaynak_Toplam_Fiyat_
-        $('#Tesfiye_Satır_Sil_' + row_İndex).click(function () {
+        $('#Tesviye_Satır_Sil_' + row_İndex).click(function () {
             $(this).parent().parent().remove()
         })
 
-        $('#Tefsiye_Adeti_' + row_İndex + ',#Tesfiye_Maliyeti_' + row_İndex).on('keyup keypress blur change', function () {
+        $('#Tefsiye_Adeti_' + row_İndex + ',#Tesviye_Maliyeti_' + row_İndex).on('keyup keypress blur change', function () {
 
             var rv = Toplam_Fiyat_Hesapla($('#Tefsiye_Adeti_' + row_İndex).maskMoney('unmasked')[0].toFixed(2)
 
-                , $('#Tesfiye_Maliyeti_' + row_İndex).maskMoney('unmasked')[0].toFixed(2))
+                , $('#Tesviye_Maliyeti_' + row_İndex).maskMoney('unmasked')[0].toFixed(2))
 
             console.log(rv)
-            $('#Tesfiye_Toplam_Fiyat' + row_İndex).val(rv.toFixed(2));
-            $('#Tesfiye_Toplam_Fiyat' + row_İndex).maskMoney();
-            $('#Tesfiye_Toplam_Fiyat' + row_İndex).trigger('mask.maskMoney');
+            $('#Tesviye_Toplam_Fiyat' + row_İndex).val(rv.toFixed(2));
+            $('#Tesviye_Toplam_Fiyat' + row_İndex).maskMoney();
+            $('#Tesviye_Toplam_Fiyat' + row_İndex).trigger('mask.maskMoney');
 
 
 

@@ -13,19 +13,19 @@ using KaynakKod.Entities.UretimMaliyeti.İşlemler;
 
 namespace qrmenu.Services
 {
-    public interface ITesfiyeService
+    public interface ITesviyeService
     {
-        Tesfiye Tesfiye_Add(Tesfiye x);
-        Tesfiye Tesfiye_Delete(Tesfiye x);
-        Tesfiye Tesfiye_Edit(Tesfiye x);
-        List<Tesfiye_Return_Value> Tesfiye_Get_All();
-        Tesfiye_Return_Value Tesfiye_Get_By_Id(Tesfiye x);
-        List<Tesfiye_Return_Value> Tesfiye_Get_By_Text(Tesfiye x);
+        Tesviye Tesviye_Add(Tesviye x);
+        Tesviye Tesviye_Delete(Tesviye x);
+        Tesviye Tesviye_Edit(Tesviye x);
+        List<Tesviye_Return_Value> Tesviye_Get_All();
+        Tesviye_Return_Value Tesviye_Get_By_Id(Tesviye x);
+        List<Tesviye_Return_Value> Tesviye_Get_By_Text(Tesviye x);
 
 
 
     }
-    public class TesfiyeService : ITesfiyeService
+    public class TesviyeService : ITesviyeService
     {
 
 
@@ -33,7 +33,7 @@ namespace qrmenu.Services
         private IJwtUtils _jwtUtils;
         private readonly AppSettings _appSettings;
 
-        public TesfiyeService(
+        public TesviyeService(
             DataContext context,
             IJwtUtils jwtUtils,
             IOptions<AppSettings> appSettings)
@@ -43,16 +43,16 @@ namespace qrmenu.Services
             _appSettings = appSettings.Value;
         }
 
-        public Tesfiye Tesfiye_Add(Tesfiye x)
+        public Tesviye Tesviye_Add(Tesviye x)
         {
-            _context.Tesfiyes.Add(x);
+            _context.Tesviyes.Add(x);
             _context.SaveChanges();
             return x;
         }
 
-        public Tesfiye Tesfiye_Delete(Tesfiye x)
+        public Tesviye Tesviye_Delete(Tesviye x)
         {
-            var temp = _context.Tesfiyes;
+            var temp = _context.Tesviyes;
             var Değer = temp.FirstOrDefault(o => o.Id == x.Id);
             Değer.Is_Deleted = 1;
             _context.SaveChanges();
@@ -60,12 +60,12 @@ namespace qrmenu.Services
             return Değer;
         }
 
-        public Tesfiye Tesfiye_Edit(Tesfiye x)
+        public Tesviye Tesviye_Edit(Tesviye x)
         {
-            var temp = _context.Tesfiyes;
+            var temp = _context.Tesviyes;
             var Değer = temp.SingleOrDefault(o => o.Id == x.Id);
             Değer.Birim_Id = x.Birim_Id;
-            Değer.Tesfiye_Türü = x.Tesfiye_Türü;
+            Değer.Tesviye_Türü = x.Tesviye_Türü;
             Değer.Maliyet = x.Maliyet;
 
             _context.SaveChanges();
@@ -73,17 +73,17 @@ namespace qrmenu.Services
             return Değer;
         }
 
-        public List<Tesfiye_Return_Value> Tesfiye_Get_All()
+        public List<Tesviye_Return_Value> Tesviye_Get_All()
         {
-            var temp = (from x in _context.Tesfiyes
+            var temp = (from x in _context.Tesviyes
                         where x.Is_Deleted == 0
                         select x
             );
-            IEnumerable<Tesfiye_Return_Value> rt = temp.Select(o => new Tesfiye_Return_Value
+            IEnumerable<Tesviye_Return_Value> rt = temp.Select(o => new Tesviye_Return_Value
             {
                 Id = o.Id,
                 Birim_Id = o.Birim_Id,
-                Tesfiye_Türü = o.Tesfiye_Türü,
+                Tesviye_Türü = o.Tesviye_Türü,
                 Maliyet = o.Maliyet,
                 Birim = (from x in _context.Birimlers
                          where x.Id == o.Birim_Id
@@ -95,17 +95,17 @@ namespace qrmenu.Services
 
         }
 
-        public Tesfiye_Return_Value Tesfiye_Get_By_Id(Tesfiye y)
+        public Tesviye_Return_Value Tesviye_Get_By_Id(Tesviye y)
         {
-            var temp = (from x in _context.Tesfiyes
+            var temp = (from x in _context.Tesviyes
                         where x.Id == y.Id && x.Is_Deleted == 0
                         select x
              );
-            IEnumerable<Tesfiye_Return_Value> rt = temp.Select(o => new Tesfiye_Return_Value
+            IEnumerable<Tesviye_Return_Value> rt = temp.Select(o => new Tesviye_Return_Value
             {
                 Id = o.Id,
                 Birim_Id = o.Birim_Id,
-                Tesfiye_Türü = o.Tesfiye_Türü,
+                Tesviye_Türü = o.Tesviye_Türü,
                 Maliyet = o.Maliyet,
                 Birim = (from x in _context.Birimlers
                          where x.Id == o.Birim_Id
@@ -117,17 +117,17 @@ namespace qrmenu.Services
             return rt.FirstOrDefault();
         }
 
-        public List<Tesfiye_Return_Value> Tesfiye_Get_By_Text(Tesfiye y)
+        public List<Tesviye_Return_Value> Tesviye_Get_By_Text(Tesviye y)
         {
-            var temp = (from x in _context.Tesfiyes
-                        where x.Is_Deleted == 0 && x.Tesfiye_Türü.StartsWith(y.Tesfiye_Türü)
+            var temp = (from x in _context.Tesviyes
+                        where x.Is_Deleted == 0 && x.Tesviye_Türü.StartsWith(y.Tesviye_Türü)
                         select x
             );
-            IEnumerable<Tesfiye_Return_Value> rt = temp.Select(o => new Tesfiye_Return_Value
+            IEnumerable<Tesviye_Return_Value> rt = temp.Select(o => new Tesviye_Return_Value
             {
                 Id = o.Id,
                 Birim_Id = o.Birim_Id,
-                Tesfiye_Türü = o.Tesfiye_Türü,
+                Tesviye_Türü = o.Tesviye_Türü,
                 Maliyet = o.Maliyet,
                 Birim = (from x in _context.Birimlers
                          where x.Id == o.Birim_Id

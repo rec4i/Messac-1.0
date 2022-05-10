@@ -633,7 +633,7 @@ namespace WebApi.Migrations
                     b.ToTable("Takıms");
                 });
 
-            modelBuilder.Entity("KaynakKod.Entities.Tesfiye_Maliyeti_Saved", b =>
+            modelBuilder.Entity("KaynakKod.Entities.Tesviye_Maliyeti_Saved", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -651,10 +651,10 @@ namespace WebApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tesfiye_Maliyeti_Saveds");
+                    b.ToTable("Tesviye_Maliyeti_Saveds");
                 });
 
-            modelBuilder.Entity("KaynakKod.Entities.Tesfiye_Maliyeti_Saved_Row", b =>
+            modelBuilder.Entity("KaynakKod.Entities.Tesviye_Maliyeti_Saved_Row", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -676,10 +676,10 @@ namespace WebApi.Migrations
                     b.Property<DateTime>("Olusturlma_Tarihi")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Tesfiye_Maliyeti_Saved_Id")
+                    b.Property<int>("Tesviye_Maliyeti_Saved_Id")
                         .HasColumnType("int");
 
-                    b.Property<string>("Tesfiye_Türü")
+                    b.Property<string>("Tesviye_Türü")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Toplam_Fiyat")
@@ -687,7 +687,7 @@ namespace WebApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tesfiye_Maliyeti_Saved_Rows");
+                    b.ToTable("Tesviye_Maliyeti_Saved_Rows");
                 });
 
             modelBuilder.Entity("KaynakKod.Entities.Toplam_Maliyet_Saved", b =>
@@ -909,7 +909,7 @@ namespace WebApi.Migrations
                     b.ToTable("Paketlemes");
                 });
 
-            modelBuilder.Entity("KaynakKod.Entities.UretimMaliyeti.İşlemler.Tesfiye", b =>
+            modelBuilder.Entity("KaynakKod.Entities.UretimMaliyeti.İşlemler.Tesviye", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -925,12 +925,12 @@ namespace WebApi.Migrations
                     b.Property<decimal>("Maliyet")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("Tesfiye_Türü")
+                    b.Property<string>("Tesviye_Türü")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tesfiyes");
+                    b.ToTable("Tesviyes");
                 });
 
             modelBuilder.Entity("KaynakKod.Entities.İş", b =>
