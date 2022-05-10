@@ -43,13 +43,15 @@
         Malzeme_Maliyeti_Varmı(Revize_Id)
         Kesim_Maliyeti_Varmı(Revize_Id)
         Tesviye_Varmı(Revize_Id)
-        Büküm_Maliyeti_Varmı(Revize_Id)
+
         Kaynak_Maliyeti_Varmı(Revize_Id)
         Bağlantı_Elemanı_Maliyeti_Varmı(Revize_Id)
         Kaplama_Maliyeti_Varmı(Revize_Id)
         Dıs_Operasyon_Varmı(Revize_Id)
         Paketleme_Varmı(Revize_Id)
         Boya_Varmı(Revize_Id)
+
+        Büküm_Maliyeti_Varmı(Revize_Id)
 
     })
     function Boya_Varmı(Revize_Id) {
@@ -306,6 +308,8 @@
 
 
 
+
+
         var Kaynak_Satır = '' +
             ' <div class="row" style="padding-top: 25px;" name="Boya_Satır_Row" row_Id="' + row_İndex + '" >' +
             '                                                            <div class="col-md-3">' +
@@ -525,25 +529,25 @@
 
 
         var Gelen_Data = Data;
+        console.log("Dıs_Operapston data ıd den item doldur")
+        console.log(Gelen_Data)
 
 
-
-        console.log("DIUSOPERASYON VAKSOKPD")
         var Kaynak_Satır = '' +
             ' <div class="row" style="padding-top: 25px;" name="Dıs_Operasyon_Row_Satır" row_Id="' + row_İndex + '" >' +
-            '                                                            <div class="col-md-3">' +
+            '                                                            <div class="col">' +
             '                                                                <input type="text" class="form-control" data_Id="' + Gelen_Data.dıs_Operasyon_Maliyeti_Saved_Id + '" id="Operasyon_Adı_' + row_İndex + '"' +
             '                                                                    placeholder="Dıs Operasyon Adı" value="' + Gelen_Data.dıs_Operasyon_Adı + '" disabled>' +
             '                                                            </div>' +
-            '                                                            <div class="col-md-2">' +
+            '                                                            <div class="col">' +
             '                                                                <input type="text" class="form-control"' +
             '                                                                    placeholder="Birim Fiyatı" value="' + Gelen_Data.dıs_Operasyon_Birim_Fiyat.toFixed(2) + '"  data-thousands="." data-decimal="," data-suffix=" ₺" id="Operasyon_Maliyeti_' + row_İndex + '">' +
             '                                                            </div>' +
-            '                                                            <div class="col-md-2">' +
+            '                                                            <div class="col">' +
             '                                                                <input type="text" class="form-control"' +
             '                                                                    placeholder="Birim Adeti"   data-thousands="" value="' + Gelen_Data.dıs_Operasyon_Adet.toFixed(2) + '" data-decimal="." id="Operasyon_Adeti_' + row_İndex + '">' +
             '                                                            </div>' +
-            '                                                            <div class="col-md-2">' +
+            '                                                            <div class="col">' +
             '                                                                <input type="text" class="form-control"' +
             '                                                                  data-thousands="." disabled data-decimal="," data-suffix=" ₺"  value="' + Gelen_Data.toplam_Maliyet.toFixed(2) + '"  placeholder="Toplam Fiyat" id="Operasyon_Toplam_Fiyat_' + row_İndex + '">' +
             '                                                            </div>' +
@@ -661,6 +665,10 @@
 
         var Gelen_Data = Data;
 
+        console.log("Kaplama Maliyet Id Den ekle")
+
+        console.log(Gelen_Data)
+
 
 
         var Kaynak_Satır = '' +
@@ -711,7 +719,7 @@
         $('#Kaplama_Toplam_Fİyat_' + row_İndex).trigger('mask.maskMoney');
         //Kaynak_Birim_Adeti_  Kaplama_Toplam_Fİyat_
         //Kaynak_Toplam_Fiyat_
-        $('#Kaynak_Satır_Sil_' + row_İndex).click(function () {
+        $('#Kaplama_Satırı_Sil' + row_İndex).click(function () {
             $(this).parent().parent().remove()
         })
 
@@ -915,9 +923,6 @@
 
 
 
-
-
-
                     clearInterval(Kaynak_Maliyet_İnterval);
                 }, 500, Kaynak_Maliyeti_Data);
 
@@ -1101,10 +1106,8 @@
 
 
 
-        console.log("as089980das980890ads80998asd098908das098908ads")
-        console.log(Büküm_Maliyeti_Data)
 
-        if (Büküm_Maliyeti_Data.length > 0) {
+        if (Array.isArray(Büküm_Maliyeti_Data)) {
 
             Büküm_Maliyeti_İnterval = setInterval(function (Büküm_Maliyeti_Data) {
 
@@ -1129,15 +1132,14 @@
                     $('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Büküm_Maliyeti').trigger('mask.maskMoney')
 
 
-                    // $('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Büküm_Maliyeti').attr('class', "form-control is-valid")
-                    //$('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Büküm_Maliyeti').attr('en_büyük_olan', "1")
 
-                    //Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Büküm_Maliyeti
 
 
                 }
 
                 if (Büküm_Maliyeti_Data[0].büküm_Tipi == 1) {
+
+
 
                     $('#Büküm_Hesabı_Adet_İle_Büküm_Zorluğu_select').val(Büküm_Maliyeti_Data[0].büküm_Zorluğu_Id)
 
@@ -1149,32 +1151,24 @@
                     $('#Büküm_Hesabı_Adet_İle_Büküm_Maliyeti').trigger('mask.maskMoney')
 
 
-                    ///$('#Büküm_Hesabı_Adet_İle_Büküm_Maliyeti').attr('class', "form-control is-valid")
-                    // $('#Büküm_Hesabı_Adet_İle_Büküm_Maliyeti').attr('en_büyük_olan', "1")
+
 
 
                     $('#Büküm_Yeni_Adeti_İnput').val(Büküm_Maliyeti_Data[0].büküm_Adeti)
                     $('#Büküm_Yeni_Adeti_İnput').trigger('mask.maskMoney')
 
-                    //Büküm_Yeni_Adeti_İnput
 
                 }
 
                 if (Büküm_Maliyeti_Data[0].büküm_Tipi == 2) {
 
-                    @* $('#Büküm_Hesabı_Adet_İle_Büküm_Zorluğu_select').val(Büküm_Maliyeti_Data[0].büküm_Zorluğu_Id)
 
-
-                            $('#Büküm_Hesabı_Uzunluğa_Malzeme_Katayısı').val(Büküm_Maliyeti_Data[0].kat_Sayı)
-                            $('#Büküm_Hesabı_Uzunluğa_Malzeme_Katayısı').trigger('mask.maskMoney')
-
-                            $('#Büküm_Hesabı_Adet_İle_Büküm_Maliyeti').val(Büküm_Maliyeti_Data[0].büküm_Maliyeti.toFixed(2))
-                            $('#Büküm_Hesabı_Adet_İle_Büküm_Maliyeti').trigger('mask.maskMoney') *@
+                    console.log("büküm zorluığu select")
+                    console.log(Büküm_Maliyeti_Data[0].büküm_Zorluğu_Id)
 
 
 
-
-                        $('#Eninemi_Uzunluğa_Boyunamı_Select').val(Büküm_Maliyeti_Data[0].hesap_Çeşiti_Id)
+                    $('#Eninemi_Uzunluğa_Boyunamı_Select').val(Büküm_Maliyeti_Data[0].hesap_Çeşiti_Id)
                     //Eninemi_Uzunluğa_Boyunamı_Select
 
                     $('#Büküm_Hesabı_Uzunluğa_Malzeme_Eni').val(Büküm_Maliyeti_Data[0].malzeme_Eni.toFixed(2))
@@ -1191,7 +1185,7 @@
                     //Büküm_Hesabı_Uzunluğa_Malzeme_Katayısı
 
 
-                    $('#Büküm_Hesabı_Uzunluğa_Malzeme_Zorluk_Katayısı').val(Büküm_Maliyeti_Data[0].büküm_Zorluğu_Id)
+
                     //Malzeme_Büküm_Uzunluk_Zorluk_Hesabı
                     //Büküm_Zorluğu_Id
 
@@ -1203,11 +1197,105 @@
                     $('#Büküm_Hesabı_Uzunluk_İle_Büküm_Maliyeti').trigger('mask.maskMoney')
                     //Büküm_Hesabı_Uzunluğa_Malzeme_Zorluk_Katayısı
 
+                    //Malzeme_Uzunuğuna_Göre_Katsayı_Getir()
+
+                    //Malzeme_Uzunuğuna_Göre_Katsayı_Getir()
+
+                    $('#Malzeme_Büküm_Uzunluk_Zorluk_Hesabı').val(Büküm_Maliyeti_Data[0].büküm_Zorluğu_Id)
+
+                    var Selected_Value = Büküm_Maliyeti_Data[0].büküm_Zorluğu_Id
+
+                    var x;
+                    if ($('#Eninemi_Uzunluğa_Boyunamı_Select').find('option:selected').attr('value') == 0) {
+                        x = {
+                            Uzunluk_Bas: $('#Büküm_Hesabı_Uzunluğa_Malzeme_Eni').maskMoney('unmasked')[0].toFixed(2)
+                        }
+                    }
+                    if ($('#Eninemi_Uzunluğa_Boyunamı_Select').find('option:selected').attr('value') == 1) {
+                        x = {
+                            Uzunluk_Bas: $('#Büküm_Hesabı_Uzunluğa_Malzeme_Genişliği').maskMoney('unmasked')[0].toFixed(2)
+                        }
+                    }
+
+
+                    $.ajax({
+                        url: 'api/BükümYeni/Malzeme_Uzunuğuna_Göre_Katsayı_Getir',
+                        type: 'POST',
+                        async: false,
+                        global: false,
+                        dataType: "json",
+                        data: JSON.stringify(x),
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            console.log('Malzeme_Uzunuğuna_Göre_Katsayı_Getir')
+                            console.log(data)
+                            if (data != undefined) {
+
+                                //var Old_Selected= $('#Malzeme_Büküm_Uzunluk_Zorluk_Hesabı').val();
+
+                                $('#Büküm_Hesabı_Uzunluğa_Malzeme_Katayısı').val(data.zorluk_Katsayısı.toFixed(2))
+                                $('#Büküm_Hesabı_Uzunluğa_Malzeme_Katayısı').maskMoney()
+                                $('#Büküm_Hesabı_Uzunluğa_Malzeme_Katayısı').trigger('mask.maskMoney')
+
+                                var selecte_value = $('#Malzeme_Büküm_Uzunluk_Zorluk_Hesabı').find(':selected').attr('value')
+
+                                console.log("depıcn selected value")
+                                console.log(selecte_value)
+
+                                getUzunlukZorluk(data.id, Selected_Value)
+                                $('#Büküm_Yeni_Adeti_İnput').trigger('blur')
+
+                                console.log($('#Malzeme_Büküm_Uzunluk_Zorluk_Hesabı').find(':selected').attr('value'))
+
+
+                            }
+                            else {
+                                $('#Büküm_Hesabı_Uzunluğa_Malzeme_Katayısı').val("Uygun Katsayı Bulunamadı")
+                                $('#Malzeme_Büküm_Uzunluk_Zorluk_Hesabı').append('<option >Uygun Zorluk Bulunamadı</option>')
+
+                            }
+
+
+                        },
+                        error: function (xhr, status, error) {
+                            if (xhr.status == 200) {
+
+                            }
+                            else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Talep Esnasında Bir Hata Oluştur',
+                                    text: '' + xhr.status + '   ' + error.Message,
+                                })
+                            }
+
+                        }
+                        //$('#Büküm_Yeni_Adeti_İnput').trigger('blur')
+                    })
+
+
+
+
+
+
+
+
+
+
                     $('#Büküm_Yeni_Adeti_İnput').val(Büküm_Maliyeti_Data[0].büküm_Adeti)
                     $('#Büküm_Yeni_Adeti_İnput').trigger('mask.maskMoney')
 
-                    //$('#Büküm_Hesabı_Uzunluk_İle_Büküm_Maliyeti').attr('class', "form-control is-valid")
-                    //$('#Büküm_Hesabı_Uzunluk_İle_Büküm_Maliyeti').attr('en_büyük_olan', "1")
+                    //$('#Malzeme_Büküm_Uzunluk_Zorluk_Hesabı').val(Büküm_Maliyeti_Data[0].büküm_Zorluğu_Id)
+
+
+
+
+
+                    console.log("parça idden item doldum malzmee uzunluk")
+                    console.log($('#Malzeme_Büküm_Uzunluk_Zorluk_Hesabı').find(':selected').val())
+
+
+
 
 
                 }
@@ -1230,6 +1318,16 @@
 
 
     }
+    var Malzeme_Uzunuğuna_Göre_Katsayı_Getir = _.debounce(function () {
+
+
+
+
+    }, 100); //Wait seconds after he stops
+
+
+
+
 
 
     function Kesim_Maliyeti_Varmı(Revize_Id) {
@@ -1275,7 +1373,7 @@
                 $('#Kesim_Hesabı_Malzeme_Adeti_İnput').val(Kesim_Maliyet_Data[0].parça_Adeti)
                 $('#Kesim_Hesabı_Malzeme_Adeti_İnput').trigger('mask.maskMoney')
 
-                $('#Kesim_Hesabı_Verimlilik_İnput').val(Kesim_Maliyet_Data[0].kesim_Verimliliği)
+                $('#Kesim_Hesabı_Verimlilik_İnput').val(parseFloat(Kesim_Maliyet_Data[0].kesim_Verimliliği).toFixed(2))
                 $('#Kesim_Hesabı_Verimlilik_İnput').trigger('mask.maskMoney')
 
 
@@ -1383,7 +1481,7 @@
                 $('#Malzeme_Malzeme_Birim_Fiyatı_İnput').val(Malzeme_Maliyet_Data[0].plaka_Maliyeti.toFixed(2))
                 $('#Malzeme_Malzeme_Birim_Fiyatı_İnput').trigger('mask.maskMoney')
 
-
+                $('#Malzeme_Parça_Adeti').trigger('blur')
                 clearInterval(Malzeme_Maliyet_İnterval);
             }, 500, Malzeme_Maliyet_Data);
 

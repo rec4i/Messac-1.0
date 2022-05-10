@@ -85,6 +85,16 @@ namespace qrmenu.Controllers
 
 
 
+        [Authorize(Role.Admin)]
+        [HttpPost("Kaplama_Maliyeti_Saved_Delete_By_Revize_Id")]
+        public IActionResult Kaplama_Maliyeti_Saved_Delete_By_Revize_Id(Revize x)
+        {
+            _IKaplamaMaliyetiServiceSavedService.Kaplama_Maliyeti_Saved_Delete_By_Revize_Id(x);
+            return Ok();
+        }
+
+
+
 
 
 

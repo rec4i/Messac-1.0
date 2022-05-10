@@ -80,8 +80,15 @@ namespace qrmenu.Controllers
             return Ok(a);
         }
 
+        [Authorize(Role.Admin)]
+        [HttpPost("Tesviye_Maliyeti_Saved_Delete_By_Revize_Id")]
+        public IActionResult Tesviye_Maliyeti_Saved_Delete_By_Revize_Id(Revize x)
+        {
+             _ITesviyeSavedService.Tesviye_Maliyeti_Saved_Delete_By_Revize_Id(x);
+            return Ok();
+        }
 
-
+        //Tesviye_Maliyeti_Saved_Delete_By_Revize_Id
 
 
         [Authorize(Role.Admin)]

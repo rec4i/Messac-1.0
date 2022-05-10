@@ -20,6 +20,8 @@ namespace qrmenu.Services
         Bağlantı_Elemanı_Saved BağlantıElemanıSaved_Edit(Bağlantı_Elemanı_Saved x);
         Bağlantı_Elemanı_Saved BağlantıElemanıSaved_Delete(Bağlantı_Elemanı_Saved x);
 
+        void BağlantıElemanıSaved_Delete_By_Revize_Id(Revize x);
+
         List<Bağlantı_Elemanı_Saved_Retrun_Value> BağlantıElemanıSaved_Get_All();
         Bağlantı_Elemanı_Saved_Retrun_Value BağlantıElemanıSaved_Get_By_Id(Bağlantı_Elemanı_Saved x);
 
@@ -92,6 +94,24 @@ namespace qrmenu.Services
             _context.SaveChanges();
 
             return Değer;
+        }
+
+        public void BağlantıElemanıSaved_Delete_By_Revize_Id(Revize x)
+        {
+
+            try
+            {
+                var temp = _context.Bağlantı_Elemanı_Saveds;
+                var Değer = temp.FirstOrDefault(o => o.Revize_Id == x.Id);
+                _context.Bağlantı_Elemanı_Saveds.Remove(Değer);
+                _context.SaveChanges();
+            }
+            catch (System.Exception)
+            {
+
+            }
+
+
         }
 
         public Bağlantı_Elemanı_Saved BağlantıElemanıSaved_Delete(Bağlantı_Elemanı_Saved x)
@@ -192,7 +212,7 @@ namespace qrmenu.Services
             Değer.Bağlantı_Elemanı_Saved_Id = x.Bağlantı_Elemanı_Saved_Id;
             Değer.Birim_Fiyat = x.Birim_Fiyat;
             Değer.Toplam_Fiyat = x.Toplam_Fiyat;
-            
+
             _context.SaveChanges();
 
             return Değer;
@@ -229,5 +249,7 @@ namespace qrmenu.Services
 
             return temp.FirstOrDefault();
         }
+
+
     }
 }

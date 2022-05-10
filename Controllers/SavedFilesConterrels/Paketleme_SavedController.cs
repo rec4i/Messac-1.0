@@ -81,6 +81,15 @@ namespace qrmenu.Controllers
         }
 
 
+        [Authorize(Role.Admin)]
+        [HttpPost("Paketleme_Maliyeti_Saved_Delete_By_Revize_Id")]
+        public IActionResult Paketleme_Maliyeti_Saved_Delete_By_Revize_Id(Revize x)
+        {
+            _IPaketlemeSavedService.Paketleme_Maliyeti_Saved_Delete_By_Revize_Id(x);
+            return Ok();
+        }
+
+
 
 
 

@@ -74,9 +74,148 @@ namespace qrmenu.Services
             throw new NotImplementedException();
         }
 
+        public List<Parça_Retrun_Value> Parça_Get_By_Takım_Id(Takım y,Parça z)
+        {
+
+
+            var temp = (from x in _context.Parças
+                        where y.Id == x.Takım_Id 
+                        select x
+            );
+
+            IEnumerable<Parça_Retrun_Value> rt = temp.Select(o => new Parça_Retrun_Value
+            {
+                Id = o.Id,
+                Parça_Adı = o.Parça_Adı,
+                Parça_Adeti = o.Parça_Adeti,
+                Birim_Maliyet = (from x in _context.Toplam_Maliyet_Saveds
+
+                                 join _revises in _context.Revizes
+                                 on x.Revize_Id equals _revises.Id
+
+                                 orderby _revises.Id descending
+                                 
+                                 where _revises.Parça_Id == o.Id 
+
+                                 select (x.Malzeme_Karlı_Toplam + x.İşçilik_Karlı_Toplam - x.Fire_Maliyeti)
+                ).FirstOrDefault(),
+
+                Evrak_Maliyeti =
+                (from x in _context.Toplam_Maliyet_Saveds
+
+                 join _revises in _context.Revizes
+                 on x.Revize_Id equals _revises.Id
+                 orderby _revises.Id descending
+                 where _revises.Parça_Id == o.Id
+
+                 select (x.Malzeme_Karlı_Toplam + x.İşçilik_Karlı_Toplam - x.Fire_Maliyeti)
+                ).FirstOrDefault()
+
+                <= 0 ? 0 :
+
+
+
+                (from x in _context.Toplam_Maliyet_Saveds
+
+                 join _revises in _context.Revizes
+                 on x.Revize_Id equals _revises.Id
+
+                 orderby _revises.Id descending
+                 where _revises.Parça_Id == o.Id
+
+
+                 select (x.Malzeme_Karlı_Toplam + x.İşçilik_Karlı_Toplam - x.Fire_Maliyeti)
+                ).FirstOrDefault() * o.Parça_Adeti,
+
+
+
+                
+
+
+                Toplam_Maliyet =
+                (from x in _context.Parças
+                 where x.Takım_Id == o.Takım_Id
+                 select x.Parça_Adeti
+
+                ).Sum() == 0 ? 0 :
+                (from x in _context.Takıms
+                 where o.Takım_Id == x.Id
+                 select x.Evrak_Maliyeti
+                ).FirstOrDefault() / (from x in _context.Parças
+                                      where x.Takım_Id == o.Takım_Id
+                                      select x.Parça_Adeti
+
+                ).Sum() * o.Parça_Adeti + ((from x in _context.Toplam_Maliyet_Saveds
+
+                                            join _revises in _context.Revizes
+                                            on x.Revize_Id equals _revises.Id
+                                            orderby _revises.Id descending
+                                            where _revises.Parça_Id == o.Id
+
+                                            select (x.Malzeme_Karlı_Toplam + x.İşçilik_Karlı_Toplam - x.Fire_Maliyeti)
+                ).FirstOrDefault() * o.Parça_Adeti),
+
+
+                Takım_Id = o.Takım_Id,
+                Olusturlma_Tarihi = o.Olusturlma_Tarihi
+
+
+            });
+
+            decimal Toplam_Malzeme_Maliyeti = rt.Select(o => o.Birim_Maliyet).Sum();
+       
+
+            IEnumerable<Parça_Retrun_Value> rt_1 = rt.Select(o => new Parça_Retrun_Value
+            {
+                Id = o.Id,
+                Parça_Adı = o.Parça_Adı,
+                Parça_Adeti = o.Parça_Adeti,
+                Birim_Maliyet = 
+                Toplam_Malzeme_Maliyeti == 0 ? 0 :
+                ((( o.Birim_Maliyet / Toplam_Malzeme_Maliyeti)*
+                (from x in _context.Takıms
+                 where o.Takım_Id == x.Id
+                 select x.Evrak_Maliyeti
+                ).FirstOrDefault())/o.Parça_Adeti)+o.Birim_Maliyet
+                 
+                 ,
+
+
+                Evrak_Maliyeti = Toplam_Malzeme_Maliyeti == 0 ? 0 :
+
+                (((( o.Birim_Maliyet / Toplam_Malzeme_Maliyeti)*
+                (from x in _context.Takıms
+                 where o.Takım_Id == x.Id
+                 select x.Evrak_Maliyeti
+                ).FirstOrDefault())/o.Parça_Adeti)+o.Birim_Maliyet)*o.Parça_Adeti
+                ,
+
+
+
+
+                Toplam_Maliyet =
+                Toplam_Malzeme_Maliyeti == 0 ? 0 :
+                Convert.ToDecimal((((( o.Birim_Maliyet / Toplam_Malzeme_Maliyeti)*
+                (from x in _context.Takıms
+                 where o.Takım_Id == x.Id
+                 select x.Evrak_Maliyeti
+                ).FirstOrDefault())/o.Parça_Adeti)+o.Birim_Maliyet).ToString("F"))  *o.Parça_Adeti,
+
+
+                Takım_Id = o.Takım_Id,
+                Olusturlma_Tarihi = o.Olusturlma_Tarihi
+            });
+
+
+           
+            return rt_1.ToList();
+        }
+
+
+
         public Revize_Retrun_Value Revize_Get_By_Id(Revize y)
         {
-            var temp =(from x in _context.Revizes
+            var temp = (from x in _context.Revizes
 
                         join _Parça in _context.Parças
                         on x.Parça_Id equals _Parça.Id
@@ -86,10 +225,11 @@ namespace qrmenu.Services
 
                         join _İş in _context.İşs
                         on _Takım.İş_Id equals _İş.Id
-                        
-                        where x.Id==y.Id
 
-                        select new {
+                        where x.Id == y.Id
+
+                        select new
+                        {
                             x.Id,
                             x.Is_Deleted,
                             x.Olusturlma_Tarihi,
@@ -100,13 +240,18 @@ namespace qrmenu.Services
                         }
             ).FirstOrDefault();
 
-            Revize_Retrun_Value rv= new Revize_Retrun_Value{
-                Id=temp.Id,
-                Parça_Id=temp.Parça_Id,
-                Is_Deleted=temp.Is_Deleted,
-                Takım=temp._Takım,
-                Parça=temp._Parça,
-                İş=temp._İş
+            Revize_Retrun_Value rv = new Revize_Retrun_Value
+            {
+                Id = temp.Id,
+                Parça_Id = temp.Parça_Id,
+                Is_Deleted = temp.Is_Deleted,
+                Takım = temp._Takım,
+                Parça = temp._Parça,
+                İş = temp._İş,
+
+                Evrak_Maliyeti = Parça_Get_By_Takım_Id(temp._Takım,temp._Parça).Select(o=> o.Birim_Maliyet).Sum()
+
+
             };
 
             return rv;
@@ -114,12 +259,12 @@ namespace qrmenu.Services
 
         public List<Revize> Revize_Get_By_Parça_Id(Parça y)
         {
-           var temp =(from x in _context.Revizes
-                        where x.Parça_Id == y.Id && x.Is_Deleted==0
+            var temp = (from x in _context.Revizes
+                        where x.Parça_Id == y.Id && x.Is_Deleted == 0
                         select x
-           );
+            );
 
-           return temp.ToList();
+            return temp.ToList();
         }
     }
 }

@@ -18,6 +18,9 @@ namespace qrmenu.Services
         Kaplama_Maliyeti_Saved Kaplama_Maliyeti_Saved_Add(Kaplama_Maliyeti_Saved x);
         Kaplama_Maliyeti_Saved Kaplama_Maliyeti_Saved_Delete(Kaplama_Maliyeti_Saved x);
 
+        void Kaplama_Maliyeti_Saved_Delete_By_Revize_Id(Revize x);
+
+
         Kaplama_Maliyeti_Saved Kaplama_Maliyeti_Saved_Edit(Kaplama_Maliyeti_Saved x);
 
         List<Kaplama_Maliyeti_Saved_Retrun_Value> Kaplama_Maliyeti_Saved_Get_All();
@@ -87,6 +90,25 @@ namespace qrmenu.Services
             // _context.baglantıElemanlarıs.Remove(Değer);
             _context.SaveChanges();
             return Değer;
+        }
+
+        public void Kaplama_Maliyeti_Saved_Delete_By_Revize_Id(Revize x)
+        {
+
+            try
+            {
+                var temp = _context.Kaplama_Maliyeti_Saveds;
+                var Değer = temp.FirstOrDefault(o => o.Revize_Id == x.Id);
+                _context.Kaplama_Maliyeti_Saveds.Remove(Değer);
+                _context.SaveChanges();
+            }
+            catch (System.Exception)
+            {
+
+            }
+
+
+
         }
 
         public Kaplama_Maliyeti_Saved Kaplama_Maliyeti_Saved_Edit(Kaplama_Maliyeti_Saved x)
@@ -159,7 +181,10 @@ namespace qrmenu.Services
                 Revize_Id = o.Revize_Id,
                 Olusturlma_Tarihi = o.Olusturlma_Tarihi,
                 Kaplama_Maliyeti_Saved_Rows = (from x in _context.Kaplama_Maliyeti_Saved_Rows
-                                               where x.Id == o.Revize_Id
+                                               join _Kaplama_maliyeti in _context.Kaplama_Maliyeti_Saveds
+                                               on x.Kaplama_Maliyeti_Saved_Id equals _Kaplama_maliyeti.Id
+
+                                               where _Kaplama_maliyeti.Revize_Id == o.Revize_Id
                                                select x
                 ).ToList()
 

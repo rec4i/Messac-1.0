@@ -86,6 +86,13 @@ namespace qrmenu.Controllers
 
 
 
+        [Authorize(Role.Admin)]
+        [HttpPost("Dıs_Operasyon_Maliyeti_Saved_Delete_By_Revize_Id")]
+        public IActionResult Dıs_Operasyon_Maliyeti_Saved_Delete_By_Revize_Id(Revize x)
+        {
+            _IDısOperasyonMaliyetiSavedService.Dıs_Operasyon_Maliyeti_Saved_Delete_By_Revize_Id(x);
+            return Ok();
+        }
 
 
 
@@ -93,6 +100,9 @@ namespace qrmenu.Controllers
 
 
 
+
+
+        //Dıs_Operasyon_Maliyeti_Saved_Delete_By_Revize_Id
 
 
 

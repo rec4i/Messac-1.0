@@ -120,7 +120,10 @@
 
     })
 
+
     function Get_Genel_Toplam(){
+
+
         var Parça_Genel_Kar_Oranı=$('#Parça_Genel_Kar_Oranı').maskMoney('unmasked')[0].toFixed(2)
         var Parça_Toplam_Maliyet=$('#Parça_Toplam_Maliyet').maskMoney('unmasked')[0].toFixed(2)
 
@@ -1048,7 +1051,7 @@
                 Malzeme_Eni: $('#Malzeme_Eni_İnput').maskMoney('unmasked')[0].toFixed(2),
                 Malzeme_Boyu: $('#Malzeme_Boyu_İnput').maskMoney('unmasked')[0].toFixed(2),
                 Malzeme_Genişliği: $('#Malzeme_Genişliği_İnput').maskMoney('unmasked')[0].toFixed(2),
-                Malzeme_Maliyeti: parseFloat($('#Malzeme_Malzeme_Birim_Fiyatı_İnput').maskMoney('unmasked')[0].toFixed(2)) / parseFloat($('#Malzeme_Parça_Adeti').val()),
+                Malzeme_Maliyeti: parseFloat($('#Malzeme_Malzeme_Birim_Fiyatı_İnput').maskMoney('unmasked')[0].toFixed(2)) / parseFloat($('#Malzeme_Parça_Adeti').val()).toFixed(2),
                 Parça_Adeti: $('#Malzeme_Parça_Adeti').val(),
                 Parça_Firesiz_Ağırlığı: $('#Malzeme_Parça_Firesiz_ağırlığı').maskMoney('unmasked')[0].toFixed(4)
 
@@ -1202,7 +1205,7 @@
                 if ($(this).is(':checked')) {
                     var x = {
                         İşlem_Adı: $(this).attr('value'),
-                        İşlem_Maliyeti: $(this).attr('İşlem_maliyeti'),
+                        İşlem_Maliyeti: parseFloat($(this).attr('İşlem_maliyeti')).toFixed(2),
                     }
                     İşçilik_Maliyeti_Selecteds.push(x)
                 }
@@ -1215,7 +1218,7 @@
                 if ($(this).is(':checked')) {
                     var x = {
                         İşlem_Adı: $(this).attr('value'),
-                        İşlem_Maliyeti: $(this).attr('İşlem_maliyeti'),
+                        İşlem_Maliyeti: parseFloat($(this).attr('İşlem_maliyeti')).toFixed(2),
                     }
                     Malzeme_Maliyeti_Selected.push(x)
                 }
@@ -1542,7 +1545,7 @@
 
     }
 
-    function Get_Dıs_Operasyon_Maliyeti() {
+    @* function Get_Dıs_Operasyon_Maliyeti() {
         var x = [];
         $('div[name*=Dıs_Operasyonlar]').each(function () {
 
@@ -1557,7 +1560,7 @@
 
         })
         return x;
-    }
+    } *@
 
     function Get_Kaynak_Maliyeti() {
         var x = [];
@@ -1909,8 +1912,8 @@
                     '';
                 $('#Malzeme_Maliyeti_Select_Div').append(Malzeme_Maliyeti_Select_Div_Hepsini_Seç)
                 
-
-
+                console.log("Yapılan İşlemlşer")
+                console.log(Yapılan_İşlemler)
                 for (var i = 0; i < Yapılan_İşlemler.length; i++) {
 
                     var İşçilik_Maliyeti_Select_Div = '' +
@@ -1918,7 +1921,7 @@
                         '                                                    <div class="col">' +
                         '                                                        <div class="checkbox">' +
                         '                                                            <label style="font-size: 1.5em">' +
-                        '                                                                <input type="checkbox" name="Yapılan_İşlemler"  İşlem_Maliyeti="' + Yapılan_İşlemler[i].İşlem_Maliyeti + '"  id="İşçilik_Maliyeti_Chechbox" value="' + Yapılan_İşlemler[i].işlem_Adı + '">' +
+                        '                                                                <input type="checkbox" name="Yapılan_İşlemler"  İşlem_Maliyeti="' + parseFloat(Yapılan_İşlemler[i].İşlem_Maliyeti).toFixed(2) + '"  id="İşçilik_Maliyeti_Chechbox" value="' + Yapılan_İşlemler[i].işlem_Adı + '">' +
                         '                                                                <span class="cr"><i' +
                         '                                                                        class="cr-icon fa fa-check"></i></span>' +
                         '                                                                ' + Yapılan_İşlemler[i].işlem_Adı +
@@ -1937,7 +1940,7 @@
                         '                                                    <div class="col">' +
                         '                                                        <div class="checkbox">' +
                         '                                                            <label style="font-size: 1.5em">' +
-                        '                                                                <input type="checkbox" İşlem_Maliyeti="' + Yapılan_İşlemler[i].İşlem_Maliyeti + '" name="Yapılan_İşlemler" id="Malzeme_Maliyeti_Chechbox" value="' + Yapılan_İşlemler[i].işlem_Adı + '">' +
+                        '                                                                <input type="checkbox" İşlem_Maliyeti="' + parseFloat(Yapılan_İşlemler[i].İşlem_Maliyeti).toFixed(2) + '" name="Yapılan_İşlemler" id="Malzeme_Maliyeti_Chechbox" value="' + Yapılan_İşlemler[i].işlem_Adı + '">' +
                         '                                                                <span class="cr"><i' +
                         '                                                                        class="cr-icon fa fa-check"></i></span>' +
                         '                                                                ' + Yapılan_İşlemler[i].işlem_Adı +
@@ -1983,6 +1986,14 @@
                                     'Başarı İle Eklendi',
                                     'success'
                                     )
+                                    
+                                    $('#İşçilik_Maliyeti_Toplam_Tutar').val(Sum_The_Checked_İnputs_For_İşçilik_Maliyeti().toFixed(2))
+                                    $('#İşçilik_Maliyeti_Toplam_Tutar').trigger('mask.maskMoney')
+                                    $('#Parça_Toplam_Maliyet').trigger('blur')
+                                    $('#Malzeme_Maliyeti_Yüzde_Kar_Oran').trigger('blur')
+                                    $('#Fire_Maliyeti_Hurda_Birim_Satış_Oranı,#Fire_Hesabı_Fire_Oranı_İnput').trigger('blur')
+                                    $('#İşçilik_Maliyeti_Yüzde_Kar_Oran').trigger('blur')
+                                    //İşçilik_Maliyeti_Yüzde_Kar_Oran
                                 }
                                 else{
                                     $('input[name=Yapılan_İşlemler][id="İşçilik_Maliyeti_Chechbox"][value="' + $(this).attr('value') + '"]').prop('checked',false)
@@ -1992,20 +2003,21 @@
 
                     }
                     else{
-                    $('input[name=Yapılan_İşlemler][id="Malzeme_Maliyeti_Chechbox"][value="' + $(this).attr('value') + '"]').attr('disabled', 'disabled')
-
+                        $('input[name=Yapılan_İşlemler][id="Malzeme_Maliyeti_Chechbox"][value="' + $(this).attr('value') + '"]').attr('disabled', 'disabled')
+                        $('#İşçilik_Maliyeti_Yüzde_Kar_Oran').trigger('blur')
                     }
                     
                 }
                 else {
                     $('input[name=Yapılan_İşlemler][id="Malzeme_Maliyeti_Chechbox"][value="' + $(this).attr('value') + '"]').removeAttr('disabled')
+                    $('#İşçilik_Maliyeti_Yüzde_Kar_Oran').trigger('blur')
                 }
 
 
                 $('#Parça_Toplam_Maliyet').trigger('blur')
                 $('#Malzeme_Maliyeti_Yüzde_Kar_Oran').trigger('blur')
                 $('#Fire_Maliyeti_Hurda_Birim_Satış_Oranı,#Fire_Hesabı_Fire_Oranı_İnput').trigger('blur')
-
+                $('#İşçilik_Maliyeti_Yüzde_Kar_Oran').trigger('blur')
 
 
             })

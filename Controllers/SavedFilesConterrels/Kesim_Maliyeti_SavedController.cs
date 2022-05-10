@@ -45,7 +45,7 @@ namespace qrmenu.Controllers
             return Ok(a);
         }
 
-     
+
 
 
 
@@ -80,7 +80,7 @@ namespace qrmenu.Controllers
         }
 
 
-        
+
         [Authorize(Role.Admin)]
         [HttpPost("Kesim_Maliyeti_Saved_Get_By_Parça_Id")]
         public IActionResult Kesim_Maliyeti_Saved_Get_By_Parça_Id(Revize x)
@@ -89,9 +89,16 @@ namespace qrmenu.Controllers
             return Ok(a);
         }
 
+        [Authorize(Role.Admin)]
+        [HttpPost("Kesim_Maliyeti_Saved_Delete_By_Revize_Id")]
+        public IActionResult Kesim_Maliyeti_Saved_Delete_By_Revize_Id(Revize x)
+        {
+            _IKesimMaliyetiSavedService.Kesim_Maliyeti_Saved_Delete_By_Revize_Id(x);
+            return Ok();
+        }
 
 
-
+        //Kesim_Maliyeti_Saved_Delete_By_Revize_Id
 
 
 

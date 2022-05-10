@@ -244,6 +244,41 @@
 
         }
 
+        else {
+
+            var x = {
+                Id: Revize_Id
+            }
+            $.ajax({
+                url: 'api/BoyaSaved/Boya_Maliyeti_Saved_Delete_By_Revize_Id',
+                type: 'POST',
+                async: false,
+                dataType: "json",
+                data: JSON.stringify(x),
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+
+                    Row_Id = data.id;
+
+
+                },
+                error: function (xhr, status, error) {
+                    if (xhr.status == 200) {
+
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Talep Esnasında Bir Hata Oluştur',
+                            text: '' + xhr.status + '   ' + error.Message,
+                        })
+                    }
+
+                }
+            })
+
+        }
+
 
     }
     function Wtrite_Db_Paketleme_Bilgileri(Kaplama_Bilgileri, Revize_Id) {
@@ -330,6 +365,40 @@
             }
 
 
+
+        }
+
+        else {
+            var x = {
+                Id: Revize_Id
+            }
+            $.ajax({
+                url: 'api/PaketlemeSaved/Paketleme_Maliyeti_Saved_Delete_By_Revize_Id',
+                type: 'POST',
+                async: false,
+                dataType: "json",
+                data: JSON.stringify(x),
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+
+                    Row_Id = data.id;
+
+
+                },
+                error: function (xhr, status, error) {
+                    if (xhr.status == 200) {
+
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Talep Esnasında Bir Hata Oluştur',
+                            text: '' + xhr.status + '   ' + error.Message,
+                        })
+                    }
+
+                }
+            })
 
         }
 
@@ -422,6 +491,40 @@
 
         }
 
+        else {
+            var x = {
+                Id: Revize_Id
+            }
+            $.ajax({
+                url: 'api/TesviyeSaved/Tesviye_Maliyeti_Saved_Delete_By_Revize_Id',
+                type: 'POST',
+                async: false,
+                dataType: "json",
+                data: JSON.stringify(x),
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+
+                    Row_Id = data.id;
+
+
+                },
+                error: function (xhr, status, error) {
+                    if (xhr.status == 200) {
+
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Talep Esnasında Bir Hata Oluştur',
+                            text: '' + xhr.status + '   ' + error.Message,
+                        })
+                    }
+
+                }
+            })
+
+        }
+
 
     }
     function Wtrite_Db_Dıs_Operasyon_Bilgileri(Kaplama_Bilgileri, Revize_Id) {
@@ -459,6 +562,10 @@
                 }
             })
 
+
+            console.log(Kaplama_Bilgileri)
+
+
             for (var i = 0; i < Kaplama_Bilgileri.length; i++) {
                 var x = {
 
@@ -466,7 +573,7 @@
                     Dıs_Operasyon_Adı: Kaplama_Bilgileri[i].Operasyon_Adı,
                     Dıs_Operasyon_Birim_Fiyat: Kaplama_Bilgileri[i].Operasyon_Maliyeti,
                     Dıs_Operasyon_Adet: Kaplama_Bilgileri[i].Operasyon_Adeti,
-                    Toplam_Fiyat: Kaplama_Bilgileri[i].Toplam_Fiyat,
+                    toplam_Maliyet: Kaplama_Bilgileri[i].Operasyon_Toplam_Fiyat,
                 }
 
                 //BağlantıElemanıSaved_Row_Add
@@ -508,6 +615,40 @@
 
 
 
+        }
+
+        else {
+
+            var x = {
+                Id: Revize_Id
+            }
+            $.ajax({
+                url: 'api/Dıs_Operasyon_Maliyeti_Saved/Dıs_Operasyon_Maliyeti_Saved_Delete_By_Revize_Id',
+                type: 'POST',
+                async: false,
+                dataType: "json",
+                data: JSON.stringify(x),
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+
+                    Row_Id = data.id;
+
+
+                },
+                error: function (xhr, status, error) {
+                    if (xhr.status == 200) {
+
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Talep Esnasında Bir Hata Oluştur',
+                            text: '' + xhr.status + '   ' + error.Message,
+                        })
+                    }
+
+                }
+            })
         }
 
 
@@ -607,7 +748,7 @@
                 var x = {
                     Toplam_Maliyet_Saved_Id: Toplam_Maliyet_Id,
                     Maliyet_Text: Toplam_Maliyet_Bilgileri.Malzeme_Maliyeti_Selected[i].İşlem_Adı,
-                    İşlem_Maliyeti: Toplam_Maliyet_Bilgileri.Malzeme_Maliyeti_Selected[i].İşlem_Maliyeti,
+                    İşlem_Maliyeti: parseFloat(Toplam_Maliyet_Bilgileri.Malzeme_Maliyeti_Selected[i].İşlem_Maliyeti).toFixed(2),
                 }
 
                 $.ajax({
@@ -742,6 +883,39 @@
 
 
         }
+        else {
+            var x = {
+                Id: Revize_Id
+            }
+            $.ajax({
+                url: 'api/Kaplama_Maliyeti_Saved/Kaplama_Maliyeti_Saved_Delete_By_Revize_Id',
+                type: 'POST',
+                async: false,
+                dataType: "json",
+                data: JSON.stringify(x),
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+
+                    Row_Id = data.id;
+
+
+                },
+                error: function (xhr, status, error) {
+                    if (xhr.status == 200) {
+
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Talep Esnasında Bir Hata Oluştur',
+                            text: '' + xhr.status + '   ' + error.Message,
+                        })
+                    }
+
+                }
+            })
+
+        }
 
 
     }
@@ -788,7 +962,7 @@
                     Bağlantı_Elemanı_Id: Bağlantı_Bilgileri[i].Bağlantı_Elemanı_Id,
                     Bağlantı_Elemanı_Adı: Bağlantı_Bilgileri[i].Bağlantı_Elemanı_Adı,
                     Birim_Fiyat: Bağlantı_Bilgileri[i].Bağlantı_Elemanı_Birim_Fiyatı,
-                    İşçilik_Maliyeti:Bağlantı_Bilgileri[i].Bağlantı_Elemanı_İşçilik_Maliyeti,
+                    İşçilik_Maliyeti: Bağlantı_Bilgileri[i].Bağlantı_Elemanı_İşçilik_Maliyeti,
                     Adet: Bağlantı_Bilgileri[i].Bağlantı_Elemanı_Birim_Adeti,
                     Toplam_Fiyat: Bağlantı_Bilgileri[i].Bağlantı_Elemanı_Satır_Toplamı,
                 }
@@ -835,11 +1009,49 @@
 
 
         }
+        else {
+            var x = {
+                Id: Revize_Id
+            }
+            $.ajax({
+                url: 'api/Bağlantı_Elemanı_Saved/BaglantıElemanları_Add',
+                type: 'POST',
+                async: false,
+                dataType: "json",
+                data: JSON.stringify(x),
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+
+                    Row_Id = data.id;
+
+
+                },
+                error: function (xhr, status, error) {
+                    if (xhr.status == 200) {
+
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Talep Esnasında Bir Hata Oluştur',
+                            text: '' + xhr.status + '   ' + error.Message,
+                        })
+                    }
+
+                }
+            })
+
+        }
 
 
     }
 
     function Write_Db_Kaynak_Bilgileri(Kaynak_Bilgileri, Revize_Id) {
+
+        console.log("Kaynak_Bilgirei")
+        console.log(Kaynak_Bilgileri)
+
+
         if (Kaynak_Bilgileri != []) {
             console.log(Kaynak_Bilgileri)
             var Row_Id = "";
@@ -918,6 +1130,38 @@
 
 
         }
+        else {
+            var x = {
+                Id: Revize_Id
+            }
+            $.ajax({
+                url: 'api/Kaynak_Maliyeti_Saved/Kaynak_Maliyeti_Saved_Delete_By_Revize_Id',
+                type: 'POST',
+                async: false,
+                dataType: "json",
+                data: JSON.stringify(x),
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+
+                    Row_Id = data.id;
+
+
+                },
+                error: function (xhr, status, error) {
+                    if (xhr.status == 200) {
+
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Talep Esnasında Bir Hata Oluştur',
+                            text: '' + xhr.status + '   ' + error.Message,
+                        })
+                    }
+
+                }
+            })
+        }
 
     }
     function Write_Db_Kesim_Bilgileri(Kesim_Bilgileri, Revize_Id) {
@@ -930,6 +1174,8 @@
                 Kesim_Süresi_Saniye: Kesim_Bilgileri.Malzeme_Kesim_Süresi,
                 Kesim_Fiyatı: Kesim_Bilgileri.Kesim_Fiyatı,
                 Kesim_Maliyeti: Kesim_Bilgileri.Kesim_Maliyeti,
+                Kesim_Verimliliği: Kesim_Bilgileri.Kesim_Verimliliği_Katsayısı
+
 
                 //Parça_Firesiz_Ağırlığı
             }
@@ -964,13 +1210,49 @@
             })
 
         }
+        else {
+
+            var x = {
+                Id: Revize_Id
+            }
+            $.ajax({
+                url: 'api/Kesim_Maliyeti_Saved/Kesim_Maliyeti_Saved_Delete_By_Revize_Id',
+                type: 'POST',
+                async: false,
+                dataType: "json",
+                data: JSON.stringify(x),
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+
+                    Swal.fire(
+                        'İşlem Başarılı',
+                    )
+
+
+                },
+                error: function (xhr, status, error) {
+                    if (xhr.status == 200) {
+
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Talep Esnasında Bir Hata Oluştur',
+                            text: '' + xhr.status + '   ' + error.Message,
+                        })
+                    }
+
+                }
+            })
+
+
+        }
     }
     function Write_Db_Büküm_Bilgileri(Büküm_Bilgileri, Revize_Id) {
 
         if (Büküm_Bilgileri != null) {
 
             if (Büküm_Bilgileri.Büküm_Tipi == "0") {
-                console.log("asddsa")
                 var x = {
                     Revize_Id: Revize_Id,
                     Malzeme_Ağırlığı: Büküm_Bilgileri.Malzeme_Ağırlığı,
@@ -1101,6 +1383,40 @@
 
             }
         }
+        else {
+            var x = {
+                Id: Revize_Id
+            }
+
+            $.ajax({
+                url: 'api/Büküm_Maliyeti_Saved/Büküm_Maliyeti_Saved_Ağırlık_Delete_By_Revize_Id',
+                type: 'POST',
+                async: false,
+                dataType: "json",
+                data: JSON.stringify(x),
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+
+                    Swal.fire(
+                        'İşlem Başarılı',
+                    )
+
+                },
+                error: function (xhr, status, error) {
+                    if (xhr.status == 200) {
+
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Talep Esnasında Bir Hata Oluştur',
+                            text: '' + xhr.status + '   ' + error.Message,
+                        })
+                    }
+
+                }
+            })
+        }
 
 
     }
@@ -1121,10 +1437,45 @@
                 Plaka_Maliyeti: Malzeme_Bilgileri.Malzeme_Maliyeti
                 //Parça_Firesiz_Ağırlığı
             }
-            console.log("malzeme bilgilreli clas")
-            console.log(x)
+
             $.ajax({
                 url: 'api/Malzeme_Maliyeti_Saved/Malzeme_Maliyeti_Saved_Add',
+                type: 'POST',
+                async: false,
+                dataType: "json",
+                data: JSON.stringify(x),
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+
+                    Swal.fire(
+                        'İşlem Başarılı',
+                    )
+
+
+                },
+                error: function (xhr, status, error) {
+                    if (xhr.status == 200) {
+
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Talep Esnasında Bir Hata Oluştur',
+                            text: '' + xhr.status + '   ' + error.Message,
+                        })
+                    }
+
+                }
+            })
+
+        }
+        else {
+            var x = {
+                Id: Revize_Id
+            }
+
+            $.ajax({
+                url: 'api/Malzeme_Maliyeti_Saved/Malzeme_Maliyeti_Saved_Delete_By_Revize_Id',
                 type: 'POST',
                 async: false,
                 dataType: "json",

@@ -88,6 +88,13 @@ namespace qrmenu.Controllers
 
 
 
+        [Authorize(Role.Admin)]
+        [HttpPost("Kaynak_Maliyeti_Saved_Delete_By_Revize_Id")]
+        public IActionResult Kaynak_Maliyeti_Saved_Delete_By_Revize_Id(Revize x)
+        {
+            _IKaynakMaliyetiSavedService.Kaynak_Maliyeti_Saved_Delete_By_Revize_Id(x);
+            return Ok();
+        }
 
 
 

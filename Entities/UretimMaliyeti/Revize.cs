@@ -46,6 +46,8 @@ namespace KaynakKod.Entities
 
         public Parça Parça { get; set; }
 
+        public decimal Evrak_Maliyeti { get; set; }
+
         public İş İş { get; set; }
 
     }

@@ -80,6 +80,13 @@ namespace qrmenu.Controllers
             return Ok(a);
         }
 
+        [Authorize(Role.Admin)]
+        [HttpPost("Boya_Maliyeti_Saved_Delete_By_Revize_Id")]
+        public IActionResult Boya_Maliyeti_Saved_Delete_By_Revize_Id(Revize x)
+        {
+            _IBoyaSavedService.Boya_Maliyeti_Saved_Delete_By_Revize_Id(x);
+            return Ok();
+        }
 
 
 

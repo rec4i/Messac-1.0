@@ -17,6 +17,11 @@ namespace qrmenu.Services
     {
         Tesviye_Maliyeti_Saved Tesviye_Maliyeti_Saved_Add(Tesviye_Maliyeti_Saved x);
         Tesviye_Maliyeti_Saved Tesviye_Maliyeti_Saved_Delete(Tesviye_Maliyeti_Saved x);
+
+        void Tesviye_Maliyeti_Saved_Delete_By_Revize_Id(Revize x);
+
+
+
         Tesviye_Maliyeti_Saved Tesviye_Maliyeti_Saved_Edit(Tesviye_Maliyeti_Saved x);
         List<Tesviye_Maliyeti_Saved_Retrun_Value> Tesviye_Maliyeti_Saved_Get_All();
         Tesviye_Maliyeti_Saved_Retrun_Value Tesviye_Maliyeti_Saved_Get_By_Id(Tesviye_Maliyeti_Saved x);
@@ -83,6 +88,23 @@ namespace qrmenu.Services
             return Değer;
         }
 
+
+        public void Tesviye_Maliyeti_Saved_Delete_By_Revize_Id(Revize x)
+        {
+            try
+            {
+                var temp = _context.Tesviye_Maliyeti_Saveds;
+                var Değer = temp.FirstOrDefault(o => o.Revize_Id == x.Id);
+
+                _context.Tesviye_Maliyeti_Saveds.Remove(Değer);
+                _context.SaveChanges();
+            }
+            catch (System.Exception)
+            {
+
+            }
+
+        }
         public Tesviye_Maliyeti_Saved Tesviye_Maliyeti_Saved_Edit(Tesviye_Maliyeti_Saved x)
         {
             var temp = _context.Tesviye_Maliyeti_Saveds;
@@ -191,5 +213,7 @@ namespace qrmenu.Services
         {
             throw new NotImplementedException();
         }
+
+
     }
 }

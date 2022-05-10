@@ -79,12 +79,21 @@ namespace qrmenu.Controllers
             return Ok(a);
         }
 
+        [Authorize(Role.Admin)]
+        [HttpPost("BağlantıElemanıSaved_Delete_By_Revize_Id")]
+        public IActionResult BağlantıElemanıSaved_Delete_By_Revize_Id(Revize x)
+        {
+            _IBağlantıElemanıSavedService.BağlantıElemanıSaved_Delete_By_Revize_Id(x);
+            return Ok();
+        }
 
 
 
 
 
 
+
+        //BağlantıElemanıSaved_Delete_By_Revize_Id
 
 
 
@@ -120,7 +129,7 @@ namespace qrmenu.Controllers
         }
 
 
-    
+
 
         [Authorize(Role.Admin)]
         [HttpPost("BağlantıElemanıSaved_Row_Delete")]
@@ -147,7 +156,7 @@ namespace qrmenu.Controllers
             return Ok(a);
         }
 
-//BağlantıElemanıSaved_Row_Get_By_Id
+        //BağlantıElemanıSaved_Row_Get_By_Id
 
 
 

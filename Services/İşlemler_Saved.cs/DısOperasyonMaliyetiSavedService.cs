@@ -19,6 +19,9 @@ namespace qrmenu.Services
         Dıs_Operasyon_Maliyeti_Saved Dıs_Operasyon_Maliyeti_Saved_Add(Dıs_Operasyon_Maliyeti_Saved x);
         Dıs_Operasyon_Maliyeti_Saved Dıs_Operasyon_Maliyeti_Saved_Delete(Dıs_Operasyon_Maliyeti_Saved x);
 
+        void Dıs_Operasyon_Maliyeti_Saved_Delete_By_Revize_Id(Revize x);
+
+
         Dıs_Operasyon_Maliyeti_Saved Dıs_Operasyon_Maliyeti_Saved_Edit(Dıs_Operasyon_Maliyeti_Saved x);
 
         List<Dıs_Operasyon_Maliyeti_Saved_Retrun_Value> Dıs_Operasyon_Maliyeti_Saved_Get_All();
@@ -99,6 +102,21 @@ namespace qrmenu.Services
             return Değer;
 
 
+        }
+
+        public void Dıs_Operasyon_Maliyeti_Saved_Delete_By_Revize_Id(Revize x)
+        {
+            try
+            {
+                var temp = _context.Dıs_Operasyon_Maliyeti_Saveds;
+                var Değer = temp.FirstOrDefault(o => o.Revize_Id == x.Id);
+                _context.Dıs_Operasyon_Maliyeti_Saveds.Remove(Değer);
+                _context.SaveChanges();
+            }
+            catch (System.Exception)
+            {
+
+            }
         }
 
         public Dıs_Operasyon_Maliyeti_Saved Dıs_Operasyon_Maliyeti_Saved_Edit(Dıs_Operasyon_Maliyeti_Saved x)
@@ -236,5 +254,7 @@ namespace qrmenu.Services
 
             return temp.FirstOrDefault();
         }
+
+
     }
 }

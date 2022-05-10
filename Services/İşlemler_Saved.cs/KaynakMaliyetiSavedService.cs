@@ -17,6 +17,8 @@ namespace qrmenu.Services
     {
         Kaynak_Maliyeti_Saved Kaynak_Maliyeti_Saved_Add(Kaynak_Maliyeti_Saved x);
         Kaynak_Maliyeti_Saved Kaynak_Maliyeti_Saved_Delete(Kaynak_Maliyeti_Saved x);
+        void Kaynak_Maliyeti_Saved_Delete_By_Revize_Id(Revize x);
+
         Kaynak_Maliyeti_Saved Kaynak_Maliyeti_Saved_Edit(Kaynak_Maliyeti_Saved x);
         List<Kaynak_Maliyeti_Saved_Retrun_Value> Kaynak_Maliyeti_Saved_Get_All();
         Kaynak_Maliyeti_Saved_Retrun_Value Kaynak_Maliyeti_Saved_Get_By_Id(Kaynak_Maliyeti_Saved x);
@@ -84,6 +86,24 @@ namespace qrmenu.Services
             _context.SaveChanges();
             return Değer;
         }
+        public void Kaynak_Maliyeti_Saved_Delete_By_Revize_Id(Revize x)
+        {
+
+            try
+            {
+                var temp = _context.Kaynak_Maliyeti_Saveds;
+                var Değer = temp.FirstOrDefault(o => o.Revize_Id == x.Id);
+
+                _context.Kaynak_Maliyeti_Saveds.Remove(Değer);
+                _context.SaveChanges();
+            }
+            catch (System.Exception)
+            {
+
+            }
+
+
+        }
 
         public Kaynak_Maliyeti_Saved Kaynak_Maliyeti_Saved_Edit(Kaynak_Maliyeti_Saved x)
         {
@@ -106,8 +126,8 @@ namespace qrmenu.Services
                 Revize_Id = o.Revize_Id,
                 Olusturlma_Tarihi = o.Olusturlma_Tarihi,
                 Kaynak_Maliyeti_Saved_Row = (from x in _context.Kaynak_Maliyeti_Saved_Rows
-                                               where x.Kaynak_Maliyeti_Saved_Id == o.Id
-                                               select x
+                                             where x.Kaynak_Maliyeti_Saved_Id == o.Id
+                                             select x
                ).ToList()
 
 
@@ -129,8 +149,8 @@ namespace qrmenu.Services
                 Revize_Id = o.Revize_Id,
                 Olusturlma_Tarihi = o.Olusturlma_Tarihi,
                 Kaynak_Maliyeti_Saved_Row = (from x in _context.Kaynak_Maliyeti_Saved_Rows
-                                               where x.Kaynak_Maliyeti_Saved_Id == o.Id
-                                               select x
+                                             where x.Kaynak_Maliyeti_Saved_Id == o.Id
+                                             select x
                ).ToList()
 
 
@@ -152,8 +172,8 @@ namespace qrmenu.Services
                 Revize_Id = o.Revize_Id,
                 Olusturlma_Tarihi = o.Olusturlma_Tarihi,
                 Kaynak_Maliyeti_Saved_Row = (from x in _context.Kaynak_Maliyeti_Saved_Rows
-                                               where x.Kaynak_Maliyeti_Saved_Id == o.Id
-                                               select x
+                                             where x.Kaynak_Maliyeti_Saved_Id == o.Id
+                                             select x
                ).ToList()
 
 
@@ -214,5 +234,7 @@ namespace qrmenu.Services
         );
             return temp.FirstOrDefault();
         }
+
+
     }
 }

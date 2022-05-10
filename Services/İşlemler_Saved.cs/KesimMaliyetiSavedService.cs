@@ -18,6 +18,9 @@ namespace qrmenu.Services
         Kesim_Maliyeti_Saved Kesim_Maliyeti_Saved_Add(Kesim_Maliyeti_Saved x);
         Kesim_Maliyeti_Saved Kesim_Maliyeti_Saved_Delete(Kesim_Maliyeti_Saved x);
 
+        void Kesim_Maliyeti_Saved_Delete_By_Revize_Id(Revize x);
+
+
         Kesim_Maliyeti_Saved Kesim_Maliyeti_Saved_Edit(Kesim_Maliyeti_Saved x);
 
         List<Kesim_Maliyeti_Saved> Kesim_Maliyeti_Saved_Get_All();
@@ -51,13 +54,13 @@ namespace qrmenu.Services
                 var temp = _context.Kesim_Maliyeti_Saveds;
                 var Değer = temp.FirstOrDefault(o => o.Revize_Id == x.Revize_Id);
                 //Değer.Is_Deleted = 1;
-                 _context.Kesim_Maliyeti_Saveds.Remove(Değer);
+                _context.Kesim_Maliyeti_Saveds.Remove(Değer);
                 _context.SaveChanges();
             }
             catch (System.Exception)
             {
 
-              
+
             }
 
             _context.Kesim_Maliyeti_Saveds.Add(x);
@@ -76,6 +79,22 @@ namespace qrmenu.Services
             return Değer;
         }
 
+
+        public void Kesim_Maliyeti_Saved_Delete_By_Revize_Id(Revize x)
+        {
+            try
+            {
+                var temp = _context.Kesim_Maliyeti_Saveds;
+                var Değer = temp.FirstOrDefault(o => o.Revize_Id == x.Id);
+                _context.Kesim_Maliyeti_Saveds.Remove(Değer);
+                _context.SaveChanges();
+            }
+            catch (System.Exception)
+            {
+
+
+            }
+        }
         public Kesim_Maliyeti_Saved Kesim_Maliyeti_Saved_Edit(Kesim_Maliyeti_Saved x)
         {
             var temp = _context.Kesim_Maliyeti_Saveds;
@@ -122,6 +141,11 @@ namespace qrmenu.Services
         );
 
             return temp.ToList();
+        }
+
+        public void Kesim_Maliyeti_Saved_Delete_By_Revize_Id(Kesim_Maliyeti_Saved x)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -17,6 +17,8 @@ namespace qrmenu.Services
     {
         Paketleme_Maliyeti_Saved Paketleme_Maliyeti_Saved_Add(Paketleme_Maliyeti_Saved x);
         Paketleme_Maliyeti_Saved Paketleme_Maliyeti_Saved_Delete(Paketleme_Maliyeti_Saved x);
+        void Paketleme_Maliyeti_Saved_Delete_By_Revize_Id(Revize x);
+
         Paketleme_Maliyeti_Saved Paketleme_Maliyeti_Saved_Edit(Paketleme_Maliyeti_Saved x);
         List<Paketleme_Maliyeti_Saved_Retrun_Value> Paketleme_Maliyeti_Saved_Get_All();
         Paketleme_Maliyeti_Saved_Retrun_Value Paketleme_Maliyeti_Saved_Get_By_Id(Paketleme_Maliyeti_Saved x);
@@ -82,7 +84,22 @@ namespace qrmenu.Services
             _context.SaveChanges();
             return Değer;
         }
+        public void Paketleme_Maliyeti_Saved_Delete_By_Revize_Id(Revize x)
+        {
+            try
+            {
+                var temp = _context.Paketleme_Maliyeti_Saveds;
+                var Değer = temp.FirstOrDefault(o => o.Revize_Id == x.Id);
 
+                _context.Paketleme_Maliyeti_Saveds.Remove(Değer);
+                _context.SaveChanges();
+            }
+            catch (System.Exception)
+            {
+
+            }
+
+        }
         public Paketleme_Maliyeti_Saved Paketleme_Maliyeti_Saved_Edit(Paketleme_Maliyeti_Saved x)
         {
             var temp = _context.Paketleme_Maliyeti_Saveds;
@@ -104,8 +121,8 @@ namespace qrmenu.Services
                 Revize_Id = o.Revize_Id,
                 Olusturlma_Tarihi = o.Olusturlma_Tarihi,
                 Paketleme_Maliyeti_Saved_Row = (from x in _context.Paketleme_Maliyeti_Saved_Rows
-                                              where x.Paketleme_Maliyeti_Saved_Id == o.Id
-                                              select x
+                                                where x.Paketleme_Maliyeti_Saved_Id == o.Id
+                                                select x
                ).ToList()
 
 
@@ -127,8 +144,8 @@ namespace qrmenu.Services
                 Revize_Id = o.Revize_Id,
                 Olusturlma_Tarihi = o.Olusturlma_Tarihi,
                 Paketleme_Maliyeti_Saved_Row = (from x in _context.Paketleme_Maliyeti_Saved_Rows
-                                              where x.Paketleme_Maliyeti_Saved_Id == o.Id
-                                              select x
+                                                where x.Paketleme_Maliyeti_Saved_Id == o.Id
+                                                select x
                ).ToList()
 
 
@@ -150,8 +167,8 @@ namespace qrmenu.Services
                 Revize_Id = o.Revize_Id,
                 Olusturlma_Tarihi = o.Olusturlma_Tarihi,
                 Paketleme_Maliyeti_Saved_Row = (from x in _context.Paketleme_Maliyeti_Saved_Rows
-                                              where x.Paketleme_Maliyeti_Saved_Id == o.Id
-                                              select x
+                                                where x.Paketleme_Maliyeti_Saved_Id == o.Id
+                                                select x
                ).ToList()
 
 
@@ -191,5 +208,7 @@ namespace qrmenu.Services
         {
             throw new NotImplementedException();
         }
+
+
     }
 }

@@ -80,6 +80,15 @@ namespace qrmenu.Controllers
             return Ok(a);
         }
 
+          [Authorize(Role.Admin)]
+        [HttpPost("Malzeme_Maliyeti_Saved_Delete_By_Revize_Id")]
+        public IActionResult Malzeme_Maliyeti_Saved_Delete_By_Revize_Id(Revize x)
+        {
+            var a = _IMalzemeMaliyetiSavedService.Malzeme_Maliyeti_Saved_Delete_By_Revize_Id(x);
+            return Ok(a);
+        }
+
+
 
     }
 }

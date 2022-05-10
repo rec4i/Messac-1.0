@@ -193,13 +193,20 @@ namespace qrmenu.Controllers
 
 
 
+        [Authorize(Role.Admin)]
+        [HttpPost("Büküm_Maliyeti_Saved_Ağırlık_Delete_By_Revize_Id")]
+        public IActionResult Büküm_Maliyeti_Saved_Ağırlık_Delete_By_Revize_Id(Revize x)
+        {
+            _IBükümMaliyetiSavedService.Büküm_Maliyeti_Saved_Ağırlık_Delete_By_Revize_Id(x);
+            return Ok();
+        }
 
 
 
 
 
 
-
+        //Büküm_Maliyeti_Saved_Ağırlık_Delete_By_Revize_Id
 
 
 

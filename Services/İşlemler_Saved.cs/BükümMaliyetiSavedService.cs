@@ -18,6 +18,9 @@ namespace qrmenu.Services
 
         Büküm_Maliyeti_Saved_Ağırlık Büküm_Maliyeti_Saved_Ağırlık_Add(Büküm_Maliyeti_Saved_Ağırlık x);
         Büküm_Maliyeti_Saved_Ağırlık Büküm_Maliyeti_Saved_Ağırlık_Delete(Büküm_Maliyeti_Saved_Ağırlık x);
+
+        void Büküm_Maliyeti_Saved_Ağırlık_Delete_By_Revize_Id(Revize x);
+
         Büküm_Maliyeti_Saved_Ağırlık Büküm_Maliyeti_Saved_Ağırlık_Edit(Büküm_Maliyeti_Saved_Ağırlık x);
         List<Büküm_Maliyeti_Saved_Ağırlık> Büküm_Maliyeti_Saved_Ağırlık_Get_All();
         Büküm_Maliyeti_Saved_Ağırlık Büküm_Maliyeti_Saved_Ağırlık_Get_By_Id(Büküm_Maliyeti_Saved_Ağırlık x);
@@ -26,6 +29,10 @@ namespace qrmenu.Services
 
         Büküm_Maliyeti_Saved_Adet Büküm_Maliyeti_Saved_Adet_Add(Büküm_Maliyeti_Saved_Adet x);
         Büküm_Maliyeti_Saved_Adet Büküm_Maliyeti_Saved_Adet_Delete(Büküm_Maliyeti_Saved_Adet x);
+
+        void Büküm_Maliyeti_Saved_Adet_Delete_By_Revize_Id(Revize x);
+
+
         Büküm_Maliyeti_Saved_Adet Büküm_Maliyeti_Saved_Adet_Edit(Büküm_Maliyeti_Saved_Adet x);
         List<Büküm_Maliyeti_Saved_Adet> Büküm_Maliyeti_Saved_Adet_Get_All();
         Büküm_Maliyeti_Saved_Adet Büküm_Maliyeti_Saved_Adet_Get_By_Id(Büküm_Maliyeti_Saved_Adet x);
@@ -34,7 +41,13 @@ namespace qrmenu.Services
 
 
         Büküm_Maliyeti_Saved_Uzunluk Büküm_Maliyeti_Saved_Uzunluk_Add(Büküm_Maliyeti_Saved_Uzunluk x);
+
+
         Büküm_Maliyeti_Saved_Uzunluk Büküm_Maliyeti_Saved_Uzunluk_Delete(Büküm_Maliyeti_Saved_Uzunluk x);
+        void Büküm_Maliyeti_Saved_Uzunluk_Delete_By_Revize_Id(Revize x);
+
+
+
         Büküm_Maliyeti_Saved_Uzunluk Büküm_Maliyeti_Saved_Uzunluk_Edit(Büküm_Maliyeti_Saved_Uzunluk x);
         List<Büküm_Maliyeti_Saved_Uzunluk> Büküm_Maliyeti_Saved_Uzunluk_Get_All();
         Büküm_Maliyeti_Saved_Uzunluk Büküm_Maliyeti_Saved_Uzunluk_Get_By_Id(Büküm_Maliyeti_Saved_Uzunluk x);
@@ -98,7 +111,6 @@ namespace qrmenu.Services
 
 
 
-
             _context.Büküm_Maliyeti_Saved_Ağırlıks.Add(x);
             _context.SaveChanges();
             return x;
@@ -113,6 +125,54 @@ namespace qrmenu.Services
             _context.SaveChanges();
             return Değer;
         }
+
+        public void Büküm_Maliyeti_Saved_Ağırlık_Delete_By_Revize_Id(Revize y)
+        {
+            
+
+            try
+            {
+                var temp = _context.Büküm_Maliyeti_Saved_Ağırlıks;
+                var Değer = temp.FirstOrDefault(o => o.Revize_Id == y.Id);
+                _context.Büküm_Maliyeti_Saved_Ağırlıks.Remove(Değer);
+                _context.SaveChanges();
+
+            }
+            catch
+            {
+
+            }
+
+            try
+            {
+                var temp = _context.Büküm_Maliyeti_Saved_Adets;
+                var Değer = temp.FirstOrDefault(o => o.Revize_Id == y.Id);
+                _context.Büküm_Maliyeti_Saved_Adets.Remove(Değer);
+                _context.SaveChanges();
+
+            }
+            catch
+            {
+
+            }
+            try
+            {
+                var temp = _context.Büküm_Maliyeti_Saved_Uzunluks;
+                var Değer = temp.FirstOrDefault(o => o.Revize_Id == y.Id);
+                _context.Büküm_Maliyeti_Saved_Uzunluks.Remove(Değer);
+                _context.SaveChanges();
+
+            }
+            catch (System.Exception)
+            {
+
+            }
+
+
+
+
+        }
+
 
         public Büküm_Maliyeti_Saved_Ağırlık Büküm_Maliyeti_Saved_Ağırlık_Edit(Büküm_Maliyeti_Saved_Ağırlık x)
         {
@@ -175,7 +235,7 @@ namespace qrmenu.Services
 
         public Büküm_Maliyeti_Saved_Adet Büküm_Maliyeti_Saved_Adet_Add(Büküm_Maliyeti_Saved_Adet x)
         {
-              try
+            try
             {
                 var temp = _context.Büküm_Maliyeti_Saved_Ağırlıks;
                 var Değer = temp.FirstOrDefault(o => o.Revize_Id == x.Revize_Id);
@@ -275,7 +335,7 @@ namespace qrmenu.Services
         public Büküm_Maliyeti_Saved_Uzunluk Büküm_Maliyeti_Saved_Uzunluk_Add(Büküm_Maliyeti_Saved_Uzunluk x)
         {
 
-               try
+            try
             {
                 var temp = _context.Büküm_Maliyeti_Saved_Ağırlıks;
                 var Değer = temp.FirstOrDefault(o => o.Revize_Id == x.Revize_Id);
@@ -366,6 +426,17 @@ namespace qrmenu.Services
               );
 
             return temp.ToList();
+        }
+
+
+        public void Büküm_Maliyeti_Saved_Adet_Delete_By_Revize_Id(Revize x)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Büküm_Maliyeti_Saved_Uzunluk_Delete_By_Revize_Id(Revize x)
+        {
+            throw new NotImplementedException();
         }
     }
 }

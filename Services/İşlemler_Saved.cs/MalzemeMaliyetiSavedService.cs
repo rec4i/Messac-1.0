@@ -22,6 +22,11 @@ namespace qrmenu.Services
         Malzeme_Maliyeti_Saved Malzeme_Maliyeti_Saved_Get_By_Id(Malzeme_Maliyeti_Saved x);
         List<Malzeme_Maliyeti_Saved> Malzeme_Maliyeti_Saved_Get_By_Parça_Id(Revize x);
 
+        Malzeme_Maliyeti_Saved Malzeme_Maliyeti_Saved_Delete_By_Revize_Id(Revize x);
+
+
+
+
     }
     public class MalzemeMaliyetiSavedService : IMalzemeMaliyetiSavedService
     {
@@ -70,6 +75,25 @@ namespace qrmenu.Services
             // _context.baglantıElemanlarıs.Remove(Değer);
             _context.SaveChanges();
             return Değer;
+        }
+
+        public Malzeme_Maliyeti_Saved Malzeme_Maliyeti_Saved_Delete_By_Revize_Id(Revize y)
+        {
+            var temp = _context.Malzeme_Maliyeti_Saveds;
+            var Değer = temp.FirstOrDefault(o => o.Revize_Id == y.Id);
+            try
+            {
+                //Değer.Is_Deleted = 1;
+                _context.Malzeme_Maliyeti_Saveds.Remove(Değer);
+                _context.SaveChanges();
+
+                return Değer;
+            }
+            catch (System.Exception)
+            {
+                return Değer;
+            }
+
         }
 
         public Malzeme_Maliyeti_Saved Malzeme_Maliyeti_Saved_Edit(Malzeme_Maliyeti_Saved x)
@@ -121,5 +145,7 @@ namespace qrmenu.Services
 
             return temp.ToList();
         }
+
+
     }
 }

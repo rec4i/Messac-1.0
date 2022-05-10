@@ -225,32 +225,7 @@ namespace qrmenu.Services
 
 
 
-                // (from x in _context.Toplam_Maliyet_Saveds
-
-                //  join _revises in _context.Revizes
-                //  on x.Revize_Id equals _revises.Id
-
-                //  join _Parças in _context.Parças
-                //  on _revises.Parça_Id equals _Parças.Id
-
-                //  join _Takıms in _context.Takıms
-                //  on _Parças.Takım_Id equals _Takıms.Id
-
-
-                //  orderby _revises.Id descending
-                //  where _revises.Id == (from x in _context.Toplam_Maliyet_Saveds
-
-                //                             join _revises in _context.Revizes
-                //                             on x.Revize_Id equals _revises.Id
-
-                //                             orderby _revises.Id descending
-                //                             where _revises.Parça_Id == o.Id
-
-                //                             select x.Id
-                // ).FirstOrDefault()
-
-                //  select (x.Malzeme_Karlı_Toplam + x.İşçilik_Karlı_Toplam - x.Fire_Maliyeti)
-                // ).Sum()
+               
 
 
                 (from x in _context.Toplam_Maliyet_Saveds
@@ -267,82 +242,7 @@ namespace qrmenu.Services
 
 
 
-                // /
-
-                // (from x in _context.Toplam_Maliyet_Saveds
-
-                //  join _revises in _context.Revizes
-                //  on x.Revize_Id equals _revises.Id
-
-                //  join _Parças in _context.Parças
-                //  on _revises.Parça_Id equals _Parças.Id
-
-                //  join _Takıms in _context.Takıms
-                //  on _Parças.Takım_Id equals _Takıms.Id
-
-
-                //  orderby _revises.Id descending
-                //  where _Takıms.Id == o.Takım_Id
-
-                //  select (x.Malzeme_Karlı_Toplam + x.İşçilik_Karlı_Toplam - x.Fire_Maliyeti)
-                // ).Sum()
-
-                //  *
-
-                //  (from x in _context.Parças
-                //   where x.Id == o.Takım_Id
-                //   select x.Parça_Adeti
-                // ).Sum()
-
-                //  /
-
-                // (from x in _context.Toplam_Maliyet_Saveds
-
-                //  join _revises in _context.Revizes
-                //  on x.Revize_Id equals _revises.Id
-
-                //  orderby _revises.Id descending
-                //  where _revises.Parça_Id == o.Id
-
-
-                //  select (x.Malzeme_Karlı_Toplam + x.İşçilik_Karlı_Toplam - x.Fire_Maliyeti)
-                // ).FirstOrDefault() * o.Parça_Adeti
                 ,
-
-                // / (from x in _context.Parças
-                //    where x.Id == o.Takım_Id
-                //    select x.Parça_Adeti
-                // ).Sum() * (from x in _context.Toplam_Maliyet_Saveds
-
-
-
-                //            join _revises in _context.Revizes
-                //            on x.Revize_Id equals _revises.Id
-
-                //            join _Parças in _context.Parças
-                //            on _revises.Parça_Id equals _Parças.Id
-
-                //            join _Takıms in _context.Takıms
-                //            on _Parças.Takım_Id equals _Takıms.Id
-
-
-                //            orderby _revises.Id descending
-                //            where _Takıms.Id == o.Takım_Id
-
-                //            select (x.Malzeme_Karlı_Toplam + x.İşçilik_Karlı_Toplam - x.Fire_Maliyeti)
-                // ).Sum()) ,
-
-
-
-
-                // Evrak_Maliyeti = (from x in _context.Takıms
-                //                   where o.Takım_Id == x.Id
-                //                   select x.Evrak_Maliyeti
-                // ).FirstOrDefault() / (from x in _context.Parças
-                //                       where x.Takım_Id == o.Takım_Id
-                //                       select x.Parça_Adeti
-
-                // ).Sum() * o.Parça_Adeti,
 
 
 
@@ -385,37 +285,24 @@ namespace qrmenu.Services
                 Id = o.Id,
                 Parça_Adı = o.Parça_Adı,
                 Parça_Adeti = o.Parça_Adeti,
-                Birim_Maliyet = Toplam_Malzeme_Maliyeti == 0 ? 0 :
-
-                (o.Toplam_Maliyet + (o.Evrak_Maliyeti
-
-                 /
-
-                Toplam_Malzeme_Maliyeti)
-                 *
-
+                Birim_Maliyet = 
+                Toplam_Malzeme_Maliyeti == 0 ? 0 :
+                ((( o.Birim_Maliyet / Toplam_Malzeme_Maliyeti)*
                 (from x in _context.Takıms
                  where o.Takım_Id == x.Id
                  select x.Evrak_Maliyeti
-                 ).FirstOrDefault() / 100) / o.Parça_Adeti,
-
-
-
+                ).FirstOrDefault())/o.Parça_Adeti)+o.Birim_Maliyet
+                 
+                 ,
 
 
                 Evrak_Maliyeti = Toplam_Malzeme_Maliyeti == 0 ? 0 :
 
-                (o.Evrak_Maliyeti
-
-                 /
-
-                Toplam_Malzeme_Maliyeti)
-                 *
-
+                (((( o.Birim_Maliyet / Toplam_Malzeme_Maliyeti)*
                 (from x in _context.Takıms
                  where o.Takım_Id == x.Id
                  select x.Evrak_Maliyeti
-                 ).FirstOrDefault() / 100
+                ).FirstOrDefault())/o.Parça_Adeti)+o.Birim_Maliyet)*o.Parça_Adeti
                 ,
 
 
@@ -423,17 +310,11 @@ namespace qrmenu.Services
 
                 Toplam_Maliyet =
                 Toplam_Malzeme_Maliyeti == 0 ? 0 :
-                o.Toplam_Maliyet + (o.Evrak_Maliyeti
-
-                 /
-
-                Toplam_Malzeme_Maliyeti)
-                 *
-
+                Convert.ToDecimal((((( o.Birim_Maliyet / Toplam_Malzeme_Maliyeti)*
                 (from x in _context.Takıms
                  where o.Takım_Id == x.Id
                  select x.Evrak_Maliyeti
-                 ).FirstOrDefault() / 100,
+                ).FirstOrDefault())/o.Parça_Adeti)+o.Birim_Maliyet).ToString("F"))  *o.Parça_Adeti,
 
 
                 Takım_Id = o.Takım_Id,

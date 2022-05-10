@@ -17,6 +17,9 @@ namespace qrmenu.Services
     {
         Boya_Maliyeti_Saved Boya_Maliyeti_Saved_Add(Boya_Maliyeti_Saved x);
         Boya_Maliyeti_Saved Boya_Maliyeti_Saved_Delete(Boya_Maliyeti_Saved x);
+        void Boya_Maliyeti_Saved_Delete_By_Revize_Id(Revize x);
+
+
         Boya_Maliyeti_Saved Boya_Maliyeti_Saved_Edit(Boya_Maliyeti_Saved x);
         List<Boya_Maliyeti_Saved_Retrun_Value> Boya_Maliyeti_Saved_Get_All();
         Boya_Maliyeti_Saved_Retrun_Value Boya_Maliyeti_Saved_Get_By_Id(Boya_Maliyeti_Saved x);
@@ -83,6 +86,22 @@ namespace qrmenu.Services
             return Değer;
         }
 
+        public void Boya_Maliyeti_Saved_Delete_By_Revize_Id(Revize x)
+        {
+            try
+            {
+                var temp = _context.Boya_Maliyeti_Saveds;
+                var Değer = temp.FirstOrDefault(o => o.Revize_Id == x.Id);
+
+                _context.Boya_Maliyeti_Saveds.Remove(Değer);
+                _context.SaveChanges();
+            }
+            catch (System.Exception)
+            {
+
+            }
+        }
+
         public Boya_Maliyeti_Saved Boya_Maliyeti_Saved_Edit(Boya_Maliyeti_Saved x)
         {
             var temp = _context.Boya_Maliyeti_Saveds;
@@ -104,8 +123,8 @@ namespace qrmenu.Services
                 Revize_Id = o.Revize_Id,
                 Olusturlma_Tarihi = o.Olusturlma_Tarihi,
                 Boya_Maliyeti_Saved_Row = (from x in _context.Boya_Maliyeti_Saved_Rows
-                                              where x.Boya_Maliyeti_Saved_Id == o.Id
-                                              select x
+                                           where x.Boya_Maliyeti_Saved_Id == o.Id
+                                           select x
                ).ToList()
 
 
@@ -127,8 +146,8 @@ namespace qrmenu.Services
                 Revize_Id = o.Revize_Id,
                 Olusturlma_Tarihi = o.Olusturlma_Tarihi,
                 Boya_Maliyeti_Saved_Row = (from x in _context.Boya_Maliyeti_Saved_Rows
-                                              where x.Boya_Maliyeti_Saved_Id == o.Id
-                                              select x
+                                           where x.Boya_Maliyeti_Saved_Id == o.Id
+                                           select x
                ).ToList()
 
 
@@ -150,8 +169,8 @@ namespace qrmenu.Services
                 Revize_Id = o.Revize_Id,
                 Olusturlma_Tarihi = o.Olusturlma_Tarihi,
                 Boya_Maliyeti_Saved_Row = (from x in _context.Boya_Maliyeti_Saved_Rows
-                                              where x.Boya_Maliyeti_Saved_Id == o.Id
-                                              select x
+                                           where x.Boya_Maliyeti_Saved_Id == o.Id
+                                           select x
                ).ToList()
 
 
@@ -191,5 +210,7 @@ namespace qrmenu.Services
         {
             throw new NotImplementedException();
         }
+
+
     }
 }
