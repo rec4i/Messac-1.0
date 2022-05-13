@@ -25,6 +25,9 @@
 
 
             $('#Parça_Modal_Yazdır_Btn').click(function () {
+                
+
+
                 var Yol_İzinli = {
                     content: [
                         {
@@ -52,16 +55,16 @@
 
                                                     [
                                                         { fontSize: 12, alignment: 'right', text: 'Takım Adı :' },
-                                                        { fontSize: 12, text: 'Parça 1' }
+                                                        { fontSize: 12, text: $('#Takım_Adı_İnput').val() }
                                                     ],
 
                                                     [
                                                         { fontSize: 12, alignment: 'right', text: 'Parça Adı :' },
-                                                        { fontSize: 12, text: 'Takım 1' }
+                                                        { fontSize: 12, text: $('#Parça_Adı_İnput').val() }
                                                     ],
                                                     [
-                                                        { fontSize: 12, alignment: 'right', text: 'Parça Id :' },
-                                                        { fontSize: 12, text: '1' }
+                                                        { fontSize: 12, alignment: 'right', text: 'Revize Id :' },
+                                                        { fontSize: 12, text: $('#Revize_ID_İnput').val() }
                                                     ],
                                                 ]
                                             },
@@ -145,6 +148,40 @@
     function Return_Genel_Toplam(){
         var Genel_Toplam=Get_Genel_Toplam()
 
+        var Revize_Bilgileri
+        var Revize_Id = window.location.href.split('?')[1].split('&')[0].split('=')[1]
+        var x ={
+            Id:Revize_Id
+        }
+        $.ajax({
+            url: 'api/Revize/Revize_Get_By_Id',
+            type: 'POST',
+            async: false,
+            dataType: "json",
+            data: JSON.stringify(x),
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                Revize_Bilgileri=data
+
+               
+
+            },
+            error: function (xhr, status, error, title) {
+                if (xhr.status == 200) {
+                }
+                else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Talep Esnasında Bir Hata Oluştur',
+                        text: 'Hata Kodu:' + xhr.status + '  Hata İçeriği: ' + title,
+                    })
+                }
+
+            }
+        });
+
+
+
         var Satırlar = []
         Satırlar.push([
             { border: [false, false, false, false], text: 'Parça Maliyeti Genel Toplam', colSpan: 8, alignment: 'center' },
@@ -158,13 +195,23 @@
 
         ])
         Satırlar.push([
+            {   text: 'Evrak Maliyet(Seçili Revizeye Göre) :', style: 'tableHeader', colSpan: 4 ,alignment: 'left'  },
+            {},
+            {},
+            {},
+            {text: parseFloat(parseFloat(Revize_Bilgileri.evrak_Maliyeti.toFixed(2)) - parseFloat(Genel_Toplam.Parça_Toplam_Maliyet).toFixed(2)).toFixed(2), style: 'tableHeader', colSpan: 4 ,alignment: 'right'},
+            {},
+            {},
+            {},
+        ])
+        Satırlar.push([
             { text: 'Genel Kar Oranı (%):', style: 'tableHeader', colSpan: 2 ,alignment: 'left' },
             {},
             {text: Genel_Toplam.Parça_Genel_Kar_Oranı, style: 'tableHeader', colSpan: 2 ,alignment: 'right'},
             {},
             { text: 'Toplam Maliyet :', style: 'tableHeader', colSpan: 2 ,alignment: 'left' },
             {},
-            {text: Genel_Toplam.Parça_Toplam_Maliyet, style: 'tableHeader', colSpan: 2 ,alignment: 'right'},
+            {text: parseFloat(Genel_Toplam.Parça_Toplam_Maliyet) + parseFloat(Revize_Bilgileri.evrak_Maliyeti.toFixed(2)), style: 'tableHeader', colSpan: 2 ,alignment: 'right'},
             {},
         ])
 

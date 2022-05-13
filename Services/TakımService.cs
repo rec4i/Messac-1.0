@@ -203,6 +203,8 @@ namespace KaynakKod.Services
                 Olusturlma_Tarihi = o.Olusturlma_Tarihi,
                 Takım_Adı = o.Takım_Adı,
                 Evrak_Maliyeti = o.Evrak_Maliyeti,
+
+
                 Toplam_Maliyet = (from x in _context.Toplam_Maliyet_Saveds
 
                                   join _Parça in _context.Parças
@@ -216,16 +218,23 @@ namespace KaynakKod.Services
                                   orderby _revises.Id descending
                                   where _revises.Parça_Id == _Parça.Id
 
+
                                   select (x.Malzeme_Karlı_Toplam + x.İşçilik_Karlı_Toplam - x.Fire_Maliyeti) * _Parça.Parça_Adeti
-                ).Sum() + o.Evrak_Maliyeti,
+
+
+                ).Sum() ,
+
+
+
                 İş = (from x in _context.İşs
                       where x.Id == o.İş_Id
                       select x
                     ).FirstOrDefault()
 
-
-
             });
+
+
+
             return rv.ToList();
 
         }

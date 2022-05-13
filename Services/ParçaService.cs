@@ -82,6 +82,7 @@ namespace qrmenu.Services
         public List<Parça_Retrun_Value> Parça_Get_All()
         {
             var temp = (from x in _context.Parças
+                        where  x.Is_Deleted == 0
                         select x
             );
 
@@ -114,7 +115,8 @@ namespace qrmenu.Services
 
 
             var temp = (from x in _context.Parças
-                        where y.Id == x.Id
+                            
+                        where y.Id == x.Id &&  x.Is_Deleted == 0
                         select x
             );
 
@@ -186,11 +188,8 @@ namespace qrmenu.Services
         {
 
 
-
-
-
             var temp = (from x in _context.Parças
-                        where y.Id == x.Takım_Id
+                        where y.Id == x.Takım_Id &&  x.Is_Deleted == 0
                         select x
             );
 

@@ -143,6 +143,10 @@
             title: 'Oluşturulma Tarihi',
         })
         columns.push({
+            field: 'Satış_Fiyatı',
+            title: 'Satış Fiyatı',
+        })
+        columns.push({
             field: 'Düzenle',
             title: 'Düzenle',
         })
@@ -171,6 +175,8 @@
 
                     row__['ID'] = temp[i].id
                     row__['Oluşturulma_Tarihi'] = getFormattedDate(temp[i].olusturlma_Tarihi)
+                    row__['Satış_Fiyatı'] = parseFloat(temp[i].evrak_Maliyeti).toFixed(2)
+
                     row__['Düzenle'] = '<button class="btn btn-warning btn-sm" value="' + temp[i].id + '" id="Revize_Düzenle_Button" style="word-break: keep-all;"><i class="fa fa-file-text "></i> Düzenle</button>'
                     row__['Sil'] = '<button class="btn btn-danger btn-sm" value="' + temp[i].id + '" id="Revize_Sil_Button" style="word-break: keep-all;"><i class="fa fa-trash "></i></button>'
 
@@ -431,7 +437,7 @@
             field: 'Birim_Maliyet',
             title: 'Birim Satış Fiyatı',
         })
-       
+
         columns.push({
             field: 'Toplam_Maliyet',
             title: 'Toplam Satış Fiyatı',

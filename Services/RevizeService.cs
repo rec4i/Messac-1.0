@@ -24,7 +24,7 @@ namespace qrmenu.Services
 
         Revize_Retrun_Value Revize_Get_By_Id(Revize y);
 
-        List<Revize> Revize_Get_By_Parça_Id(Parça x);
+        List<Revize_Retrun_Value> Revize_Get_By_Parça_Id(Parça x);
 
 
     }
@@ -74,141 +74,74 @@ namespace qrmenu.Services
             throw new NotImplementedException();
         }
 
-        public List<Parça_Retrun_Value> Parça_Get_By_Takım_Id(Takım y,Parça z)
+        public decimal Parça_Get_By_Takım_Id(Takım y, Parça z, int r)
         {
 
 
             var temp = (from x in _context.Parças
-                        where y.Id == x.Takım_Id 
+                        where y.Id == x.Takım_Id
                         select x
             );
 
             IEnumerable<Parça_Retrun_Value> rt = temp.Select(o => new Parça_Retrun_Value
             {
-                Id = o.Id,
-                Parça_Adı = o.Parça_Adı,
-                Parça_Adeti = o.Parça_Adeti,
-                Birim_Maliyet = (from x in _context.Toplam_Maliyet_Saveds
+         
+                Birim_Maliyet =
+                 (from x in _context.Toplam_Maliyet_Saveds
 
                                  join _revises in _context.Revizes
                                  on x.Revize_Id equals _revises.Id
 
                                  orderby _revises.Id descending
-                                 
-                                 where _revises.Parça_Id == o.Id 
 
-                                 select (x.Malzeme_Karlı_Toplam + x.İşçilik_Karlı_Toplam - x.Fire_Maliyeti)
-                ).FirstOrDefault(),
+                                 where _revises.Parça_Id == o.Id
 
-                Evrak_Maliyeti =
+                                 //select (x.Malzeme_Karlı_Toplam + x.İşçilik_Karlı_Toplam - x.Fire_Maliyeti)
+                                 select x
+
+
+                ).Count() > 0 ?
+                (from x in _context.Toplam_Maliyet_Saveds
+
+                                 join _revises in _context.Revizes
+                                 on x.Revize_Id equals _revises.Id
+
+                                 orderby _revises.Id descending
+
+                                 where _revises.Parça_Id == o.Id
+
+                                 //select (x.Malzeme_Karlı_Toplam + x.İşçilik_Karlı_Toplam - x.Fire_Maliyeti)
+                                 select x
+
+
+                ).FirstOrDefault().Revize_Id == r ? 0 :
+
+
                 (from x in _context.Toplam_Maliyet_Saveds
 
                  join _revises in _context.Revizes
                  on x.Revize_Id equals _revises.Id
-                 orderby _revises.Id descending
-                 where _revises.Parça_Id == o.Id
-
-                 select (x.Malzeme_Karlı_Toplam + x.İşçilik_Karlı_Toplam - x.Fire_Maliyeti)
-                ).FirstOrDefault()
-
-                <= 0 ? 0 :
-
-
-
-                (from x in _context.Toplam_Maliyet_Saveds
-
-                 join _revises in _context.Revizes
-                 on x.Revize_Id equals _revises.Id
 
                  orderby _revises.Id descending
                  where _revises.Parça_Id == o.Id
 
-
                  select (x.Malzeme_Karlı_Toplam + x.İşçilik_Karlı_Toplam - x.Fire_Maliyeti)
-                ).FirstOrDefault() * o.Parça_Adeti,
+
+                ).FirstOrDefault()  : 0
 
 
+                ,
 
-                
-
-
-                Toplam_Maliyet =
-                (from x in _context.Parças
-                 where x.Takım_Id == o.Takım_Id
-                 select x.Parça_Adeti
-
-                ).Sum() == 0 ? 0 :
-                (from x in _context.Takıms
-                 where o.Takım_Id == x.Id
-                 select x.Evrak_Maliyeti
-                ).FirstOrDefault() / (from x in _context.Parças
-                                      where x.Takım_Id == o.Takım_Id
-                                      select x.Parça_Adeti
-
-                ).Sum() * o.Parça_Adeti + ((from x in _context.Toplam_Maliyet_Saveds
-
-                                            join _revises in _context.Revizes
-                                            on x.Revize_Id equals _revises.Id
-                                            orderby _revises.Id descending
-                                            where _revises.Parça_Id == o.Id
-
-                                            select (x.Malzeme_Karlı_Toplam + x.İşçilik_Karlı_Toplam - x.Fire_Maliyeti)
-                ).FirstOrDefault() * o.Parça_Adeti),
-
-
-                Takım_Id = o.Takım_Id,
-                Olusturlma_Tarihi = o.Olusturlma_Tarihi
+              
 
 
             });
 
             decimal Toplam_Malzeme_Maliyeti = rt.Select(o => o.Birim_Maliyet).Sum();
-       
-
-            IEnumerable<Parça_Retrun_Value> rt_1 = rt.Select(o => new Parça_Retrun_Value
-            {
-                Id = o.Id,
-                Parça_Adı = o.Parça_Adı,
-                Parça_Adeti = o.Parça_Adeti,
-                Birim_Maliyet = 
-                Toplam_Malzeme_Maliyeti == 0 ? 0 :
-                ((( o.Birim_Maliyet / Toplam_Malzeme_Maliyeti)*
-                (from x in _context.Takıms
-                 where o.Takım_Id == x.Id
-                 select x.Evrak_Maliyeti
-                ).FirstOrDefault())/o.Parça_Adeti)+o.Birim_Maliyet
-                 
-                 ,
-
-
-                Evrak_Maliyeti = Toplam_Malzeme_Maliyeti == 0 ? 0 :
-
-                (((( o.Birim_Maliyet / Toplam_Malzeme_Maliyeti)*
-                (from x in _context.Takıms
-                 where o.Takım_Id == x.Id
-                 select x.Evrak_Maliyeti
-                ).FirstOrDefault())/o.Parça_Adeti)+o.Birim_Maliyet)*o.Parça_Adeti
-                ,
 
 
 
-
-                Toplam_Maliyet =
-                Toplam_Malzeme_Maliyeti == 0 ? 0 :
-                Convert.ToDecimal((((( o.Birim_Maliyet / Toplam_Malzeme_Maliyeti)*
-                (from x in _context.Takıms
-                 where o.Takım_Id == x.Id
-                 select x.Evrak_Maliyeti
-                ).FirstOrDefault())/o.Parça_Adeti)+o.Birim_Maliyet).ToString("F"))  *o.Parça_Adeti,
-
-
-                Takım_Id = o.Takım_Id,
-                Olusturlma_Tarihi = o.Olusturlma_Tarihi
-            });
-
-
-           
-            return rt_1.ToList();
+            return Toplam_Malzeme_Maliyeti;
         }
 
 
@@ -248,23 +181,96 @@ namespace qrmenu.Services
                 Takım = temp._Takım,
                 Parça = temp._Parça,
                 İş = temp._İş,
+                Evrak_Maliyeti =
+                (
+                    (from x in _context.Toplam_Maliyet_Saveds
 
-                Evrak_Maliyeti = Parça_Get_By_Takım_Id(temp._Takım,temp._Parça).Select(o=> o.Birim_Maliyet).Sum()
+                     join _revises in _context.Revizes
+                     on x.Revize_Id equals _revises.Id
+
+                     where _revises.Id == temp.Id
+
+                     select (x.Malzeme_Karlı_Toplam + x.İşçilik_Karlı_Toplam - x.Fire_Maliyeti)
+                ).FirstOrDefault() * (from x in _context.Parças
+                                      where x.Id == temp.Parça_Id
+                                      select x.Parça_Adeti
+
+                ).FirstOrDefault()
+                )
+                /
+                   (
+                       Parça_Get_By_Takım_Id(temp._Takım, temp._Parça, temp.Id)
+                       +
+                    (from x in _context.Toplam_Maliyet_Saveds
+
+                     join _revises in _context.Revizes
+                     on x.Revize_Id equals _revises.Id
+
+                     where _revises.Id == temp.Id
+
+                     select (x.Malzeme_Karlı_Toplam + x.İşçilik_Karlı_Toplam - x.Fire_Maliyeti)
+                    ).FirstOrDefault()
+                    )
+                *
+                (from x in _context.Takıms
+
+                 join _Parça in _context.Parças
+                 on temp.Parça_Id equals _Parça.Id
+
+                 select x.Evrak_Maliyeti
+                ).FirstOrDefault() + (from x in _context.Toplam_Maliyet_Saveds
+
+                                      join _revises in _context.Revizes
+                                      on x.Revize_Id equals _revises.Id
+
+                                      where _revises.Id == temp.Id
+
+                                      select (x.Malzeme_Karlı_Toplam + x.İşçilik_Karlı_Toplam - x.Fire_Maliyeti)
+                    ).FirstOrDefault()
+
 
 
             };
 
             return rv;
         }
+       
 
-        public List<Revize> Revize_Get_By_Parça_Id(Parça y)
+        public List<Revize_Retrun_Value> Revize_Get_By_Parça_Id(Parça y)
         {
             var temp = (from x in _context.Revizes
-                        where x.Parça_Id == y.Id && x.Is_Deleted == 0
-                        select x
+
+                        join _Parça in _context.Parças
+                        on x.Parça_Id equals _Parça.Id
+
+                        where x.Parça_Id == y.Id
+
+                        select new
+                        {
+                            x.Id,
+                        }
             );
 
-            return temp.ToList();
+
+
+            List<Revize_Retrun_Value> rt = new List<Revize_Retrun_Value>();
+
+            if (temp.Count() > 0)
+            {
+                foreach (var item in temp)
+                {
+                    rt.Add(Revize_Get_By_Id(new Revize
+                    {
+                        Id = item.Id,
+                    }));
+                }
+            }
+
+
+
+            return rt.ToList();
         }
+
+
     }
 }
