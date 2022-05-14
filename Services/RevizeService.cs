@@ -85,36 +85,48 @@ namespace qrmenu.Services
 
             IEnumerable<Parça_Retrun_Value> rt = temp.Select(o => new Parça_Retrun_Value
             {
-         
+
                 Birim_Maliyet =
-                 (from x in _context.Toplam_Maliyet_Saveds
 
-                                 join _revises in _context.Revizes
-                                 on x.Revize_Id equals _revises.Id
-
-                                 orderby _revises.Id descending
-
-                                 where _revises.Parça_Id == o.Id
-
-                                 //select (x.Malzeme_Karlı_Toplam + x.İşçilik_Karlı_Toplam - x.Fire_Maliyeti)
-                                 select x
-
-
-                ).Count() > 0 ?
                 (from x in _context.Toplam_Maliyet_Saveds
 
-                                 join _revises in _context.Revizes
-                                 on x.Revize_Id equals _revises.Id
+                 join _revises in _context.Revizes
+                 on x.Revize_Id equals _revises.Id
 
-                                 orderby _revises.Id descending
+                 orderby _revises.Id descending
 
-                                 where _revises.Parça_Id == o.Id
+                 where _revises.Parça_Id == o.Id
 
-                                 //select (x.Malzeme_Karlı_Toplam + x.İşçilik_Karlı_Toplam - x.Fire_Maliyeti)
-                                 select x
+                 select x
 
 
-                ).FirstOrDefault().Revize_Id == r ? 0 :
+                ).FirstOrDefault().Revize_Id 
+                
+                == r ||
+
+                (from x in _context.Toplam_Maliyet_Saveds
+
+                 join _revises in _context.Revizes
+                 on x.Revize_Id equals _revises.Id
+
+                 orderby _revises.Id descending
+
+                 where _revises.Parça_Id == o.Id
+
+                 select _revises
+
+
+                ).FirstOrDefault().Parça_Id == z.Id
+                
+                ?
+                
+                    
+
+                 0
+
+
+                
+                 :
 
 
                 (from x in _context.Toplam_Maliyet_Saveds
@@ -127,12 +139,12 @@ namespace qrmenu.Services
 
                  select (x.Malzeme_Karlı_Toplam + x.İşçilik_Karlı_Toplam - x.Fire_Maliyeti)
 
-                ).FirstOrDefault()  : 0
+                ).FirstOrDefault()
 
 
                 ,
 
-              
+
 
 
             });
@@ -159,7 +171,7 @@ namespace qrmenu.Services
                         join _İş in _context.İşs
                         on _Takım.İş_Id equals _İş.Id
 
-                        where x.Id == y.Id
+                        where x.Id == y.Id && x.Is_Deleted == 0
 
                         select new
                         {
@@ -181,7 +193,23 @@ namespace qrmenu.Services
                 Takım = temp._Takım,
                 Parça = temp._Parça,
                 İş = temp._İş,
+                Olusturlma_Tarihi = temp.Olusturlma_Tarihi,
                 Evrak_Maliyeti =
+
+                (
+                       Parça_Get_By_Takım_Id(temp._Takım, temp._Parça, temp.Id)
+                       +
+                    (from x in _context.Toplam_Maliyet_Saveds
+
+                     join _revises in _context.Revizes
+                     on x.Revize_Id equals _revises.Id
+
+                     where _revises.Id == temp.Id && _revises.Is_Deleted == 0
+
+                     select (x.Malzeme_Karlı_Toplam + x.İşçilik_Karlı_Toplam - x.Fire_Maliyeti)
+                    ).FirstOrDefault()
+                ) == 0 ? 0 :
+
                 (
                     (from x in _context.Toplam_Maliyet_Saveds
 
@@ -191,15 +219,16 @@ namespace qrmenu.Services
                      where _revises.Id == temp.Id
 
                      select (x.Malzeme_Karlı_Toplam + x.İşçilik_Karlı_Toplam - x.Fire_Maliyeti)
-                ).FirstOrDefault() * (from x in _context.Parças
+                    ).FirstOrDefault() * (from x in _context.Parças
                                       where x.Id == temp.Parça_Id
                                       select x.Parça_Adeti
 
                 ).FirstOrDefault()
                 )
+
                 /
-                   (
-                       Parça_Get_By_Takım_Id(temp._Takım, temp._Parça, temp.Id)
+                (
+                    Parça_Get_By_Takım_Id(temp._Takım, temp._Parça, temp.Id)
                        +
                     (from x in _context.Toplam_Maliyet_Saveds
 
@@ -210,22 +239,29 @@ namespace qrmenu.Services
 
                      select (x.Malzeme_Karlı_Toplam + x.İşçilik_Karlı_Toplam - x.Fire_Maliyeti)
                     ).FirstOrDefault()
-                    )
+                )
                 *
+
                 (from x in _context.Takıms
 
                  join _Parça in _context.Parças
-                 on temp.Parça_Id equals _Parça.Id
+                 on x.Id equals _Parça.Takım_Id
+
+                 where _Parça.Id == temp._Parça.Id
 
                  select x.Evrak_Maliyeti
-                ).FirstOrDefault() + (from x in _context.Toplam_Maliyet_Saveds
+                ).FirstOrDefault()
 
-                                      join _revises in _context.Revizes
-                                      on x.Revize_Id equals _revises.Id
+                + 
 
-                                      where _revises.Id == temp.Id
+                (from x in _context.Toplam_Maliyet_Saveds
 
-                                      select (x.Malzeme_Karlı_Toplam + x.İşçilik_Karlı_Toplam - x.Fire_Maliyeti)
+                   join _revises in _context.Revizes
+                   on x.Revize_Id equals _revises.Id
+
+                   where _revises.Id == temp.Id
+
+                   select (x.Malzeme_Karlı_Toplam + x.İşçilik_Karlı_Toplam - x.Fire_Maliyeti)
                     ).FirstOrDefault()
 
 
@@ -234,7 +270,7 @@ namespace qrmenu.Services
 
             return rv;
         }
-       
+
 
         public List<Revize_Retrun_Value> Revize_Get_By_Parça_Id(Parça y)
         {

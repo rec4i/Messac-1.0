@@ -211,7 +211,7 @@
             {},
             { text: 'Toplam Maliyet :', style: 'tableHeader', colSpan: 2 ,alignment: 'left' },
             {},
-            {text: parseFloat(Genel_Toplam.Parça_Toplam_Maliyet) + parseFloat(Revize_Bilgileri.evrak_Maliyeti.toFixed(2)), style: 'tableHeader', colSpan: 2 ,alignment: 'right'},
+            {text: parseFloat(parseFloat(Genel_Toplam.Parça_Toplam_Maliyet).toFixed(2)  + parseFloat(Revize_Bilgileri.evrak_Maliyeti).toFixed(2)).toFixed(2) , style: 'tableHeader', colSpan: 2 ,alignment: 'right'},
             {},
         ])
 

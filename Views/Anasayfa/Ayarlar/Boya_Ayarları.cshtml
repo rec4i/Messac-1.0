@@ -37,350 +37,424 @@
             })
 
         })
-        console.log("Boya_Türleri")
         Boya_Türleri_Doldur()
-        function Boya_Türleri_Doldur() {
-            $.ajax({
-                url: 'api/Boya/Boya_Türü_Get_All',
-                type: 'POST',
-                async: false,
-                dataType: "json",
-
-                contentType: "application/json; charset=utf-8",
-                success: function (data) {
-                    console.log("KesimTürkeri")
-                    console.log(data)
-                    $('#Boya_Türleri_Div').empty()
-                    for (var i = 0; i < data.length; i++) {
-                        var myvar = '<div class="row" style="padding-top:25px">' +
-                            '                        <div class="col-md-10"></div>' +
-                            '                        <div class="col-md-2">' +
-                            '                            <button type="button" Boya_Türü_Id="' + data[i].id + '"  id="Boya_Türü_Sil' + data[i].id + '" class="btn btn-danger btn-block">Başlığı Sil</button>' +
-                            '                        </div>' +
-
-                            '                    </div>';
-
-                        var Ekleme_Buttons = '' +
-                            '<div class="row">' +
-                            '                                    <div class="col">' +
-                            '                                        <div class="form-group">' +
-                            '                                                        <input id="Boya_Text_' + data[i].id + '" data-thousands="." data-decimal=","' +
-                            '                                                        data-suffix=" mm" class="form-control form-control" type="text"' +
-                            '                                                        placeholder="Boya Adı">' +
-                            '                                        </div>' +
-                            '                                    </div>' +
-                            '                                    <div class="col"  >' +
-                            '                                        <div class="form-group">' +
-
-                            '<select class="form-control" id="Boya_Birim_' + data[i].id + '">' +
-                            ' </select> ' +
-                            '                                        </div>' +
-                            '                                    </div>' +
-                            '                                    <div class="col">' +
-                            '                                        <div class="form-group">' +
-                            '                                                        <input id="Boya_Birim_Fiyat' + data[i].id + '" data-thousands="." data-decimal=","' +
-                            '                                                        data-suffix=" ₺" class="form-control form-control" type="text"' +
-                            '                                                        placeholder="Birim Fiyatı">' +
-                            '                                        </div>' +
-                            '                                    </div>' +
-                            '                                    <div class="col-md-2">' +
-                            '                                         <button type="button" Boya_Türü_Id="' + data[i].id + '"  id="Yeni_Boya_Ekle_Btn_' + data[i].id + '" class="btn btn-warning btn-block">Ekle</button>' +
-                            '                                    </div>' +
-                            '                                </div>' +
-
-                            '';
-
-                        // 
-                        // 
-                        var variable = '' +
-                            '<div class="row">' +
-                            '        <div class="col-md-12">' +
-                            '            <div class="card card-primary collapsed-card">' +
-                            '                <div class="card-header">' +
-                            '                    <h3 class="card-title">' + data[i].boya_Türü_Text + '</h3>' +
-                            '                    <div class="card-tools">' +
-                            '                        <button type="button" class="btn btn-tool" data-card-widget="collapse">' +
-                            '                            <i class="fas fa-plus"></i>' +
-                            '                        </button>' +
-                            '                    </div>' +
-                            '                </div>' +
-                            '                <div class="card-body">' + Ekleme_Buttons +
-                            '                    <div class="row">' +
-                            '                        <div class="col-md-12">' +
-                            '                           <table id="Boya_Adları_Table_' + data[i].id + '"></table>' +
-                            '                        </div>' +
-                            '                    </div>' + myvar +
-                            '                </div>' +
-                            '            </div>' +
-                            '        </div>' +
-                            '    </div>' +
-                            '';
-                        $('#Boya_Türleri_Div').append(variable)
-                        Birim_Listesi_Doldur()
-
-                        $('#Boya_Birim_Fiyat' + data[i].id).maskMoney()
-
-
-
-
-                        $('#Boya_Türü_Sil' + data[i].id).once('click', function () {
-                            var x = {
-                                Id: $(this).attr('Boya_Türü_Id')
-                            }
-                            var eski_this = $(this)
-
-
-                            Swal.fire({
-                                title: 'Başlığı Silmek İstiyormusunuz? ',
-                                icon: 'warning',
-                                showCancelButton: true,
-                                confirmButtonColor: '#3085d6',
-                                cancelButtonColor: '#d33',
-                                cancelButtonText: 'Vazgeç',
-                                confirmButtonText: 'SİL'
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    $.ajax({
-                                        url: 'api/Boya/Boya_Türü_Delete',
-                                        type: 'POST',
-                                        async: false,
-                                        dataType: "json",
-                                        data: JSON.stringify(x),
-                                        contentType: "application/json; charset=utf-8",
-                                        success: function (data) {
-                                            Swal.fire(
-                                                'İşlem Başarılı',
-                                                'success'
-                                            )
-                                            Boya_Türleri_Doldur()
-                                        },
-                                        error: function (xhr, status, error) {
-                                            if (xhr.status == 200) {
-                                                eski_this.parent().parent().parent().parent().parent().parent().remove()
-                                                Swal.fire(
-                                                    'Silindi',
-                                                    'Başlık Başarı İle Silindi',
-                                                    'success'
-                                                )
-                                            }
-                                            else {
-                                                Swal.fire({
-                                                    icon: 'error',
-                                                    title: 'Talep Esnasında Bir Hata Oluştur',
-                                                    text: '' + xhr.status + '   ' + error.message,
-                                                })
-                                            }
-
-                                        }
-                                    });
-
-                                }
-                            })
-
-                        })
-
-                        $('#Yeni_Boya_Ekle_Btn_' + data[i].id).click(function () {
-                            var kesim_türü_Id = $(this).attr('Boya_Türü_Id')
-
-                            var Gönderilecek_veri = {
-                                Boya_Türü_Id: $(this).attr('Boya_Türü_Id'),
-                                Boya_Text: $('#Boya_Text_' + kesim_türü_Id).val(),
-                                Birim_Id: $('#Boya_Birim_' + kesim_türü_Id + '').find(':selected').attr('value'),
-                                Birim_Fiyat: $('#Boya_Birim_Fiyat' + kesim_türü_Id + '').maskMoney('unmasked')[0].toFixed(2)
-                            }
-                            var temp;
-                            $.ajax({
-                                url: 'api/Boya/Boya_Add',
-                                type: 'POST',
-                                async: false,
-                                dataType: "json",
-                                data: JSON.stringify(Gönderilecek_veri),
-                                contentType: "application/json; charset=utf-8",
-                                success: function (data) {
-                                    tamp = data
-                                    var $table = $('#Boya_Adları_Table_' + kesim_türü_Id)
-                                    buildTable($table, 0, 0, kesim_türü_Id)
-
-                                },
-                                error: function (xhr, status, error) {
-                                    if (xhr.status == 200) {
-                                        var $table = $('#Boya_Adları_Table_' + kesim_türü_Id)
-                                        buildTable($table, 0, 0, kesim_türü_Id)
-                                    }
-                                    else {
-                                        Swal.fire({
-                                            icon: 'error',
-                                            title: 'Talep Esnasında Bir Hata Oluştur',
-                                            text: '' + xhr.status + '   ' + error.Message,
-                                        })
-                                    }
-
-                                }
-                            });
-
-
-
-
-
-                        })
-
-
-                        var $table = $('#Boya_Adları_Table_' + data[i].id)
-                        buildTable($table, 0, 0, data[i].id)
-                        function buildTable($el, cells, rows, Kesim_Türü_Id) {
-
-
-                            var x = {
-                                Boya_Türü_Id: Kesim_Türü_Id
-                            }
-
-
-                            $el.bootstrapTable('destroy');
-
-                            var i; var j; var row
-                            var columns = [];
-                            var data__ = [];
-                            columns.push({
-                                field: 'Count',
-                                title: 'Count',
-                                sortable: true
-                            })
-                            columns.push({
-                                field: 'ID',
-                                title: 'ID',
-                                sortable: true
-                            })
-                            columns.push({
-                                field: 'Boya_Adı',
-                                title: 'Boya Adı',
-                            })
-                            columns.push({
-                                field: 'Birim',
-                                title: 'Birim',
-                            })
-                            columns.push({
-                                field: 'Birim_Fiyat',
-                                title: 'Birim Fiyat',
-                            })
-
-                            columns.push({
-                                field: 'Sil',
-                                title: 'SİL',
-                            })
-
-
-                            var Temp___;
-                            $.ajax({
-                                url: 'api/Boya/Boya_Get_By_Boya_Türü_Id',
-                                type: 'POST',
-                                async: false,
-                                dataType: "json",
-                                data: JSON.stringify(x),
-                                contentType: "application/json; charset=utf-8",
-                                success: function (data) {
-                                    console.log("Boya_YTweff_E-F-Ef-_Fe")
-                                    console.log(data)
-                                    var temp = data
-                                    Temp___ = data
-
-
-                                    for (i = 0; i < temp.length; i++) {
-                                        row = {}
-
-                                        row['Count'] = i
-                                        row['ID'] = temp[i].id
-                                        row['Boya_Türü_Id'] = temp[i].boya_Türü_Id
-                                        row['Birim'] = temp[i].birim.birim_Kısa_ad
-                                        row['Boya_Adı'] = temp[i].boya_Text
-                                        row['Birim_Fiyat'] = temp[i].birim_Fiyat.toFixed(2)
-                                        row['Sil'] = '<button class="btn btn-danger" Boya_Id="' + temp[i].id + '" boya_Türü_Id="' + temp[i].boya_Türü_Id + '" Row_İndex="' + i + '" id="Boya_Sil"><i class="fa fa-trash"></i></button>'
-                                        data__.push(row)
-                                    }
-                                },
-                                error: function () {
-                                    alert('Talep esnasında sorun oluştu.Yeniden deneyin');
-                                }
-                            });
-
-
-                            $('button[id=Kesim_Düzenle]').click(function () {
-
-
-
-                            })
-                            $el.bootstrapTable({
-                                columns: columns,
-                                data: data__,
-                                onDblClickCell: function (field, value, row, $element) {
-
-                                }
-                            })
 
 
 
 
 
 
-                            $el.bootstrapTable('hideColumn', 'Count')
-                            $el.bootstrapTable('hideColumn', 'ID')
+
+
+    })
+    function Boya_Türleri_Doldur() {
+        $.ajax({
+            url: 'api/Boya/Boya_Türü_Get_All',
+            type: 'POST',
+            async: false,
+            dataType: "json",
+
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                $('#Boya_Türleri_Div').empty()
+                for (var i = 0; i < data.length; i++) {
+                    var myvar = '<div class="row" style="padding-top:25px">' +
+                        '                        <div class="col-md-8"></div>' +
+                        '                        <div class="col-md-2">' +
+                        '                            <button type="button" Boya_Türü_Başlık="' + data[i].boya_Türü_Text + '" Boya_Türü_Id="' + data[i].id + '"  id="Boya_Türü_Düzenle" class="btn btn-primary btn-block">Adı Düzenle</button>' +
+                        '                        </div>' +
+                        '                        <div class="col-md-2">' +
+                        '                            <button type="button" Boya_Türü_Başlık="' + data[i].boya_Türü_Text + '" Boya_Türü_Id="' + data[i].id + '"  id="Boya_Türü_Sil" class="btn btn-danger btn-block">Başlığı Sil</button>' +
+                        '                        </div>' +
+
+                        '                    </div>';
+
+                    var Ekleme_Buttons = '' +
+                        '<div class="row">' +
+                        '                                    <div class="col">' +
+                        '                                        <div class="form-group">' +
+                        '                                                        <input id="Boya_Text_' + data[i].id + '" data-thousands="." data-decimal=","' +
+                        '                                                        data-suffix=" mm" class="form-control form-control" type="text"' +
+                        '                                                        placeholder="Boya Adı">' +
+                        '                                        </div>' +
+                        '                                    </div>' +
+                        '                                    <div class="col"  >' +
+                        '                                        <div class="form-group">' +
+
+                        '<select class="form-control" id="Boya_Birim_' + data[i].id + '">' +
+                        ' </select> ' +
+                        '                                        </div>' +
+                        '                                    </div>' +
+                        '                                    <div class="col">' +
+                        '                                        <div class="form-group">' +
+                        '                                                        <input id="Boya_Birim_Fiyat' + data[i].id + '" data-thousands="." data-decimal=","' +
+                        '                                                        data-suffix=" ₺" class="form-control form-control" type="text"' +
+                        '                                                        placeholder="Birim Fiyatı">' +
+                        '                                        </div>' +
+                        '                                    </div>' +
+                        '                                    <div class="col-md-2">' +
+                        '                                         <button type="button" Boya_Türü_Id="' + data[i].id + '"  id="Yeni_Boya_Ekle_Btn_' + data[i].id + '" class="btn btn-warning btn-block">Ekle</button>' +
+                        '                                    </div>' +
+                        '                                </div>' +
+
+                        '';
+
+                    // 
+                    // 
+                    var variable = '' +
+                        '<div class="row">' +
+                        '        <div class="col-md-12">' +
+                        '            <div class="card card-primary collapsed-card">' +
+                        '                <div class="card-header">' +
+                        '                    <h3 class="card-title">' + data[i].boya_Türü_Text + '</h3>' +
+                        '                    <div class="card-tools">' +
+                        '                        <button type="button" class="btn btn-tool" data-card-widget="collapse">' +
+                        '                            <i class="fas fa-plus"></i>' +
+                        '                        </button>' +
+                        '                    </div>' +
+                        '                </div>' +
+                        '                <div class="card-body">' + Ekleme_Buttons +
+                        '                    <div class="row">' +
+                        '                        <div class="col-md-12">' +
+                        '                           <table id="Boya_Adları_Table_' + data[i].id + '"></table>' +
+                        '                        </div>' +
+                        '                    </div>' + myvar +
+                        '                </div>' +
+                        '            </div>' +
+                        '        </div>' +
+                        '    </div>' +
+                        '';
+                    $('#Boya_Türleri_Div').append(variable)
+                    Birim_Listesi_Doldur()
+
+                    $('#Boya_Birim_Fiyat' + data[i].id).maskMoney()
 
 
 
-                            $('button[id=Boya_Sil]').once('click', function () {
 
-                                var Gönderilecek_veri = {
-                                    id: $(this).attr('Boya_Id')
-                                }
-                                var kesim_türü_Id = $(this).attr('boya_Türü_Id')
+                    $('#Boya_Türü_Sil').once('click', function () {
+                        var x = {
+                            Id: $(this).attr('Boya_Türü_Id')
+                        }
+                        var eski_this = $(this)
 
+
+                        Swal.fire({
+                            title: 'Başlığı Silmek İstiyormusunuz? ',
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            cancelButtonText: 'Vazgeç',
+                            confirmButtonText: 'SİL'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
                                 $.ajax({
-                                    url: 'api/Boya/Boya_Delete',
+                                    url: 'api/Boya/Boya_Türü_Delete',
                                     type: 'POST',
                                     async: false,
                                     dataType: "json",
-                                    data: JSON.stringify(Gönderilecek_veri),
+                                    data: JSON.stringify(x),
                                     contentType: "application/json; charset=utf-8",
                                     success: function (data) {
-                                        var $table = $('#Boya_Adları_Table_' + kesim_türü_Id)
-                                        buildTable($table, 0, 0, kesim_türü_Id)
                                         Swal.fire(
                                             'İşlem Başarılı',
                                             'success'
                                         )
-
+                                        Boya_Türleri_Doldur()
                                     },
                                     error: function (xhr, status, error) {
                                         if (xhr.status == 200) {
-
+                                            eski_this.parent().parent().parent().parent().parent().parent().remove()
+                                            Swal.fire(
+                                                'Silindi',
+                                                'Başlık Başarı İle Silindi',
+                                                'success'
+                                            )
                                         }
                                         else {
                                             Swal.fire({
                                                 icon: 'error',
                                                 title: 'Talep Esnasında Bir Hata Oluştur',
-                                                text: '' + xhr.status + '   ' + error.Message,
+                                                text: '' + xhr.status + '   ' + error.message,
                                             })
                                         }
 
                                     }
-                                })
-                            })
+                                });
 
+                            }
+                        })
 
+                    })
 
+                    $('#Boya_Türü_Düzenle').click(function () {
+                        $('#Parametre_Modal').modal('hide')
+                        $('#Boya_Başlığı_Düzenle_Modal').modal('show')
 
+                        $('#Boya_Başlığı_Düzenle_Modal_Kaydet_Button').attr('Boya_Türü_Id', $(this).attr('Boya_Türü_Id'))
+                        $('#Boya_Başlık_İnput').val($(this).attr('Boya_Türü_Başlık'))
+                        //
+
+                    })
+
+                    $('#Yeni_Boya_Ekle_Btn_' + data[i].id).click(function () {
+                        var kesim_türü_Id = $(this).attr('Boya_Türü_Id')
+
+                        var Gönderilecek_veri = {
+                            Boya_Türü_Id: $(this).attr('Boya_Türü_Id'),
+                            Boya_Text: $('#Boya_Text_' + kesim_türü_Id).val(),
+                            Birim_Id: $('#Boya_Birim_' + kesim_türü_Id + '').find(':selected').attr('value'),
+                            Birim_Fiyat: $('#Boya_Birim_Fiyat' + kesim_türü_Id + '').maskMoney('unmasked')[0].toFixed(2)
                         }
+                        var temp;
+                        $.ajax({
+                            url: 'api/Boya/Boya_Add',
+                            type: 'POST',
+                            async: false,
+                            dataType: "json",
+                            data: JSON.stringify(Gönderilecek_veri),
+                            contentType: "application/json; charset=utf-8",
+                            success: function (data) {
+                                tamp = data
+                                var $table = $('#Boya_Adları_Table_' + kesim_türü_Id)
+                                Boya_Table_Build($table, 0, 0, kesim_türü_Id)
+
+                            },
+                            error: function (xhr, status, error) {
+                                if (xhr.status == 200) {
+                                    var $table = $('#Boya_Adları_Table_' + kesim_türü_Id)
+                                    Boya_Table_Build($table, 0, 0, kesim_türü_Id)
+                                }
+                                else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Talep Esnasında Bir Hata Oluştur',
+                                        text: '' + xhr.status + '   ' + error.Message,
+                                    })
+                                }
+
+                            }
+                        });
+
+                    })
+
+
+                    var $table = $('#Boya_Adları_Table_' + data[i].id)
+                    Boya_Table_Build($table, 0, 0, data[i].id)
 
 
 
 
 
-                    }
+                }
+
+
+
+            },
+            error: function (xhr, status, error) {
+                if (xhr.status == 200) {
+                }
+                else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Talep Esnasında Bir Hata Oluştur',
+                        text: '' + xhr.status + '   ' + error.Message,
+                    })
+                }
+
+            }
+        });
+    }
+
+    function Boya_Table_Build($el, cells, rows, Kesim_Türü_Id) {
+
+
+        var x = {
+            Boya_Türü_Id: Kesim_Türü_Id
+        }
+
+
+        $el.bootstrapTable('destroy');
+
+        var i; var j; var row
+        var columns = [];
+        var data__ = [];
+        columns.push({
+            field: 'Count',
+            title: 'Count',
+            sortable: true
+        })
+        columns.push({
+            field: 'ID',
+            title: 'ID',
+            sortable: true
+        })
+        columns.push({
+            field: 'Boya_Adı',
+            title: 'Boya Adı',
+        })
+        columns.push({
+            field: 'Birim',
+            title: 'Birim',
+        })
+        columns.push({
+            field: 'Birim_Fiyat',
+            title: 'Birim Fiyat',
+        })
+
+        columns.push({
+            field: 'Düzenle',
+            title: 'Düzenle',
+        })
+
+        columns.push({
+            field: 'Sil',
+            title: 'SİL',
+        })
+
+
+        var Temp___;
+        $.ajax({
+            url: 'api/Boya/Boya_Get_By_Boya_Türü_Id',
+            type: 'POST',
+            async: false,
+            dataType: "json",
+            data: JSON.stringify(x),
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                console.log("Boya_YTweff_E-F-Ef-_Fe")
+                console.log(data)
+                var temp = data
+                Temp___ = data
+
+
+                for (i = 0; i < temp.length; i++) {
+                    row = {}
+
+                    row['Count'] = i
+                    row['ID'] = temp[i].id
+                    row['Boya_Türü_Id'] = temp[i].boya_Türü_Id
+                    row['Birim'] = temp[i].birim.birim_Kısa_ad
+                    row['Boya_Adı'] = temp[i].boya_Text
+                    row['Birim_Fiyat'] = temp[i].birim_Fiyat.toFixed(2)
+                    row['Sil'] = '<button class="btn btn-danger" Boya_Id="' + temp[i].id + '" boya_Türü_Id="' + temp[i].boya_Türü_Id + '" Row_İndex="' + i + '" id="Boya_Sil"><i class="fa fa-trash"></i></button>'
+                    row['Düzenle'] = '<button class="btn btn-block btn-warning" boya_Türü_Id="' + temp[i].boya_Türü_Id + '" Boya_Id="' + temp[i].id + '" id="Boya_Düzenle">Düzenle</button>'
+
+                    data__.push(row)
+                }
+            },
+            error: function () {
+                alert('Talep esnasında sorun oluştu.Yeniden deneyin');
+            }
+        });
+
+
+        $('button[id=Kesim_Düzenle]').click(function () {
+
+
+
+        })
+        $el.bootstrapTable({
+            columns: columns,
+            data: data__,
+            onDblClickCell: function (field, value, row, $element) {
+
+            }
+        })
+
+
+
+
+
+
+        $el.bootstrapTable('hideColumn', 'Count')
+        $el.bootstrapTable('hideColumn', 'ID')
+
+        $('button[id=Boya_Düzenle]').click(function () {
+
+            $('#Parametre_Modal').modal('hide')
+            $('#Boya_Düzenle_Modal').modal('show')
+
+
+
+            $('#Boya_Düzenle_Modal_Kaydet_Button').attr('boya_Türü_Id', $(this).attr('boya_Türü_Id'))
+            $('#Boya_Düzenle_Modal_Kaydet_Button').attr('Boya_Id', $(this).attr('Boya_Id'))
+
+
+
+            var x = {
+                Id: $(this).attr('Boya_Id')
+            }
+
+            $.ajax({
+                url: 'api/Boya/Boya_Get_By_Id',
+                type: 'POST',
+                async: false,
+                dataType: "json",
+                data: JSON.stringify(x),
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    $('#Boya_Düzenle_Boya_Adı_İnput').val(data.boya_Text)
+
+
+                    $('#Boya_Düzenle_Boya_Birim_Fiyat_input').val(data.birim_Fiyat)
+                    $('#Boya_Düzenle_Boya_Birim_Fiyat_input').maskMoney()
+                    $('#Boya_Düzenle_Boya_Birim_Fiyat_input').trigger('mask.maskMoney')
+
+
+                    $('#Boya_Düzenle_Boya_Birim').val(data.birim_Id)
 
 
 
                 },
                 error: function (xhr, status, error) {
                     if (xhr.status == 200) {
+
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Talep Esnasında Bir Hata Oluştur',
+                            text: '' + xhr.status + '   ' + error.message,
+                        })
+                    }
+
+                }
+            });
+
+
+
+        })
+
+
+
+        $('button[id=Boya_Sil]').once('click', function () {
+
+            var Gönderilecek_veri = {
+                id: $(this).attr('Boya_Id')
+            }
+            var kesim_türü_Id = $(this).attr('boya_Türü_Id')
+
+            $.ajax({
+                url: 'api/Boya/Boya_Delete',
+                type: 'POST',
+                async: false,
+                dataType: "json",
+                data: JSON.stringify(Gönderilecek_veri),
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    var $table = $('#Boya_Adları_Table_' + kesim_türü_Id)
+                    Boya_Table_Build($table, 0, 0, kesim_türü_Id)
+                    Swal.fire(
+                        'İşlem Başarılı',
+                        'success'
+                    )
+
+                },
+                error: function (xhr, status, error) {
+                    if (xhr.status == 200) {
+
                     }
                     else {
                         Swal.fire({
@@ -391,17 +465,14 @@
                     }
 
                 }
-            });
-        }
+            })
+        })
 
 
 
 
+    }
 
-
-
-
-    })
 </script>
 
 <div class="row">

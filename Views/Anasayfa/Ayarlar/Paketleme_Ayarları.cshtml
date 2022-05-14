@@ -113,10 +113,10 @@
             sortable: true
         })
 
-        @* columns.push({
+        columns.push({
             field: 'Düzenle',
             title: 'Düzenle',
-        }) *@
+        })
         columns.push({
             field: 'Sil',
             title: 'Sil',
@@ -150,7 +150,7 @@
                     row['Birim'] = temp[i].birim.birim_Kısa_ad
                     row['Fiyat'] = Fiyatı
                     row['Sil'] = '<button class="btn btn-danger" Paketleme_Id="' + temp[i].id + '"  id="Paketleme_Sil_Btn"><i class="fa fa-trash"></i></button>'
-                    row['Düzenle'] = '<button class="btn btn-block btn-warning" Kaynak_Id="' + temp[i].id + '" id="Paketleme_Düzenle">Düzenle</button>'
+                    row['Düzenle'] = '<button class="btn btn-block btn-warning" Paketleme_Id="' + temp[i].id + '" id="Paketleme_Düzenle">Düzenle</button>'
 
                     data__.push(row)
 
@@ -236,8 +236,51 @@
         })
         $('#Paketleme_Düzenle').click(function () {
             $('#Parametre_Modal').modal('hide')
-            $('#Kaynak_Düzenle_modal').modal('show')
-            $('#Kaynak_Düzenle_Kaydet_Button').attr('Kaynak_Id', $(this).attr('Kaynak_Id'))
+            $('#Paketleme_Düzenle_Modal').modal('show')
+            $('#Paketleme_Düzenle_Modal_Kaydet_Button').attr('Paketleme_Id', $(this).attr('Paketleme_Id'))
+
+
+
+
+            var x = {
+                Id: $(this).attr('Paketleme_Id')
+            }
+
+            $.ajax({
+                url: 'api/Paketleme/Paketleme_Get_By_Id',
+                type: 'POST',
+                async: false,
+                dataType: "json",
+                data: JSON.stringify(x),
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    $('#Paketleme_Düzenle_Paketleme_Türü').val(data.paketleme_Türü)
+
+
+                    $('#Paketleme_Düzenle_Birim_Fiyat').val(data.maliyet)
+                    $('#Paketleme_Düzenle_Birim_Fiyat').maskMoney()
+                    $('#Paketleme_Düzenle_Birim_Fiyat').trigger('mask.maskMoney')
+
+
+                    $('#Paketleme_Düzenle_Birim_Select').val(data.birim_Id)
+
+
+
+                },
+                error: function (xhr, status, error) {
+                    if (xhr.status == 200) {
+
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Talep Esnasında Bir Hata Oluştur',
+                            text: '' + xhr.status + '   ' + error.message,
+                        })
+                    }
+
+                }
+            });
 
         })
         // $el.bootstrapTable('hideColumn', 'ID')

@@ -141,6 +141,7 @@ namespace qrmenu.Services
             Değer.Kesim_mm_Son = kesim.Kesim_mm_Son;
             Değer.Kesim_Türü_Id = kesim.Kesim_Türü_Id;
             Değer.Saat_Bası_Ucret = kesim.Saat_Bası_Ucret;
+            Değer.Birim_Id=kesim.Birim_Id;
             _context.SaveChanges();
 
             return Değer;

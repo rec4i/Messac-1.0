@@ -1,0 +1,175 @@
+<script>
+    $(document).ready(function () {
+        $('#Boya_Başlığı_Düzenle_Modal_Kaydet_Button').click(function () {
+            var x = {
+                Id: $(this).attr('Boya_Türü_Id'),
+                Boya_Türü_Text: $('#Boya_Başlık_İnput').val()
+            }
+
+            $.ajax({
+                url: 'api/Boya/Boya_Türü_Edit',
+                type: 'POST',
+                async: false,
+                dataType: "json",
+                data: JSON.stringify(x),
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    Boya_Türleri_Doldur()
+
+                    $('#Boya_Başlığı_Düzenle_Modal').modal('hide')
+                    $('#Parametre_Modal').modal('show')
+
+
+                },
+                error: function (xhr, status, error) {
+                    if (xhr.status == 200) {
+                        Boya_Türleri_Doldur()
+                        $('#Boya_Başlığı_Düzenle_Modal').modal('hide')
+                        $('#Parametre_Modal').modal('show')
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Talep Esnasında Bir Hata Oluştur',
+                            text: '' + xhr.status + '   ' + error.message,
+                        })
+                    }
+
+                }
+            });
+
+
+
+            Boya_Türleri_Doldur()
+
+
+        })
+    })
+</script>
+
+<div class="modal fade" id="Boya_Başlığı_Düzenle_Modal" tabindex="-100" role="dialog"
+    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="Uzunul_Ve_Genişlik_Zorluk_Düzenle_Modal_Header">Düzenle</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col">
+                        <label for="">Boya Türü :</label>
+                        <input id="Boya_Başlık_İnput" class="form-control form-control" type="text"
+                            placeholder="Boya Türü">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+                <button type="button" id="Boya_Başlığı_Düzenle_Modal_Kaydet_Button" class="btn btn-primary">
+                    Kaydet
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    $(document).ready(function () {
+
+        $('#Boya_Düzenle_Modal_Kaydet_Button').click(function () {
+
+            var x = {
+                Id: $(this).attr('Boya_Id'),
+                Boya_Text: $('#Boya_Düzenle_Boya_Adı_İnput').val(),
+                Birim_Fiyat: $('#Boya_Düzenle_Boya_Birim_Fiyat_input').maskMoney('unmasked')[0].toFixed(2),
+                Birim_Id: $('#Boya_Düzenle_Boya_Birim').find(':selected').attr('value'),
+            }
+
+            $.ajax({
+                url: 'api/Boya/Boya_Edit',
+                type: 'POST',
+                async: false,
+                dataType: "json",
+                data: JSON.stringify(x),
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+
+                    var $table = $('#Boya_Adları_Table_' + data.boya_Türü_Id)
+                    Boya_Table_Build($table, 0, 0, data.boya_Türü_Id)
+
+
+                    $('#Boya_Düzenle_Modal').modal('hide')
+                    $('#Parametre_Modal').modal('show')
+
+
+
+                },
+                error: function (xhr, status, error) {
+                    if (xhr.status == 200) {
+
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Talep Esnasında Bir Hata Oluştur',
+                            text: '' + xhr.status + '   ' + error.message,
+                        })
+                    }
+
+                }
+            });
+
+            $('#Boya_Düzenle_Modal').modal('hide')
+            $('#Parametre_Modal').modal('show')
+
+        })
+
+
+
+
+    })
+</script>
+
+
+<div class="modal fade" id="Boya_Düzenle_Modal" tabindex="-100" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="Uzunul_Ve_Genişlik_Zorluk_Düzenle_Modal_Header">Düzenle</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col">
+                        <label for="">Boya Adı :</label>
+                        <input id="Boya_Düzenle_Boya_Adı_İnput" class="form-control form-control" type="text"
+                            placeholder="Boya Adı">
+                    </div>
+                    <div class="col">
+                        <label for="">Birim :</label>
+                        <select name="" id="Boya_Düzenle_Boya_Birim" class="form-control"></select>
+                    </div>
+                    <div class="col">
+                        <label for="">Birim Fiyat :</label>
+                        <input id="Boya_Düzenle_Boya_Birim_Fiyat_input" class="form-control form-control" type="text"
+                            data-thousands="." data-decimal="," data-suffix=" ₺" placeholder="Birim Fiyat">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+                <button type="button" id="Boya_Düzenle_Modal_Kaydet_Button" class="btn btn-primary">
+                    Kaydet
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

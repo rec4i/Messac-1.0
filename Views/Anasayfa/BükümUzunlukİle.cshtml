@@ -131,9 +131,15 @@
                         '                                    </div>' +
                         '                                </div>' +
                         '                              <div class="row" style="padding-top: 25px;">' +
-                        '                                    <div class="col-md-8"></div>' +
+                        '                                    <div class="col-md-6"></div>' +
                         '                                    <div class="col-md-2">' +
-                        '                                        <button type="button" data_Id="' + data[i].id +'" id="Yeni_Zorluk_Ekle_Modal_Aç_Button_' + data[i].id + '"' +
+                        '                                        <button type="button" data_Id="' + data[i].id + '" id="Uzunluk_Zorluk_İle_Uzunluk_Düzenle"' +
+                        '                                            class="btn btn-block btn-primary">' +
+                        '                                            Düzenle' +
+                        '                                        </button>' +
+                        '                                    </div>' +
+                        '                                    <div class="col-md-2">' +
+                        '                                        <button type="button" data_Id="' + data[i].id + '" id="Yeni_Zorluk_Ekle_Modal_Aç_Button_' + data[i].id + '"' +
                         '                                            class="btn btn-block btn-warning">' +
                         '                                            Ekle' +
                         '                                        </button>' +
@@ -178,7 +184,65 @@
                     $('#Yeni_Zorluk_Ekle_Modal_Aç_Button_' + data[i].id).click(function () {
                         $('#Parametre_Modal').modal('hide')
                         $('#Uzunul_Ve_Genişlik_Zorluk_Ekle_Modal').modal('show')
-                        $('#Uzunluk_Ve_Genişlik_Zorluk_Ekle_Kaydet_Modal_Kaydet').attr('Data_Id', $(this).attr('data_Id'))
+                        $('#Uzunluk_Ve_Genişlik_Zorluk_Ekle_Kaydet_Modal_Kaydet').attr('data_Id', $(this).attr('data_Id'))
+
+
+                    })
+
+                    $('#Uzunluk_Zorluk_İle_Uzunluk_Düzenle').click(function () {
+                        $('#Parametre_Modal').modal('hide')
+                        $('#Uzunluk_Ve_Genişlik_Düzenle_Modal').modal('show')
+
+                        $('#Uzunluk_Ve_Genişlik_Düzenle_Modal_Kaydet').attr('Uzunluk_Ve_Genişlik_Id', $(this).attr('data_Id'))
+
+                        var x = {
+                            Id: $(this).attr('data_Id')
+                        }
+
+                        $.ajax({
+                            url: 'api/BükümYeni/Büküm_Uzunluk_Hesabı_Get_By_Id',
+                            type: 'POST',
+                            async: false,
+                            dataType: "json",
+                            data: JSON.stringify(x),
+                            contentType: "application/json; charset=utf-8",
+                            success: function (data) {
+                                //BükümYeni_Uzunluk_İle_Uzunluk_Bas_Düzenle
+                                //data.uzunluk_Bas
+                                $('#BükümYeni_Uzunluk_İle_Uzunluk_Bas_Düzenle').val(data.uzunluk_Bas)
+                                $('#BükümYeni_Uzunluk_İle_Uzunluk_Bas_Düzenle').maskMoney()
+                                $('#BükümYeni_Uzunluk_İle_Uzunluk_Bas_Düzenle').trigger('mask.maskMoney')
+
+
+                                //BükümYeni_Uzunluk_İle_Uzunluk_Son_Düzenle
+                                //data.uzunluk_Son
+                                $('#BükümYeni_Uzunluk_İle_Uzunluk_Son_Düzenle').val(data.uzunluk_Son)
+                                $('#BükümYeni_Uzunluk_İle_Uzunluk_Son_Düzenle').maskMoney()
+                                $('#BükümYeni_Uzunluk_İle_Uzunluk_Son_Düzenle').trigger('mask.maskMoney')
+
+
+                                //BükümYeni_Uzunluk_İle_Uzunluk_Kaysayı_Düzenle
+                                //data.zorluk_Katsayısı
+                                $('#BükümYeni_Uzunluk_İle_Uzunluk_Kaysayı_Düzenle').val(data.zorluk_Katsayısı)
+                                $('#BükümYeni_Uzunluk_İle_Uzunluk_Kaysayı_Düzenle').maskMoney()
+                                $('#BükümYeni_Uzunluk_İle_Uzunluk_Kaysayı_Düzenle').trigger('mask.maskMoney')
+
+
+                            },
+                            error: function (xhr, status, error) {
+                                if (xhr.status == 200) {
+
+                                }
+                                else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Talep Esnasında Bir Hata Oluştur',
+                                        text: '' + xhr.status + '   ' + error.Message,
+                                    })
+                                }
+
+                            }
+                        })
 
 
                     })
@@ -384,6 +448,51 @@
             $('#Uzunul_Ve_Genişlik_Zorluk_Düzenle_Modal').modal('show')
             $('#Uzunluk_Ve_Genişlik_Zorluk_Düzenle_Kaydet').attr('Operasyon_ıd', $(this).attr('Zorluk_Id'))
             $('#Uzunluk_Ve_Genişlik_Zorluk_Düzenle_Kaydet').attr('Genel_Id', $(this).attr('Büküm_KiloHesabı_Id'))
+
+
+            var x = {
+                Id: $(this).attr('Zorluk_Id')
+            }
+
+            $.ajax({
+                url: 'api/BükümYeni/Büküm_Uzunluk_Hesabı_Zorluk_Get_By_Id',
+                type: 'POST',
+                async: false,
+                dataType: "json",
+                data: JSON.stringify(x),
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    //Uzunluk_Ve_Genişlik_Zorluk_Adı_Düzenle
+                    //data.zorluk_Adı
+                    $('#Uzunluk_Ve_Genişlik_Zorluk_Adı_Düzenle').val(data.zorluk_Adı)
+
+
+                    //Uzunluk_Ve_Genişlik_Zorluk_Katsayı_Düzenle
+                    //data.zorluk_Katsayısı
+                    $('#Uzunluk_Ve_Genişlik_Zorluk_Katsayı_Düzenle').val(data.zorluk_Katsayısı)
+                    $('Uzunluk_Ve_Genişlik_Zorluk_Katsayı_Düzenle').maskMoney()
+                    $('Uzunluk_Ve_Genişlik_Zorluk_Katsayı_Düzenle').trigger('mask.maskMoney')
+
+
+
+                },
+                error: function (xhr, status, error) {
+                    if (xhr.status == 200) {
+
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Talep Esnasında Bir Hata Oluştur',
+                            text: '' + xhr.status + '   ' + error.Message,
+                        })
+                    }
+
+                }
+            })
+
+
+
 
         })
         $('button[id=Büküm_Uzunluk_Hesabu_Zorluk_Sil]').click(function () {

@@ -823,11 +823,9 @@
             $('#Evrak_maliyeti_Modal_Kaydet').attr('value', $(this).attr('value'))
             $('#Evrak_maliyeti_Modal_Kaydet').attr('Table_Id', $(this).attr('Table_Id'))
             $('#Evrak_maliyeti_Modal_Kaydet').attr('Row_Index', $(this).attr('Row_Index'))//.toFixed(2)
-            $('#Evrak_Maliyeti_İnput').val(parseFloat($(this).parent().parent().find('#Toplam_Maliyet').attr('value')).toFixed(2))
+            $('#Evrak_Maliyeti_İnput').val(parseFloat($(this).parent().parent().find('#Evrak_Maliyeti').attr('value')).toFixed(2))
             $('#Evrak_Maliyeti_İnput').maskMoney()
             $('#Evrak_Maliyeti_İnput').trigger('mask.maskMoney')
-
-
 
 
         })

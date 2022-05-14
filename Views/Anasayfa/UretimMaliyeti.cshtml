@@ -26,17 +26,18 @@
                 var temp = data
                 var rows = []
                 for (i = 0; i < temp.rows.length; i++) {
-                    var  x = {
+                    var x = {
                         'İşin_Adı': temp.rows[i].İşin_Adı,
-                        'oluşturlma_Tar':temp.rows[i].oluşturlma_Tar,
-                        'son_Düzenleme_Tar':temp.rows[i].son_Düzenleme_Tar,
-                        'Düzenle':'<button class="btn btn-warning btn-sm" value="' + temp.rows[i].id + '" id="Düzenle" style="word-break: keep-all;"><i class="fa fa-file-text "></i> Düzenle</button>'
+                        'oluşturlma_Tar': temp.rows[i].oluşturlma_Tar,
+                        'son_Düzenleme_Tar': temp.rows[i].son_Düzenleme_Tar,
+                        'Düzenle': '<button class="btn btn-warning btn-sm" value="' + temp.rows[i].id + '" id="Düzenle" style="word-break: keep-all;"><i class="fa fa-file-text "></i> Düzenle</button>'
                     }
                     rows.push(x)
 
                 }
                 temp.rows = rows
                 params.success(temp)
+                console.log(data)
 
 
             },
@@ -104,19 +105,19 @@
 @Html.Partial("İş_Olustur_Folder/Evrak_Maliyeti_Modal")
 @* <div class="row">
     <div class="col-md-12">
-        <div class="card">
-            <div class="card-body">
-                <div class="row text-right">
-                    <div class="col-md-2 ">
-                        <button type="button" class="btn btn-block btn-default">Default</button>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <table data-search="true" id="İş_Emirleri"></table>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="card">
+    <div class="card-body">
+    <div class="row text-right">
+    <div class="col-md-2 ">
+    <button type="button" class="btn btn-block btn-default">Default</button>
     </div>
-</div> *@
+    </div>
+    <div class="row">
+    <div class="col-md-12">
+    <table data-search="true" id="İş_Emirleri"></table>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div> *@

@@ -1,0 +1,89 @@
+<script>
+    $(document).ready(function () {
+
+        $('#Paketleme_Düzenle_Modal_Kaydet_Button').click(function () {
+
+            var x = {
+                Id: $(this).attr('Paketleme_Id'),
+                Paketleme_Türü: $('#Paketleme_Düzenle_Paketleme_Türü').val(),
+                Maliyet: $('#Paketleme_Düzenle_Birim_Fiyat').maskMoney('unmasked')[0].toFixed(2),
+                Birim_Id: $('#Paketleme_Düzenle_Birim_Select').find(':selected').attr('value'),
+            }
+
+            $.ajax({
+                url: 'api/Paketleme/Paketleme_Edit',
+                type: 'POST',
+                async: false,
+                dataType: "json",
+                data: JSON.stringify(x),
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+
+                    var $table = $('#Paketleme_Table')
+                    Paketleme_Tablo_Doldur($table, 0, 0, 0)
+
+                    $('#Paketleme_Düzenle_Modal').modal('hide')
+                    $('#Parametre_Modal').modal('show')
+
+
+
+                },
+                error: function (xhr, status, error) {
+                    if (xhr.status == 200) {
+
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Talep Esnasında Bir Hata Oluştur',
+                            text: '' + xhr.status + '   ' + error.message,
+                        })
+                    }
+
+                }
+            });
+
+            $('#Paketleme_Düzenle_Modal').modal('hide')
+            $('#Parametre_Modal').modal('show')
+        })
+
+    })
+</script>
+
+<div class="modal fade" id="Paketleme_Düzenle_Modal" tabindex="-100" role="dialog"
+    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="Uzunul_Ve_Genişlik_Zorluk_Düzenle_Modal_Header">Düzenle</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col">
+                        <label for="">Paketleme Türü :</label>
+                        <input id="Paketleme_Düzenle_Paketleme_Türü" class="form-control form-control" type="text"
+                            placeholder="Malzeme Türü Adı">
+                    </div>
+                    <div class="col">
+                        <label for="">Birim :</label>
+                        <select name="" id="Paketleme_Düzenle_Birim_Select" class="form-control"></select>
+                    </div>
+                    <div class="col">
+                        <label for="">Birim Fiyat :</label>
+                        <input id="Paketleme_Düzenle_Birim_Fiyat" class="form-control form-control" type="text"
+                            data-thousands="." data-decimal="," data-suffix=" ₺" placeholder="Birim Fiyat">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+                <button type="button" id="Paketleme_Düzenle_Modal_Kaydet_Button" class="btn btn-primary">
+                    Kaydet
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -59,6 +59,10 @@ namespace qrmenu.Services
 
         List<Kilo_Başına_Büküm_Return_Value> Kilo_Başına_Büküm_Get_By_Malzeme_Id(Kilo_Başına_Büküm x);
 
+
+
+        
+
         List<Uzunluk_Fiyat_Return_Value> Uygun_Adet_İle_Büküm_Getir(Uzunluk_Fiyat_Return_Value x);
 
         List<Kilo_Başına_Büküm_Return_Value> Uygun_Kilo_İle_Büküm_Getir(Kilo_Başına_Büküm_Return_Value x);

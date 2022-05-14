@@ -178,7 +178,10 @@ namespace qrmenu.Services
         {
             var temp = _context.Boyas;
             var Değer = temp.FirstOrDefault(o => o.Id == x.Id);
-            Değer.Is_Deleted = 1;
+            Değer.Birim_Fiyat = x.Birim_Fiyat;
+            Değer.Boya_Text = x.Boya_Text;
+            Değer.Birim_Id = x.Birim_Id;
+
             //_context.Büküm_KiloHesabı.Remove(Değer);
             _context.SaveChanges();
 
@@ -251,7 +254,7 @@ namespace qrmenu.Services
         public Boya_Return_Value Boya_Get_By_Id(Boya y)
         {
             var temp = (from x in _context.Boyas
-                        where x.Is_Deleted != 1 && x.Id==y.Id
+                        where x.Is_Deleted != 1 && x.Id == y.Id
                         select x
             );
 

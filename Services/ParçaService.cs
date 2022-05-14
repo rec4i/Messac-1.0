@@ -151,13 +151,6 @@ namespace qrmenu.Services
                 ).Sum(),
 
 
-                // Evrak_Maliyeti = (from x in _context.Takıms
-                //                   where o.Takım_Id == x.Id
-                //                   select x.Evrak_Maliyeti
-                // ).FirstOrDefault() / (from x in _context.Parças
-                //                       where x.Takım_Id == o.Takım_Id
-                //                       select x.Parça_Adeti
-                // ).Sum() * o.Parça_Adeti,
 
                 Toplam_Maliyet = (from x in _context.Takıms
                                   where o.Takım_Id == x.Id

@@ -2122,7 +2122,101 @@
 
         var $Kaynak_Table=$('#Kaynak_Türleri_Table')
         Kaynak_Tablo_Doldur($Kaynak_Table, 0,0)
-        function Kaynak_Tablo_Doldur($el, cells, rows) {
+        
+        $('#Kaynak_Düzenle_Kaydet_Button').click(function(){
+             var Gönderilsinmi=1;
+             var x ={
+                id:$(this).attr('kaynak_id'),
+                Kaynak_Türü:$('#Kaynak_Türü_İnput_Düzenle').val(),
+                Birim_Id:$('#Kaynak_Birim_Düzenle').find('option:selected').attr('value'),
+                Maliyet:$('#Kaynak_Birim_Fiyat_Düzenle').maskMoney('unmasked')[0]
+            }
+            if (x.Kaynak_Türü == "") {
+                Gönderilsinmi = 0;
+                $('#Kaynak_Türü_İnput_Düzenle').attr('class', 'form-control is-invalid')
+            }
+            else {
+               
+                $('#Kaynak_Türü_İnput_Düzenle').attr('class', 'form-control')
+                 Gönderilsinmi = 1;
+            }
+
+            if (x.Maliyet == "") {
+                $('#Kaynak_Birim_Fiyat_Düzenle').attr('class', 'form-control is-invalid')
+                Gönderilsinmi = 0;
+            }
+            else {
+                Gönderilsinmi = 1;
+                $('#Kaynak_Birim_Fiyat_Düzenle').attr('class', 'form-control')
+            }
+
+            if (x.Birim_Id == undefined) {
+                Gönderilsinmi = 0;
+                $('#Kaynak_Birim_Düzenle').attr('class', 'form-control is-invalid')
+            }
+            else {
+                Gönderilsinmi = 1;
+                $('#Kaynak_Birim_Düzenle').attr('class', 'form-control')
+            }
+
+            if ($('#Kaynak_Birim_Fiyat_Düzenle').val() == "") {
+                Gönderilsinmi = 0;
+                $('#Kaynak_Birim_Fiyat_Düzenle').attr('class', 'form-control is-invalid')
+            }
+            else {
+                Gönderilsinmi = 1;
+               $('#Kaynak_Birim_Fiyat_Düzenle').attr('class', 'form-control')
+            }
+
+           
+
+           
+          
+            if(Gönderilsinmi == 1)
+            {
+                $.ajax({
+                    url: 'api/kaynak/Kaynak_Edit',
+                    type: 'POST',
+                    async: false,
+                    dataType: "json",
+                    data: JSON.stringify(x),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+
+                        
+                       
+                        var $table=$('#Kaynak_Türleri_Table')
+                        Kaynak_Tablo_Doldur($table, 0,0,0)
+
+                        $('#Kaynak_Düzenle_modal').modal('hide')
+                        $('#Parametre_Modal').modal('show')
+
+                        //Kaynak_Düzenle_modal
+
+
+                    },
+                    error: function (xhr, status, error) {
+                        if (xhr.status == 200) {
+
+                        }
+                        else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Talep Esnasında Bir Hata Oluştur',
+                                text: '' + xhr.status + '   ' + error.Message,
+                            })
+                        }
+
+                    }
+                }) 
+            }
+
+
+        })
+
+    })
+
+    function Kaynak_Tablo_Doldur($el, cells, rows) {
             
             $el.bootstrapTable('destroy');
            
@@ -2275,86 +2369,33 @@
                 $('#Kaynak_Düzenle_modal').modal('show')
                 $('#Kaynak_Düzenle_Kaydet_Button').attr('Kaynak_Id',$(this).attr('Kaynak_Id'))
 
-
-            })
-           // $el.bootstrapTable('hideColumn', 'ID')
-
-           
-
-          
-
-          
-                
-            
-
-
-        }
-        $('#Kaynak_Düzenle_Kaydet_Button').click(function(){
-             var Gönderilsinmi=1;
-             var x ={
-                id:$(this).attr('kaynak_id'),
-                Kaynak_Türü:$('#Kaynak_Türü_İnput_Düzenle').val(),
-                Birim_Id:$('#Kaynak_Birim_Düzenle').find('option:selected').attr('value'),
-                Maliyet:$('#Kaynak_Birim_Fiyat_Düzenle').maskMoney('unmasked')[0]
-            }
-            if (x.Kaynak_Türü == "") {
-                Gönderilsinmi = 0;
-                $('#Kaynak_Türü_İnput_Düzenle').attr('class', 'form-control is-invalid')
-            }
-            else {
-               
-                $('#Kaynak_Türü_İnput_Düzenle').attr('class', 'form-control')
-                 Gönderilsinmi = 1;
-            }
-
-            if (x.Maliyet == "") {
-                $('#Kaynak_Birim_Fiyat_Düzenle').attr('class', 'form-control is-invalid')
-                Gönderilsinmi = 0;
-            }
-            else {
-                Gönderilsinmi = 1;
-                $('#Kaynak_Birim_Fiyat_Düzenle').attr('class', 'form-control')
-            }
-
-            if (x.Birim_Id == undefined) {
-                Gönderilsinmi = 0;
-                $('#Kaynak_Birim_Düzenle').attr('class', 'form-control is-invalid')
-            }
-            else {
-                Gönderilsinmi = 1;
-                $('#Kaynak_Birim_Düzenle').attr('class', 'form-control')
-            }
-
-            if ($('#Kaynak_Birim_Fiyat_Düzenle').val() == "") {
-                Gönderilsinmi = 0;
-                $('#Kaynak_Birim_Fiyat_Düzenle').attr('class', 'form-control is-invalid')
-            }
-            else {
-                Gönderilsinmi = 1;
-               $('#Kaynak_Birim_Fiyat_Düzenle').attr('class', 'form-control')
-            }
-
-           
-
-           
-          
-            if(Gönderilsinmi == 1)
-            {
+                 var x ={
+                    id:$(this).attr('Kaynak_Id')
+                }
                 $.ajax({
-                    url: 'api/kaynak/Kaynak_Edit',
+                    url: 'api/Kaynak/Kaynak_Get_By_Id',
                     type: 'POST',
                     async: false,
                     dataType: "json",
                     data: JSON.stringify(x),
                     contentType: "application/json; charset=utf-8",
                     success: function (data) {
+                        //Kaynak_Türü_İnput_Düzenle
+                        //data.kaynak_Türü
+                        $('#Kaynak_Türü_İnput_Düzenle').val(data.kaynak_Türü)
 
-                        
+                        //Kaynak_Birim_Düzenle
+                        //data.Birim_Id
+                        $('#Kaynak_Birim_Düzenle').val(data.birim_Id)
+
+
+                        //Kaynak_Birim_Fiyat_Düzenle     
+                        //data.Maliyet                 
+                        $('#Kaynak_Birim_Fiyat_Düzenle').val(data.maliyet)
+                        $('#Kaynak_Birim_Fiyat_Düzenle').maskMoney()
+                        $('#Kaynak_Birim_Fiyat_Düzenle').trigger('mask.maskMoney')
+
                        
-                        var $table=$('#Kaynak_Türleri_Table')
-                        Kaynak_Tablo_Doldur($table, 0,0,0)
-
-
                     },
                     error: function (xhr, status, error) {
                         if (xhr.status == 200) {
@@ -2369,13 +2410,24 @@
                         }
 
                     }
-                }) 
-            }
+                })
+
+                
 
 
-        })
+            })
+           // $el.bootstrapTable('hideColumn', 'ID')
 
-    })
+           
+
+          
+
+          
+                
+            
+
+
+        }
 
     
 
@@ -2460,6 +2512,7 @@
          $('#Birim_Düzenle_Modal').on('hidden.bs.modal', function () {
 
             $('#Parametre_Modal').modal('show')
+
 
         })
 
@@ -2546,6 +2599,38 @@
                 $('#Parametre_Modal').modal('hide')
                 $('#Birim_Düzenle_Modal').modal('show')
                 $('#Birim_Düzenle_Kaydet_Button').attr('Birim_Id',$(this).attr('Birim_Id'))
+
+
+                var x ={
+                    id:$(this).attr('Birim_Id')
+                }
+                $.ajax({
+                    url: 'api/Kaynak/birimler_Get_By_Id',
+                    type: 'POST',
+                    async: false,
+                    dataType: "json",
+                    data:JSON.stringify(x),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+
+                      //Birim_Uzun_Adı_Düzenle_input
+                      //data.birim_Uzun_Ad
+                      $('#Birim_Uzun_Adı_Düzenle_input').val(data.birim_Uzun_Ad)
+
+
+                      //Birim_Kısa_Adı_Düzenle_input
+                      //data.birim_Kısa_ad
+                      $('#Birim_Kısa_Adı_Düzenle_input').val(data.birim_Kısa_ad)
+
+
+                    
+                    },
+                    error: function () {
+                        alert('Talep esnasında sorun oluştu.Yeniden deneyin');
+                    }
+                });
+
+
 
             })
             $('button[id=Birim_Sil]').click(function(){
@@ -2692,10 +2777,32 @@
                     for (i = 0; i < data.length; i++) {
                         $('#Kaynak_Birim').append('<option value="'+data[i].id+'">'+data[i].birim_Kısa_ad+'</option>')
                     }
+
+                     $('#Kesim_Düzenle_Birim_Select').empty()
+                    for (i = 0; i < data.length; i++) {
+                        $('#Kesim_Düzenle_Birim_Select').append('<option value="'+data[i].id+'">'+data[i].birim_Kısa_ad+'</option>')
+                    }
+
+                      $('#Teviye_Düzenle_Birim_Select').empty()
+                    for (i = 0; i < data.length; i++) {
+                        $('#Teviye_Düzenle_Birim_Select').append('<option value="'+data[i].id+'">'+data[i].birim_Kısa_ad+'</option>')
+                    }
+
+                     $('#Boya_Düzenle_Boya_Birim').empty()
+                    for (i = 0; i < data.length; i++) {
+                        $('#Boya_Düzenle_Boya_Birim').append('<option value="'+data[i].id+'">'+data[i].birim_Kısa_ad+'</option>')
+                    }
+
                      $('#Kaynak_Birim_Düzenle').empty()
                     for (i = 0; i < data.length; i++) {
                         $('#Kaynak_Birim_Düzenle').append('<option value="'+data[i].id+'">'+data[i].birim_Kısa_ad+'</option>')
                     }
+                    $('#Paketleme_Düzenle_Birim_Select').empty()
+                    for (i = 0; i < data.length; i++) {
+                        $('#Paketleme_Düzenle_Birim_Select').append('<option value="'+data[i].id+'">'+data[i].birim_Kısa_ad+'</option>')
+                    }
+
+                    //Paketleme_Düzenle_Birim_Select
 
                     $('#Kaplama_Birim').empty()
                     for (i = 0; i < data.length; i++) {
@@ -2796,7 +2903,7 @@
                         var Bağlantı_Elemanı_Türü_Sil_Düzenle_Buttons = '<div class="row" style="padding-top:25px">' +
                             '                        <div class="col-md-8"></div>' +
                             '                        <div class="col-md-2">' +
-                            '                            <button type="button" Bağlantı_Türü_Id="' + data[i].id + '"  id="Bağlantı_Elemanı_Türü_Düzenle" class="btn btn-warning btn-block">Düzenle</button>' +
+                            '                            <button type="button" Baglantı_Türü_Text="'+data[i].bağlantı_Elemanları_Türü_Text+'" Bağlantı_Türü_Id="' + data[i].id + '"  id="Bağlantı_Elemanı_Türü_Düzenle" class="btn btn-warning btn-block">Düzenle</button>' +
                             '                        </div>' +
                             '                        <div class="col-md-2">' +
                             '                            <button type="button" Bağlantı_Türü_Id="' + data[i].id + '"  id="Bağlantı_Elemanı_Türü_Sil_'+data[i].id+'" class="btn btn-danger btn-block">Türü Sil</button>' +
@@ -2866,6 +2973,12 @@
                             $('#Parametre_Modal').modal('hide')
                             $('#Bağlantı_Elemanı_Türü_Düzenle_Modal').modal('show')
                             $('#Bağlantı_Elemanı_Türü_Düzenle_Kaydet_Button').attr('Bağlantı_Türü_Id',$(this).attr('Bağlantı_Türü_Id'))
+
+
+                            //Bağlantı_Türü_Id
+                            $('#Bağlantı_Elemanı_Türü_Adı_İnput_Düzenle').val($(this).attr('Baglantı_Türü_Text'))
+
+
 
                         })
 
@@ -3181,6 +3294,55 @@
                 $('#Bağlantı_Elemanı_Düzenle_Kaydet_Button').attr('Bağlantı_Id',$(this).attr('Bağlantı_Id'))
                 $('#Bağlantı_Elemanı_Düzenle_Kaydet_Button').attr('Bağlantı_Türü_Id',$(this).attr('Bağlantı_Türü_Id'))
                 //Bağlantı_Türü_Id
+
+                var x ={
+                    id:$(this).attr('Bağlantı_Id')
+                }
+                $.ajax({
+                    url: 'api/Baglantı_Elemanları/baglantıElemanları_Get_By_Id',
+                    type: 'POST',
+                    async: false,
+                    dataType: "json",
+                    data: JSON.stringify(x),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                       //Bağlantı_Elemanı_Adı_İnput_Düzenle 
+                        //data.bağlantı_Elemanı_Text
+                        $('#Bağlantı_Elemanı_Adı_İnput_Düzenle').val(data.bağlantı_Elemanı_Text)
+
+
+                        //Bağlantı_Elemanı_Birim_Maliyet_input_Düzenle
+                        //data.birim_Fiyat
+
+                        $('#Bağlantı_Elemanı_Birim_Maliyet_input_Düzenle').val(data.birim_Fiyat)
+                        $('#Bağlantı_Elemanı_Birim_Maliyet_input_Düzenle').maskMoney()
+                        $('#Bağlantı_Elemanı_Birim_Maliyet_input_Düzenle').trigger('mask.maskMoney')
+
+                        //Bağlantı_Elemanı_İşçilik_Maliyet_input_Düzenle
+                        //data.İşçilik_Maliyeti
+
+                        $('#Bağlantı_Elemanı_İşçilik_Maliyet_input_Düzenle').val(data.İşçilik_Maliyeti)
+                        $('#Bağlantı_Elemanı_İşçilik_Maliyet_input_Düzenle').maskMoney()
+                        $('#Bağlantı_Elemanı_İşçilik_Maliyet_input_Düzenle').trigger('mask.maskMoney')
+
+                    },
+                    error: function (xhr, status, error) {
+                        if (xhr.status == 200) {
+
+                        }
+                        else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Talep Esnasında Bir Hata Oluştur',
+                                text: '' + xhr.status + '   ' + error.Message,
+                            })
+                        }
+
+                    }
+                })
+
+
+
             })
            
            // $el.bootstrapTable('hideColumn', 'ID')
@@ -3199,7 +3361,7 @@
 
             $('#Parametre_Modal').modal('show')
 
-        })
+        })//Bağlantı_Türü_Id
         $('#Bağlantı_Elemanı_Birim_Maliyet_input_Düzenle').maskMoney()
 
         $('#Bağlantı_Elemanı_Düzenle_Kaydet_Button').click(function(){
@@ -3210,6 +3372,7 @@
                 id:$(this).attr('Bağlantı_Id'),
                 Bağlantı_Elemanı_Text:$('#Bağlantı_Elemanı_Adı_İnput_Düzenle').val(),
                 Birim_Fiyat:$('#Bağlantı_Elemanı_Birim_Maliyet_input_Düzenle').maskMoney('unmasked')[0],
+                İşçilik_Maliyeti:$('#Bağlantı_Elemanı_İşçilik_Maliyet_input_Düzenle').maskMoney('unmasked')[0],
                 Bağlantı_Elemanları_Türü_Id:$(this).attr('Bağlantı_Türü_Id')
             }
 
@@ -3223,6 +3386,14 @@
                 $('#Bağlantı_Elemanı_Adı_İnput_Düzenle').attr('class', 'form-control')
             }
 
+            if (x.İşçilik_Maliyeti == "") {
+                Gönderilsinmi = 0;
+                $('#Bağlantı_Elemanı_İşçilik_Maliyet_input_Düzenle').attr('class', 'form-control is-invalid')
+            }
+            else {
+                Gönderilsinmi = 1;
+                $('#Bağlantı_Elemanı_İşçilik_Maliyet_input_Düzenle').attr('class', 'form-control')
+            }
 
             if (x.Birim_Fiyat== "") {
                 Gönderilsinmi = 0;
@@ -3267,7 +3438,7 @@
 
         $('#Bağlantı_Elemanı_Türü_Düzenle_Kaydet_Button').click(function(){
             var x ={
-                id:$(this).attr('bağlantı_türü_id'),
+                id:$(this).attr('Bağlantı_türü_id'),
                 Bağlantı_Elemanları_Türü_Text:$('#Bağlantı_Elemanı_Türü_Adı_İnput_Düzenle').val(),
             }
 
@@ -3539,6 +3710,60 @@
                 $('#Kaplama_Düzenle_Modal').modal('show')
                 $('#Kaplama_Düzenle_Kaydet_Btn').attr('Kaplama_Id',$(this).attr('Kaplama_Id'))
                 //Bağlantı_Türü_Id
+
+                var x ={
+                    Id:$(this).attr('Kaplama_Id')
+                }
+                $.ajax({
+                    url: 'api/Kaplama/kaplama_Get_By_Id',
+                    type: 'POST',
+                    async: false,
+                    dataType: "json",
+                    data: JSON.stringify(x),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+
+
+                        //Kaplama_Adı_input_Düzenle
+                        //data.kapmala_Text
+                        $('#Kaplama_Adı_input_Düzenle').val(data.kapmala_Text)
+
+
+
+                        //Kaplama_Birim_Düzenle
+                        //data.baplama_Birim_Düzenle
+
+                        $('#Kaplama_Birim_Düzenle').val(data.birim_Id)
+
+
+                        //Kaplama_Birim_Fiyat_Düzenle
+                        //data.birim_Maliyet
+                        
+                        $('#Kaplama_Birim_Fiyat_Düzenle').val(data.birim_Maliyet)
+                         $('#Kaplama_Birim_Fiyat_Düzenle').maskMoney()
+                         $('#Kaplama_Birim_Fiyat_Düzenle').trigger('mask.maskMoney')
+                      
+
+                        
+                    
+                    },
+                    error: function (xhr, status, error) {
+                        if (xhr.status == 200) {
+
+                        }
+                        else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Talep Esnasında Bir Hata Oluştur',
+                                text: '' + xhr.status + '   ' + error.Message,
+                            })
+                        }
+
+                    }
+                })
+
+
+
             })
            
            // $el.bootstrapTable('hideColumn', 'ID')
@@ -3836,7 +4061,59 @@
                 $('#Parametre_Modal').modal('hide')
                 $('#Dıs_Operasyon_Düzenle_modal').modal('show')
                 $('#Dıs_Operasyon_Düzenle_Kaydet_Btn').attr('Operasyon_ıd',$(this).attr('Operasyon_ıd'))
-                //Bağlantı_Türü_Id
+
+
+
+                var x ={
+                    id:$(this).attr('Operasyon_ıd')
+                }
+                $.ajax({
+                    url: 'api/DısOperasyon/DısOperasyon_Get_By_Id',
+                    type: 'POST',
+                    async: false,
+                    dataType: "json",
+                    data: JSON.stringify(x),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        //Dış_Operasyon_İnput_Düzenle
+                        //data.operasyon_Adı
+                        $('#Dış_Operasyon_İnput_Düzenle').val(data.operasyon_Adı)
+
+                        //Dıs_Operasyon_Birim_Düzenle
+                        //data.birim_Id
+                        $('#Dıs_Operasyon_Birim_Düzenle').val(data.birim_Id)
+
+
+                        //Dış_Operasyon_Birim_Fiyat_İnput_Düzenle
+                        //data.operasyon_Maliyeti
+                        $('#Dış_Operasyon_Birim_Fiyat_İnput_Düzenle').val(data.operasyon_Maliyeti)
+                        $('#Dış_Operasyon_Birim_Fiyat_İnput_Düzenle').maskMoney()
+                        $('#Dış_Operasyon_Birim_Fiyat_İnput_Düzenle').trigger('mask.maskMoney')
+
+                            
+                      
+                    },
+                    error: function (xhr, status, error) {
+                        if (xhr.status == 200) {
+
+                        }
+                        else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Talep Esnasında Bir Hata Oluştur',
+                                text: '' + xhr.status + '   ' + error.Message,
+                            })
+                        }
+
+                    }
+                })
+
+                
+
+
+
+
+
             })
            
            // $el.bootstrapTable('hideColumn', 'ID')
@@ -4045,15 +4322,22 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col">
                         <div class="form-group">
                             <input id="Bağlantı_Elemanı_Adı_İnput_Düzenle" class="form-control form-control" type="text"
                                     placeholder="Bağlantı Elemanı Adı">
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col">
                         <div class="form-group">
                                         <input id="Bağlantı_Elemanı_Birim_Maliyet_input_Düzenle" data-thousands="." data-decimal=","
+                                        data-suffix=" ₺" class="form-control form-control" type="text"
+                                        placeholder="Birim Fiyatı">
+                        </div>
+                    </div>
+                     <div class="col">
+                        <div class="form-group">
+                                        <input id="Bağlantı_Elemanı_İşçilik_Maliyet_input_Düzenle" data-thousands="." data-decimal=","
                                         data-suffix=" ₺" class="form-control form-control" type="text"
                                         placeholder="Birim Fiyatı">
                         </div>
@@ -4637,6 +4921,15 @@
     </div>
 </div>
 @Html.Partial("BükümİslemlerModals")
+@Html.Partial("Ayarlar/Malzeme_Düzenle_Modals")
+@Html.Partial("Ayarlar/Kesim_Düzenle_Modals")
+@Html.Partial("Ayarlar/Tesfiye_Düzenle_Modal")
+@Html.Partial("Ayarlar/Paketleme_Düzenle_Modal")
+@Html.Partial("Ayarlar/Boya_Düzenle_Modals")
+
+
+
+
 
 <div class="modal fade" id="Parametre_Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
      aria-hidden="true">

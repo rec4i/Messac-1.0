@@ -113,10 +113,10 @@
             sortable: true
         })
 
-        @* columns.push({
+        columns.push({
             field: 'Düzenle',
             title: 'Düzenle',
-        }) *@
+        })
         columns.push({
             field: 'Sil',
             title: 'Sil',
@@ -150,7 +150,7 @@
                     row['Birim'] = temp[i].birim.birim_Kısa_ad
                     row['Fiyat'] = Fiyatı
                     row['Sil'] = '<button class="btn btn-danger" Tesviye_Id="' + temp[i].id + '"  id="Tesviye_Sil_Btn"><i class="fa fa-trash"></i></button>'
-                    row['Düzenle'] = '<button class="btn btn-block btn-warning" Kaynak_Id="' + temp[i].id + '" id="Tesviye_Düzenle">Düzenle</button>'
+                    row['Düzenle'] = '<button class="btn btn-block btn-warning" Tesfiye_Id="' + temp[i].id + '" id="Tesviye_Düzenle">Düzenle</button>'
 
                     data__.push(row)
 
@@ -236,8 +236,49 @@
         })
         $('#Tesviye_Düzenle').click(function () {
             $('#Parametre_Modal').modal('hide')
-            $('#Kaynak_Düzenle_modal').modal('show')
-            $('#Kaynak_Düzenle_Kaydet_Button').attr('Kaynak_Id', $(this).attr('Kaynak_Id'))
+            $('#Tesfiye_Düzenle_Modal').modal('show')
+            $('#Tesviye_Düzenle_Modal_Kaydet_Button').attr('Tesfiye_Id', $(this).attr('Tesfiye_Id'))
+
+            var x = {
+                Id: $(this).attr('Tesfiye_Id')
+            }
+
+            $.ajax({
+                url: 'api/Tesviye/Tesviye_Get_By_Id',
+                type: 'POST',
+                async: false,
+                dataType: "json",
+                data: JSON.stringify(x),
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    $('#Tesviye_Düzenle_Tesfiye_Türü').val(data.tesviye_Türü)
+
+
+                    $('#Tesfiye_Düzenle_Birim_Fiyat').val(data.maliyet)
+                    $('#Tesfiye_Düzenle_Birim_Fiyat').maskMoney()
+                    $('#Tesfiye_Düzenle_Birim_Fiyat').trigger('mask.maskMoney')
+
+
+                    $('#Teviye_Düzenle_Birim_Select').val(data.birim_Id)
+
+
+
+                },
+                error: function (xhr, status, error) {
+                    if (xhr.status == 200) {
+
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Talep Esnasında Bir Hata Oluştur',
+                            text: '' + xhr.status + '   ' + error.message,
+                        })
+                    }
+
+                }
+            });
+
 
         })
         // $el.bootstrapTable('hideColumn', 'ID')

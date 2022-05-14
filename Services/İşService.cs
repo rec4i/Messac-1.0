@@ -105,18 +105,16 @@ namespace KaynakKod.Services
         public pagination_Request_Result<İş> İş_Get_The_List(pagenation_request request)
         {
             var temp = (from x in _context.İşs
+                        orderby x.Id descending
                         where x.Is_Deleted==0
                         select x
               ).Skip(Convert.ToInt32(request.offset)).Take(Convert.ToInt32(request.limit)).ToList();
 
-
-
-
             var Result = new pagination_Request_Result<İş>
             {
                 rows = temp.ToList(),
-                totalNotFiltered = _context.İşs.Count(),
-                total = temp.Count()
+                totalNotFiltered = temp.Count() ,
+                total =  _context.İşs.Count()
             };
 
             return Result;

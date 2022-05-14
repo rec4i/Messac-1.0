@@ -124,8 +124,6 @@
 
                 var temp = data
 
-                console.log("sadkoası9d90ı*0ads")
-                console.log(data)
                 for (i = 0; i < temp.length; i++) {
                     row = {}
 
@@ -175,8 +173,6 @@
             columns: columns,
             data: data__,
             onPostBody: function (data) {
-                console.log("auuağğuağuağu")
-                console.log(data)
                 $('#Büküm_KiloHesabı_Kilo_Bas_İnput').maskMoney();
                 $('#Büküm_KiloHesabı_Kilo_Bas_İnput').trigger('mask.maskMoney');
                 $('#Büküm_KiloHesabı_Kilo_Bas_İnput').attr("disabled", 'true');
@@ -255,6 +251,64 @@
             $('#Parametre_Modal').modal('hide')
             $('#BükümYeni_KiloBüküm_Ekle_Modal_Düzenle').modal('show')
             $('#BükümYeni_KiloBüküm_Ekle_Modal_Kaydet_Düzenle').attr('Operasyon_ıd', $(this).attr('Büküm_KiloHesabı_Id'))
+
+            var x = {
+                Id: $(this).attr('Büküm_KiloHesabı_Id')
+            }
+
+            $.ajax({
+                url: 'api/BükümYeni/Büküm_KiloHesabı_Get_By_Id',
+                type: 'POST',
+                async: false,
+                dataType: "json",
+                data: JSON.stringify(x),
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    //BükümYeni_Kilo_İle_Ağırlık_Bas_Düzenle
+                    //
+                    $('#BükümYeni_Kilo_İle_Ağırlık_Bas_Düzenle').val(data.kilo_Bas)
+                    $('#BükümYeni_Kilo_İle_Ağırlık_Bas_Düzenle').maskMoney()
+                    $('#BükümYeni_Kilo_İle_Ağırlık_Bas_Düzenle').trigger('mask.maskMoney')
+
+
+
+                    //BükümYeni_Kilo_İle_Ağırlık_Son_Düzenle
+                    //
+                    $('#BükümYeni_Kilo_İle_Ağırlık_Son_Düzenle').val(data.kilo_Son)
+                    $('#BükümYeni_Kilo_İle_Ağırlık_Son_Düzenle').maskMoney()
+                    $('#BükümYeni_Kilo_İle_Ağırlık_Son_Düzenle').trigger('mask.maskMoney')
+
+
+                    //BükümYeni_Kilo_İle_Katsayı_Düzenle
+                    //
+                    $('#BükümYeni_Kilo_İle_Katsayı_Düzenle').val(data.katSayı)
+                    $('#BükümYeni_Kilo_İle_Katsayı_Düzenle').maskMoney()
+                    $('#BükümYeni_Kilo_İle_Katsayı_Düzenle').trigger('mask.maskMoney')
+
+
+
+
+                },
+                error: function (xhr, status, error) {
+                    if (xhr.status == 200) {
+
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Talep Esnasında Bir Hata Oluştur',
+                            text: '' + xhr.status + '   ' + error.Message,
+                        })
+                    }
+
+                }
+            })
+
+
+
+
+
+
         })
 
 
@@ -306,6 +360,7 @@
             field: 'Düzenle',
             title: 'Düzenle',
         })
+
         columns.push({
             field: 'Sil',
             title: 'Sil',
@@ -322,10 +377,8 @@
 
                 var temp = data
 
-                console.log("asasdasd")
 
 
-                console.log(data)
                 for (i = 0; i < temp.length; i++) {
                     row = {}
 
@@ -369,7 +422,6 @@
             columns: columns,
             data: data__,
             onPostBody: function (data) {
-                console.log(data)
 
                 $('#Büküm_adetHesabı_Katsayı_İnput').maskMoney();
                 $('#Büküm_adetHesabı_Katsayı_İnput').attr("disabled", 'true');
@@ -442,6 +494,52 @@
             $('#Parametre_Modal').modal('hide')
             $('#BükümYeni_AdetİleBüküm_Modal_Düzenle').modal('show')
             $('#BükümYeni_AdetBüküm_Ekle_Modal_Kaydet_Düzenle').attr('Operasyon_ıd', $(this).attr('Büküm_AdetHesabı_Id'))
+
+            var x = {
+                Id: $(this).attr('Büküm_AdetHesabı_Id')
+            }
+
+
+            $.ajax({
+                url: 'api/BükümYeni/Büküm_AdetHesabı_Get_By_Id',
+                type: 'POST',
+                async: false,
+                dataType: "json",
+                data: JSON.stringify(x),
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    //BükümYeni_AdetİleBüküm_Zorluk_Adı_Düzenle
+                    //
+                    $('#BükümYeni_AdetİleBüküm_Zorluk_Adı_Düzenle').val(data.zorluk_Adı)
+
+
+
+                    //BükümYeni_AdetİleBüküm_Kaysayı_Düzenle
+                    //
+                    $('#BükümYeni_AdetİleBüküm_Kaysayı_Düzenle').val(data.Zorluk_Katsayısı)
+                    $('#BükümYeni_AdetİleBüküm_Kaysayı_Düzenle').maskMoney()
+                    $('#BükümYeni_AdetİleBüküm_Kaysayı_Düzenle').trigger('mask.maskMoney')
+
+
+                },
+                error: function (xhr, status, error) {
+                    if (xhr.status == 200) {
+
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Talep Esnasında Bir Hata Oluştur',
+                            text: '' + xhr.status + '   ' + error.Message,
+                        })
+                    }
+
+                }
+            })
+
+
+
+
         })
 
 

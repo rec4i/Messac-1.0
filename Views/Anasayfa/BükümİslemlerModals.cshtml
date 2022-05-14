@@ -396,7 +396,7 @@
                             'success'
                         )
                         $('#Uzunluk_Ve_Genişlik_Düzenle_Modal').modal('hide')
-                        Uzunluk_Ve_Genişlik_Doldur_All()
+                        Uzunluk_Doldur()
                     },
                     error: function (xhr, status, error) {
                         if (xhr.status == 200) {
@@ -589,7 +589,7 @@
     <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="Uzunluk_Ve_Genişlik_Düzenle_Modal_Header">Adet İle Büküm</h5>
+                <h5 class="modal-title" id="Uzunluk_Ve_Genişlik_Düzenle_Modal_Header">Düzenle</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -817,51 +817,6 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
                 <button type="button" id="BükümYeni_KiloBüküm_Ekle_Modal_Kaydet" class="btn btn-primary">
-                    Kaydet
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<div class="modal fade" id="BükümYeni_KiloBüküm_Ekle_Modal_Düzenle" tabindex="-100" role="dialog"
-    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="BükümYeni_KiloBüküm_Ekle_Modal_Header_Düzenle">Kilo İle Büküm Düzenle</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div id="Malzeme_Cinsi_Ekle_Div_Düzenle" style="padding-top: 25px;">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <label for="">Ağırlık Baş:</label>
-                            <input id="BükümYeni_Kilo_İle_Ağırlık_Bas_Düzenle" data-thousands="" data-decimal=","
-                                data-suffix=" kg" class="form-control form-control" type="text"
-                                placeholder="Ağırlık Baş">
-                        </div>
-                        <div class="col-md-4">
-                            <label for="">Ağırlık Son:</label>
-                            <input id="BükümYeni_Kilo_İle_Ağırlık_Son_Düzenle" data-thousands="" data-decimal=","
-                                data-suffix=" kg" class="form-control form-control" type="text"
-                                placeholder="Ağırlık Son">
-                        </div>
-                        <div class="col-md-4">
-                            <label for="">Katsayı:</label>
-                            <input id="BükümYeni_Kilo_İle_Katsayı_Düzenle" data-thousands="" data-decimal=","
-                                data-suffix="" class="form-control form-control" type="text" placeholder="Katsayı">
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
-                <button type="button" id="BükümYeni_KiloBüküm_Ekle_Modal_Kaydet_Düzenle" class="btn btn-primary">
                     Kaydet
                 </button>
             </div>

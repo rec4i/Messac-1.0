@@ -41,6 +41,7 @@ namespace qrmenu.Services
             var temp = _context.uretimMaliyetis.ToList();
 
             var uretimMaliyeti_Pagenation_List = (from x in temp
+                                                    
                                                   select new
                                                   {
                                                       x.Id,
