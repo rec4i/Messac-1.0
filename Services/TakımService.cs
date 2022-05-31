@@ -182,6 +182,8 @@ namespace KaynakKod.Services
             });
             return rv.ToList();
         }
+
+        
         public List<Parça_Retrun_Value> Parça_Get_By_Takım_Id(Takım y)
         {
 
@@ -191,21 +193,24 @@ namespace KaynakKod.Services
                         select x
             );
 
-            IEnumerable<Parça_Retrun_Value> rt = temp.Select(o => new Parça_Retrun_Value
+             IEnumerable<Parça_Retrun_Value> rt = temp.Select(o => new Parça_Retrun_Value
             {
                 Id = o.Id,
                 Parça_Adı = o.Parça_Adı,
                 Parça_Adeti = o.Parça_Adeti,
-                Birim_Maliyet = (from x in _context.Toplam_Maliyet_Saveds
+                Birim_Maliyet =
+                (from x in _context.Toplam_Maliyet_Saveds
 
-                                 join _revises in _context.Revizes
-                                 on x.Revize_Id equals _revises.Id
+                 join _revises in _context.Revizes
+                 on x.Revize_Id equals _revises.Id
 
-                                 orderby _revises.Id descending
-                                 where _revises.Parça_Id == o.Id
+                 orderby _revises.Id descending
+                 where _revises.Parça_Id == o.Id && x.Is_Deleted == 0 && _revises.Is_Deleted == 0
 
-                                 select (x.Malzeme_Karlı_Toplam + x.İşçilik_Karlı_Toplam - x.Fire_Maliyeti)
-                ).FirstOrDefault(),
+                 select (x.Malzeme_Karlı_Toplam + x.İşçilik_Karlı_Toplam - x.Fire_Maliyeti)
+                ).FirstOrDefault() * o.Parça_Adeti
+
+                ,
 
                 Evrak_Maliyeti =
                 (from x in _context.Toplam_Maliyet_Saveds
@@ -213,16 +218,12 @@ namespace KaynakKod.Services
                  join _revises in _context.Revizes
                  on x.Revize_Id equals _revises.Id
                  orderby _revises.Id descending
-                 where _revises.Parça_Id == o.Id
+                 where _revises.Parça_Id == o.Id && _revises.Is_Deleted == 0 && x.Is_Deleted == 0
 
                  select (x.Malzeme_Karlı_Toplam + x.İşçilik_Karlı_Toplam - x.Fire_Maliyeti)
-                ).FirstOrDefault()
+                ).FirstOrDefault() * o.Parça_Adeti
 
                 <= 0 ? 0 :
-
-
-
-
 
 
                 (from x in _context.Toplam_Maliyet_Saveds
@@ -231,7 +232,7 @@ namespace KaynakKod.Services
                  on x.Revize_Id equals _revises.Id
 
                  orderby _revises.Id descending
-                 where _revises.Parça_Id == o.Id
+                 where _revises.Parça_Id == o.Id && _revises.Is_Deleted == 0 && x.Is_Deleted == 0
 
 
                  select (x.Malzeme_Karlı_Toplam + x.İşçilik_Karlı_Toplam - x.Fire_Maliyeti)
@@ -245,12 +246,12 @@ namespace KaynakKod.Services
 
                 Toplam_Maliyet =
                 (from x in _context.Parças
-                 where x.Takım_Id == o.Takım_Id
+                 where x.Takım_Id == o.Takım_Id && x.Is_Deleted == 0
                  select x.Parça_Adeti
 
                 ).Sum() == 0 ? 0 :
                 (from x in _context.Takıms
-                 where o.Takım_Id == x.Id
+                 where o.Takım_Id == x.Id && x.Is_Deleted == 0
                  select x.Evrak_Maliyeti
                 ).FirstOrDefault() / (from x in _context.Parças
                                       where x.Takım_Id == o.Takım_Id
@@ -261,7 +262,7 @@ namespace KaynakKod.Services
                                             join _revises in _context.Revizes
                                             on x.Revize_Id equals _revises.Id
                                             orderby _revises.Id descending
-                                            where _revises.Parça_Id == o.Id
+                                            where _revises.Parça_Id == o.Id && _revises.Is_Deleted == 0 && x.Is_Deleted == 0
 
                                             select (x.Malzeme_Karlı_Toplam + x.İşçilik_Karlı_Toplam - x.Fire_Maliyeti)
                 ).FirstOrDefault() * o.Parça_Adeti),
@@ -282,24 +283,55 @@ namespace KaynakKod.Services
                 Id = o.Id,
                 Parça_Adı = o.Parça_Adı,
                 Parça_Adeti = o.Parça_Adeti,
+
                 Birim_Maliyet =
-                Toplam_Malzeme_Maliyeti == 0 ? 0 :
-                (((o.Birim_Maliyet / Toplam_Malzeme_Maliyeti) *
-                (from x in _context.Takıms
-                 where o.Takım_Id == x.Id
-                 select x.Evrak_Maliyeti
-                ).FirstOrDefault()) / o.Parça_Adeti) + o.Birim_Maliyet
+
+                 Toplam_Malzeme_Maliyeti == 0 ? 0 :
+                Convert.ToDecimal(((o.Birim_Maliyet / Toplam_Malzeme_Maliyeti
+
+                *
+
+               (from x in _context.Takıms
+                where o.Takım_Id == x.Id && x.Is_Deleted == 0
+                select x.Evrak_Maliyeti
+                ).FirstOrDefault())).ToString("F")) / o.Parça_Adeti + Convert.ToDecimal((from x in _context.Toplam_Maliyet_Saveds
+
+                                                                                         join _revises in _context.Revizes
+                                                                                         on x.Revize_Id equals _revises.Id
+                                                                                         orderby _revises.Id descending
+                                                                                         where _revises.Parça_Id == o.Id && _revises.Is_Deleted == 0 && x.Is_Deleted == 0
+
+                                                                                         select (x.Malzeme_Karlı_Toplam + x.İşçilik_Karlı_Toplam - x.Fire_Maliyeti)
+                ).FirstOrDefault().ToString("F")
+                )
+
+
 
                  ,
 
 
-                Evrak_Maliyeti = Toplam_Malzeme_Maliyeti == 0 ? 0 :
+                Evrak_Maliyeti =
 
-                ((((o.Birim_Maliyet / Toplam_Malzeme_Maliyeti) *
-                (from x in _context.Takıms
-                 where o.Takım_Id == x.Id
-                 select x.Evrak_Maliyeti
-                ).FirstOrDefault()) / o.Parça_Adeti) + o.Birim_Maliyet) * o.Parça_Adeti
+                Toplam_Malzeme_Maliyeti == 0 ? 0 :
+
+                (o.Birim_Maliyet / Toplam_Malzeme_Maliyeti
+
+                *
+
+               (from x in _context.Takıms
+                where o.Takım_Id == x.Id && x.Is_Deleted == 0
+                select x.Evrak_Maliyeti
+                ).FirstOrDefault()) / o.Parça_Adeti + (from x in _context.Toplam_Maliyet_Saveds
+
+                                                       join _revises in _context.Revizes
+                                                       on x.Revize_Id equals _revises.Id
+                                                       orderby _revises.Id descending
+                                                       where _revises.Parça_Id == o.Id && _revises.Is_Deleted == 0 && x.Is_Deleted == 0
+
+                                                       select (x.Malzeme_Karlı_Toplam + x.İşçilik_Karlı_Toplam - x.Fire_Maliyeti)
+                ).FirstOrDefault() * o.Parça_Adeti
+
+
                 ,
 
 
@@ -307,11 +339,27 @@ namespace KaynakKod.Services
 
                 Toplam_Maliyet =
                 Toplam_Malzeme_Maliyeti == 0 ? 0 :
-                Convert.ToDecimal(((((o.Birim_Maliyet / Toplam_Malzeme_Maliyeti) *
-                (from x in _context.Takıms
-                 where o.Takım_Id == x.Id
-                 select x.Evrak_Maliyeti
-                ).FirstOrDefault()) / o.Parça_Adeti) + o.Birim_Maliyet).ToString("F")) * o.Parça_Adeti,
+
+
+
+
+              Convert.ToDecimal((o.Birim_Maliyet / Toplam_Malzeme_Maliyeti
+
+                *
+
+               (from x in _context.Takıms
+                where o.Takım_Id == x.Id && x.Is_Deleted == 0
+                select x.Evrak_Maliyeti
+                ).FirstOrDefault()) / o.Parça_Adeti + (from x in _context.Toplam_Maliyet_Saveds
+
+                                                       join _revises in _context.Revizes
+                                                       on x.Revize_Id equals _revises.Id
+                                                       orderby _revises.Id descending
+                                                       where _revises.Parça_Id == o.Id && _revises.Is_Deleted == 0 && x.Is_Deleted == 0
+
+                                                       select (x.Malzeme_Karlı_Toplam + x.İşçilik_Karlı_Toplam - x.Fire_Maliyeti)
+                ).FirstOrDefault()) * o.Parça_Adeti,
+
 
 
                 Takım_Id = o.Takım_Id,
@@ -371,7 +419,7 @@ namespace KaynakKod.Services
                     Toplam_Maliyet = Parça_Get_By_Takım_Id(new Takım
                     {
                         Id = item.Id
-                    }).Select(o => o.Birim_Maliyet).Sum()
+                    }).Select(o => o.Toplam_Maliyet).Sum()
 
                 };
 
