@@ -818,11 +818,11 @@
         //Evrak_Maliyeti
 
         $('button[id=Takım_Evrak_Maliyeti_Ekle]').click(function () {
-            $('#Evrak_Maliyeti_Modal').modal('show')
+            $('#').modal('show')
 
-            $('#Evrak_maliyeti_Modal_Kaydet').attr('value', $(this).attr('value'))
-            $('#Evrak_maliyeti_Modal_Kaydet').attr('Table_Id', $(this).attr('Table_Id'))
-            $('#Evrak_maliyeti_Modal_Kaydet').attr('Row_Index', $(this).attr('Row_Index'))//.toFixed(2)
+            $('#_Kaydet').attr('value', $(this).attr('value'))
+            $('#_Kaydet').attr('Table_Id', $(this).attr('Table_Id'))
+            $('#_Kaydet').attr('Row_Index', $(this).attr('Row_Index'))//.toFixed(2)
             $('#Evrak_Maliyeti_İnput').val(parseFloat($(this).parent().parent().find('#Evrak_Maliyeti').attr('value')).toFixed(2))
             $('#Evrak_Maliyeti_İnput').maskMoney()
             $('#Evrak_Maliyeti_İnput').trigger('mask.maskMoney')
@@ -944,7 +944,9 @@
             clickToSelect: true,
             detailView: true,
             onExpandRow: function (index, row, detail) {
-                Takım_Bilgileri_Tablo_Doldur(index, row, detail)
+                //Takım_Bilgileri_Tablo_Doldur(index, row, detail)
+                window.location.href="TakımIndex?id="+row.ID;
+                console.log(row["ID"])
             },
             onPostBody: function () {
                 $('button[id=İşi_Düzenle]').click(function () {
@@ -988,35 +990,56 @@
                 })
 
                 $('button[id=İşi_Sil]').click(function () {
-                    var x = {
+
+                      var x = {
                         Id: $(this).attr('value')
                     }
-                    $.ajax({
-                        url: 'api/İş/İş_Delete',
-                        type: 'POST',
-                        async: false,
-                        dataType: "json",
-                        data: JSON.stringify(x),
-                        contentType: "application/json; charset=utf-8",
-                        success: function (data) {
-                            var İş_Tablosu = $('#İş_Table')
-                            İş_Tablosu_Build(İş_Tablosu, 1, 1)
+                    Swal.fire({
+                        title: 'Silmek İstediğinizden Emin misiniz?',
+                        showDenyButton: true,
+                        confirmButtonText: 'Sil',
+                        denyButtonText: 'Vazgeç',
+                    }).then((result) => {
+                        /* Read more about isConfirmed, isDenied below */
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                url: 'api/İş/İş_Delete',
+                                type: 'POST',
+                                async: false,
+                                dataType: "json",
+                                data: JSON.stringify(x),
+                                contentType: "application/json; charset=utf-8",
+                                success: function (data) {
+                                    var İş_Tablosu = $('#İş_Table')
+                                    İş_Tablosu_Build(İş_Tablosu, 1, 1)
+                                    Swal.fire('Saved!', '', 'success')
+
+                                },
+                                error: function (xhr, status, error, title) {
+                                    if (xhr.status == 200) {
+                                    }
+                                    else {
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: 'Talep Esnasında Bir Hata Oluştur',
+                                            text: 'Hata Kodu:' + xhr.status + '  Hata İçeriği: ' + title,
+                                        })
+                                    }
+
+                                }
+                            });
 
 
-                        },
-                        error: function (xhr, status, error, title) {
-                            if (xhr.status == 200) {
-                            }
-                            else {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Talep Esnasında Bir Hata Oluştur',
-                                    text: 'Hata Kodu:' + xhr.status + '  Hata İçeriği: ' + title,
-                                })
-                            }
 
+
+                        } else if (result.isDenied) {
+                            Swal.fire('Changes are not saved', '', 'info')
                         }
-                    });
+                    })
+
+
+                  
+
                 })
             }
         })
@@ -1028,7 +1051,6 @@
 </script>
 @Html.Partial("İş_Olustur_Folder/İşDüzenle_Modal")
 @Html.Partial("İş_Olustur_Folder/ParçaDüzenle_Modal")
-
 @Html.Partial("İş_Olustur_Folder/TakımDüzenle_Modal")
 
 <div class="row">
@@ -1054,7 +1076,7 @@
                 </div>
                 <div class="row" style="padding-top: 25px;">
                     <div class="col">
-                        <table id="İş_Table"></table>
+                        <table id="İş_Table"  data-search="true"></table>
                     </div>
                 </div>
             </div>

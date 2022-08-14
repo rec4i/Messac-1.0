@@ -1,4 +1,8 @@
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.13.4/jquery.mask.min.js"></script>
+@* <script type="text/javascript" src="\Eklentiler\jquery.mask.min.js" defer></script> *@
+
+
+
+<script src="https://unpkg.com/inputmask@5.0.3/dist/inputmask.js"></script>
 <script>
     $(document).ready(function () {
 
@@ -106,13 +110,14 @@
                 })
                 $('#Kesim_Hesabı_Malzeme_Adeti_İnput').trigger('mask.maskMoney');
 
+                console.log("Dolduruluyor");
                 $('input[id=Kesim_Süresi_Saat_Dakika]').inputmask("hh:mm:ss", {
                     placeholder: "hh:mm:ss",
                     insertMode: false,
                     showMaskOnHover: false,
                     hourFormat: "24"
                 });
-
+                console.log("Doldurulmuş");
                 $('#Kesim_Hesabı_Fire_Dahil_Ağırlık_İnput').maskMoney({
                     precision: 4
                 })
@@ -178,7 +183,7 @@
 
                 })
 
-               
+
 
                 $('#Kesim_Select').change(function () {
 
@@ -206,7 +211,9 @@
             }
 
         })
-        $('input[id=Kesim_Süresi_Saat_Dakika]').val()
+        //        $('input[id=Kesim_Süresi_Saat_Dakika]').val()
+
+    
 
     })
     function Uygun_Kesimi_Getir(Malzeme_Kalınlığı, Kesim_Türü, $Kesim_Maliyet_İnput) {
@@ -311,4 +318,6 @@
         })
     }
 </script>
-<script src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js"></script>
+
+
+<script src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js" defer></script>

@@ -9,6 +9,7 @@ using WebApi.Helpers;
 using KaynakKod.Models;
 using KaynakKod.Models.pagenation_request;
 using System;
+using System.Globalization;
 
 namespace KaynakKod.Services
 {
@@ -106,15 +107,17 @@ namespace KaynakKod.Services
         {
             var temp = (from x in _context.İşs
                         orderby x.Id descending
-                        where x.Is_Deleted==0
+                        where x.Is_Deleted == 0
                         select x
-              ).Skip(Convert.ToInt32(request.offset)).Take(Convert.ToInt32(request.limit)).ToList();
+              ).Skip(Convert.ToInt32(request.offset)).Take(Convert.ToInt32(request.limit))
+              .Where(o=> o.Id.ToString().Contains(request.search)|| o.İşin_Adı.StartsWith(request.search)|| o.Olusturlma_Tarihi.ToString(   ).Contains(request.search))
+              .ToList();
 
             var Result = new pagination_Request_Result<İş>
             {
                 rows = temp.ToList(),
-                totalNotFiltered = temp.Count() ,
-                total =  _context.İşs.Count()
+                totalNotFiltered = _context.İşs.Where(o => o.Is_Deleted == 0).Count(),
+                total = temp.Count()
             };
 
             return Result;

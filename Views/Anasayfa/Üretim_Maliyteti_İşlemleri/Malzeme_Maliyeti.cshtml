@@ -345,8 +345,17 @@
 
                 if (Malzeme_Ağırlığı > 0) {
 
+                    try{
+                        $('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Katsayı').val(Ugun_Kilo_KatSayısı_Getir(Malzeme_Ağırlığı).katSayı.toFixed(2))
 
-                    $('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Katsayı').val(Ugun_Kilo_KatSayısı_Getir(Malzeme_Ağırlığı).katSayı.toFixed(2))
+                    }
+                    catch(ex){
+                        $('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Katsayı').val(0)
+
+                    }
+
+
+
                     $('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Katsayı').maskMoney()
                     $('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Katsayı').trigger('mask.maskMoney');
 

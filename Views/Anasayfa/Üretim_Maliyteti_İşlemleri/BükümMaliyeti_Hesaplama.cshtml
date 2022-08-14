@@ -67,14 +67,14 @@
             '                                                        <div class="col-md-12">' +
             '                                                            <label for="">Malzeme Ağırlığı:</label>' +
             '                                                            <input type="text" class="form-control"' +
-            '                                                                id="Büküm_Hesabı_Malzeme_Ağırlığı_İnput" data-thousands="" placeholder="Malzeme Ağırlığı" data-suffix=" kg" data-decimal="," disabled>' +
+            '                                                                id="Büküm_Hesabı_Malzeme_Ağırlığı_İnput" data-thousands="" placeholder="Malzeme Ağırlığı" data-suffix=" kg" data-decimal="," >' +
             '                                                        </div>' +
             '                                                    </div>' +
             '                                                    <div class="row">' +
             '                                                        <div class="col-md-12">' +
             '                                                            <label for="">Katsayı:</label>' +
             '                                                            <input type="text"' +
-            '                                                           disabled     id="Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Katsayı"' +
+            '                                                                id="Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Katsayı"' +
             '                                                                class="form-control">' +
             '                                                        </div>' +
             '                                                    </div>' +
@@ -205,7 +205,14 @@
         $('#Büküm_Maliyeti_Sırası').append(variable)
 
 
-        $('#Büküm_Hesabı_Malzeme_Ağırlığı_İnput').val($('#Malzeme_Parça_Firesiz_ağırlığı').maskMoney('unmasked')[0].toFixed(4))
+
+        try {
+            $('#Büküm_Hesabı_Malzeme_Ağırlığı_İnput').val($('#Malzeme_Parça_Firesiz_ağırlığı').maskMoney('unmasked')[0].toFixed(4))
+        }
+        catch (ex) {
+            $('#Büküm_Hesabı_Malzeme_Ağırlığı_İnput').val(0)
+        }
+
         $('#Büküm_Hesabı_Malzeme_Ağırlığı_İnput').maskMoney({
             precision: 4
         })
@@ -213,14 +220,89 @@
         //Ugun_Kilo_KatSayısı_Getir(Malzeme_Ağırlığı).katSayı.toFixed(2)
 
 
-        $('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Katsayı').val(Ugun_Kilo_KatSayısı_Getir($('#Malzeme_Parça_Firesiz_ağırlığı').maskMoney('unmasked')[0].toFixed(4)).katSayı.toFixed(2))
-        $('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Katsayı').maskMoney()
-        $('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Katsayı').trigger('mask.maskMoney');
+        //$('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Katsayı').val(Ugun_Kilo_KatSayısı_Getir($('#Malzeme_Parça_Firesiz_ağırlığı').maskMoney('unmasked')[0].toFixed(4)).katSayı.toFixed(2))
+        try {
+            $('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Katsayı').val(Ugun_Kilo_KatSayısı_Getir($('#Malzeme_Parça_Firesiz_ağırlığı').maskMoney('unmasked')[0].toFixed(4)).katSayı.toFixed(2))
+        }
+        catch (ex) {
+            $('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Katsayı').val(0)
+        }
+
+
+
+       // $('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Katsayı').maskMoney()
+
+        $("#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Katsayı").inputmask({'alias': 'currency',"prefix": "" , allowMinus: false, digits: 4, max: 999.99});
+
+        //$('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Katsayı').trigger('mask.maskMoney');
+
+
+
+
+        $('#Büküm_Hesabı_Malzeme_Ağırlığı_İnput').change(function () {
+
+            console.log("asd90098asd908sda908")
+            console.log($(this).maskMoney('unmasked')[0].toFixed(2))
+
+
+            var Ağırlık = 0
+            try {
+                Ağırlık = $(this).maskMoney('unmasked')[0].toFixed(2)
+            }
+            catch (ex) {
+
+            }
+
+            var Katsayı = 0
+            try {
+                Katsayı = $('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Katsayı').maskMoney('unmasked')[0].toFixed(2)
+            }
+            catch (ex) {
+
+            }
+
+
+
+
+            $('input[name=Malzeme_Büküm_Fiyatı_İnput][Büküm_Tipi=0]').val(Katsayı * Ağırlık)
+            $('input[name=Malzeme_Büküm_Fiyatı_İnput][Büküm_Tipi=0]').maskMoney()
+            $('input[name=Malzeme_Büküm_Fiyatı_İnput][Büküm_Tipi=0]').trigger('mask.maskMoney');
+
+        })
+
+
+        $('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Katsayı').change(function () {
+
+            console.log($(this).maskMoney('unmasked')[0].toFixed(2))
+            var Ağırlık = 0
+            var Katsayı = 0
+            try {
+                Katsayı = $('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Katsayı').maskMoney('unmasked')[0].toFixed(2)
+            }
+            catch (ex) {
+
+            }
+
+            try {
+                Ağırlık = $('#Büküm_Hesabı_Malzeme_Ağırlığı_İnput').maskMoney('unmasked')[0].toFixed(2)
+            }
+            catch (ex) {
+
+            }
+
+
+
+
+            $('input[name=Malzeme_Büküm_Fiyatı_İnput][Büküm_Tipi=0]').val(Katsayı * Ağırlık)
+            $('input[name=Malzeme_Büküm_Fiyatı_İnput][Büküm_Tipi=0]').maskMoney()
+            $('input[name=Malzeme_Büküm_Fiyatı_İnput][Büküm_Tipi=0]').trigger('mask.maskMoney');
+        })
 
 
 
 
 
+        //Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Katsayı
 
         $('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Katsayı').on('keyup keypress blur change', function () {
             var Result = Kilo_İle_Büküm_Maliyet_Hesapla(
@@ -604,7 +686,7 @@
                         $('#Malzeme_Büküm_Uzunluk_Zorluk_Hesabı').val(Selected_Value)
                         $('#Malzeme_Büküm_Uzunluk_Zorluk_Hesabı').trigger('change')
                     }
-                    else{
+                    else {
                         $("#Malzeme_Büküm_Uzunluk_Zorluk_Hesabı").val($("#Malzeme_Büküm_Uzunluk_Zorluk_Hesabı option:first").val());
                         $('#Malzeme_Büküm_Uzunluk_Zorluk_Hesabı').trigger('change')
                     }

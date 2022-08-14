@@ -50,6 +50,18 @@ namespace WebApi.Controllers
             return View();
         }
 
+        [Route("/TakımIndex")]
+        public IActionResult TakımIndex()
+        {
+            return View();
+        }
+        [Route("/ParcaIndex")]
+        public IActionResult ParcaIndex()
+        {
+            return View();
+        }
+
+
 
     }
 }
