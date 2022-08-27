@@ -125,15 +125,15 @@
                         '                                                                    placeholder="Bağlantı Elemanı" value="' + Gelen_Data.bağlantı_Elemanı_Text + " - " + Gelen_Data.bağlantı_Elemanları_Türü.bağlantı_Elemanları_Türü_Text + '" disabled>' +
                         '                                                            </div>' +
                         '                                                            <div class="col">' +
-                        '                                                                <input type="text" class="form-control"' +
+                        '                                                                <input type="text" class="form-control is-invalid"' +
                         '                                                                    placeholder="Birim Fiyatı" value="' + Gelen_Data.birim_Fiyat.toFixed(2) + '"  data-thousands="." data-decimal="," data-suffix=" ₺" id="Bağlantı_Elemanı_Birim_Fiyatı_' + row_İndex + '">' +
                         '                                                            </div>' +
                         '                                                            <div class="col">' +
-                        '                                                                <input type="text" class="form-control"' +
+                        '                                                                <input type="text" class="form-control is-invalid"' +
                         '                                                                    placeholder="İşçilik Maliyeti" value="' + Gelen_Data.İşçilik_Maliyeti.toFixed(2) + '"  data-thousands="." data-decimal="," data-suffix=" ₺" id="Bağlantı_Elemanı_İşçilik_Maliyeti_' + row_İndex + '">' +
                         '                                                            </div>' +
                         '                                                            <div class="col">' +
-                        '                                                                <input type="text" class="form-control"' +
+                        '                                                                <input type="text" class="form-control is-invalid"' +
                         '                                                                    placeholder="Birim Adeti"   data-thousands="" data-decimal="." data-suffix="" id="Bağlantı_Elemanı_Birim_Adeti' + row_İndex + '">' +
                         '                                                            </div>' +
                         '                                                            <div class="col">' +
@@ -160,29 +160,166 @@
                     //$('#Bağlantı_Elemanı_Birim_Fiyatı_' + row_İndex).trigger('mask.maskMoney')
 
 
-                    $("#Bağlantı_Elemanı_Birim_Adeti" + row_İndex).inputmask({ 'alias': 'currency', "suffix": " ", "prefix": "", rightAlign: false, allowMinus: false, digits: 0 });
+                    $("#Bağlantı_Elemanı_Birim_Adeti" + row_İndex).inputmask({ alias: 'numeric', "suffix": "", "prefix": "", rightAlign: false, allowMinus: false, digits: 0 });
 
 
                     //$('#Bağlantı_Elemanı_Birim_Adeti' + row_İndex).maskMoney()
-                   // $('#Bağlantı_Elemanı_Birim_Adeti' + row_İndex).trigger('mask.maskMoney')
+                    // $('#Bağlantı_Elemanı_Birim_Adeti' + row_İndex).trigger('mask.maskMoney')
 
 
 
                     $("#Bağlantı_Elemanı_İşçilik_Maliyeti_" + row_İndex).inputmask({ 'alias': 'currency', "suffix": " ₺", "prefix": "", rightAlign: false, allowMinus: false, digits: 2 });
 
-//
+                    //
 
-                   // $('#Bağlantı_Elemanı_İşçilik_Maliyeti_' + row_İndex).maskMoney()
+                    // $('#Bağlantı_Elemanı_İşçilik_Maliyeti_' + row_İndex).maskMoney()
                     //$('#Bağlantı_Elemanı_İşçilik_Maliyeti_' + row_İndex).trigger('mask.maskMoney')
 
                     //Bağlantı_Elemanı_İşçilik_Maliyeti_
 
 
-                    $('#Bağlantı_Elemanı_Birim_Adeti' + row_İndex + ',#Bağlantı_Elemanı_Birim_Fiyatı_' + row_İndex+','+'#Bağlantı_Elemanı_İşçilik_Maliyeti_' + row_İndex).on('keyup keypress blur change', function () {
 
 
-                        var rv = parseFloat($('#Bağlantı_Elemanı_Birim_Adeti' + row_İndex).maskMoney('unmasked')[0].toFixed(2)) * 
-                        (parseFloat($('#Bağlantı_Elemanı_Birim_Fiyatı_' + row_İndex).maskMoney('unmasked')[0].toFixed(2))+parseFloat($('#Bağlantı_Elemanı_İşçilik_Maliyeti_' + row_İndex).maskMoney('unmasked')[0].toFixed(2)))
+
+
+
+
+                    $('#Bağlantı_Elemanı_Birim_Adeti' + row_İndex).on('keyup keypress blur change', function () {
+
+                        if (
+                            $(this).val() == "0"
+                            ||
+                            $(this).val() == 0
+                            ||
+                            $(this).val() == ""
+                            ||
+                            $(this).val() == undefined
+                            ||
+                            $(this).val() == "undefined"
+
+
+                        ) {
+                            $(this).attr('class', 'form-control is-invalid')
+                        }
+                        else {
+                            $(this).attr('class', 'form-control')
+                        }
+
+
+
+                    })
+
+
+
+
+
+                    console.log($('#Bağlantı_Elemanı_İşçilik_Maliyeti_' + row_İndex).val())
+
+                    if (
+                        $('#Bağlantı_Elemanı_İşçilik_Maliyeti_' + row_İndex).val() == "0.00 ₺"
+                        ||
+                        $('#Bağlantı_Elemanı_İşçilik_Maliyeti_' + row_İndex).val() == 0.00
+                        ||
+                        $('#Bağlantı_Elemanı_İşçilik_Maliyeti_' + row_İndex).val() == ""
+                        ||
+                        $('#Bağlantı_Elemanı_İşçilik_Maliyeti_' + row_İndex).val() == undefined
+                        ||
+                        $('#Bağlantı_Elemanı_İşçilik_Maliyeti_' + row_İndex).val() == "undefined"
+
+
+                    ) {
+                        $('#Bağlantı_Elemanı_İşçilik_Maliyeti_' + row_İndex).attr('class', 'form-control is-invalid')
+                    }
+                    else {
+                        $('#Bağlantı_Elemanı_İşçilik_Maliyeti_' + row_İndex).attr('class', 'form-control')
+                    }
+
+
+                    $('#Bağlantı_Elemanı_İşçilik_Maliyeti_' + row_İndex).on('keyup keypress blur change', function () {
+
+                        if (
+                            $(this).val() == "0.00 ₺"
+                            ||
+                            $(this).val() == 0.00
+                            ||
+                            $(this).val() == ""
+                            ||
+                            $(this).val() == undefined
+                            ||
+                            $(this).val() == "undefined"
+
+
+                        ) {
+                            $(this).attr('class', 'form-control is-invalid')
+                        }
+                        else {
+                            $(this).attr('class', 'form-control')
+                        }
+
+
+
+                    })
+
+
+
+
+
+                    if (
+                        $('#Bağlantı_Elemanı_Birim_Fiyatı_' + row_İndex).val() == "0.00 ₺"
+                        ||
+                        $('#Bağlantı_Elemanı_Birim_Fiyatı_' + row_İndex).val() == 0.00
+                        ||
+                        $('#Bağlantı_Elemanı_Birim_Fiyatı_' + row_İndex).val() == ""
+                        ||
+                        $('#Bağlantı_Elemanı_Birim_Fiyatı_' + row_İndex).val() == undefined
+                        ||
+                        $('#Bağlantı_Elemanı_Birim_Fiyatı_' + row_İndex).val() == "undefined"
+
+
+                    ) {
+                        $('#Bağlantı_Elemanı_Birim_Fiyatı_' + row_İndex).attr('class', 'form-control is-invalid')
+                    }
+                    else {
+                        $('#Bağlantı_Elemanı_Birim_Fiyatı_' + row_İndex).attr('class', 'form-control')
+                    }
+
+
+                    $('#Bağlantı_Elemanı_Birim_Fiyatı_' + row_İndex).on('keyup keypress blur change', function () {
+
+                        if (
+                            $(this).val() == "0.00 ₺"
+                            ||
+                            $(this).val() == 0.00
+                            ||
+                            $(this).val() == ""
+                            ||
+                            $(this).val() == undefined
+                            ||
+                            $(this).val() == "undefined"
+
+
+                        ) {
+                            $(this).attr('class', 'form-control is-invalid')
+                        }
+                        else {
+                            $(this).attr('class', 'form-control')
+                        }
+
+
+
+                    })
+
+
+
+
+
+
+
+                    $('#Bağlantı_Elemanı_Birim_Adeti' + row_İndex + ',#Bağlantı_Elemanı_Birim_Fiyatı_' + row_İndex + ',' + '#Bağlantı_Elemanı_İşçilik_Maliyeti_' + row_İndex).on('keyup keypress blur change', function () {
+
+
+                        var rv = parseFloat($('#Bağlantı_Elemanı_Birim_Adeti' + row_İndex).maskMoney('unmasked')[0].toFixed(2)) *
+                            (parseFloat($('#Bağlantı_Elemanı_Birim_Fiyatı_' + row_İndex).maskMoney('unmasked')[0].toFixed(2)) + parseFloat($('#Bağlantı_Elemanı_İşçilik_Maliyeti_' + row_İndex).maskMoney('unmasked')[0].toFixed(2)))
 
                         $('#Bağlantı_Elemanı_Satır_Toplamı_' + row_İndex).val(rv.toFixed(2))
                         $('#Bağlantı_Elemanı_Satır_Toplamı_' + row_İndex).maskMoney()

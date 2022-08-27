@@ -133,7 +133,7 @@
                         '                                                                    placeholder="Paketleme Türü" value="' + Gelen_Data.paketleme_Türü + '" disabled>' +
                         '                                                            </div>' +
                         '                                                            <div class="col-md-2">' +
-                        '                                                                <input type="text" class="form-control"' +
+                        '                                                                <input type="text" class="form-control is-invalid"' +
                         '                                                                    placeholder="Birim Fiyatı" value="' + Gelen_Data.maliyet.toFixed(2) + '"  data-thousands="." data-decimal="," data-suffix=" ₺" id="Paketleme_Maliyeti_' + row_İndex + '">' +
                         '                                                            </div>' +
                         '                                                            <div class="col-md-2">' +
@@ -141,7 +141,7 @@
                         '                                                                    placeholder="Birim" id="Paketleme_Birimi_' + row_İndex + '" value="' + Gelen_Data.birim.birim_Kısa_ad + '" disabled>' +
                         '                                                            </div>' +
                         '                                                            <div class="col-md-2">' +
-                        '                                                                <input type="text" class="form-control"' +
+                        '                                                                <input type="text" class="form-control is-invalid"' +
                         '                                                                    placeholder="Birim Adeti"   data-thousands="" data-decimal="."  data-suffix=" ' + Gelen_Data.birim.birim_Kısa_ad + '" id="Paketleme_Adeti_' + row_İndex + '">' +
                         '                                                            </div>' +
                         '                                                            <div class="col-md-2">' +
@@ -166,7 +166,7 @@
                     //   $('#Paketleme_Maliyeti_' + row_İndex).maskMoney();
                     // $('#Paketleme_Maliyeti_' + row_İndex).trigger('mask.maskMoney');
 
-                    $("#Paketleme_Adeti_" + row_İndex).inputmask({ 'alias': 'currency', "suffix": " "+Gelen_Data.birim.birim_Kısa_ad , "prefix": "", rightAlign: false, allowMinus: false, digits: 2 });
+                    $("#Paketleme_Adeti_" + row_İndex).inputmask({ 'alias': 'currency', "suffix": " " + Gelen_Data.birim.birim_Kısa_ad, "prefix": "", rightAlign: false, allowMinus: false, digits: 2 });
 
 
                     //$('#Paketleme_Adeti_' + row_İndex).maskMoney();
@@ -180,6 +180,86 @@
                     $('#Paketleme_Satır_Sil_' + row_İndex).click(function () {
                         $(this).parent().parent().remove()
                     })
+
+
+
+                    $('#Paketleme_Adeti_' + row_İndex).on('keyup keypress blur change', function () {
+                        console.log($(this).val())
+                        if (
+                            $(this).val() == "0.00 " + Gelen_Data.birim.birim_Kısa_ad
+                            ||
+                            $(this).val() == 0.00
+                            ||
+                            $(this).val() == ""
+                            ||
+                            $(this).val() == undefined
+                            ||
+                            $(this).val() == "undefined"
+
+
+                        ) {
+                            $(this).attr('class', 'form-control is-invalid')
+                        }
+                        else {
+                            $(this).attr('class', 'form-control')
+                        }
+
+
+
+                    })
+
+                    console.log($('#Paketleme_Maliyeti_' + row_İndex).val())
+
+                    if (
+                        $('#Paketleme_Maliyeti_' + row_İndex).val() == "0.00 ₺"
+                        ||
+                        $('#Paketleme_Maliyeti_' + row_İndex).val() == 0.00
+                        ||
+                        $('#Paketleme_Maliyeti_' + row_İndex).val() == ""
+                        ||
+                        $('#Paketleme_Maliyeti_' + row_İndex).val() == undefined
+                        ||
+                        $('#Paketleme_Maliyeti_' + row_İndex).val() == "undefined"
+
+
+                    ) {
+                        $('#Paketleme_Maliyeti_' + row_İndex).attr('class', 'form-control is-invalid')
+                    }
+                    else {
+                        $('#Paketleme_Maliyeti_' + row_İndex).attr('class', 'form-control')
+                    }
+
+
+                    $('#Paketleme_Maliyeti_' + row_İndex).on('keyup keypress blur change', function () {
+
+                        if (
+                            $(this).val() == "0.00 ₺"
+                            ||
+                            $(this).val() == 0.00
+                            ||
+                            $(this).val() == ""
+                            ||
+                            $(this).val() == undefined
+                            ||
+                            $(this).val() == "undefined"
+
+
+                        ) {
+                            $(this).attr('class', 'form-control is-invalid')
+                        }
+                        else {
+                            $(this).attr('class', 'form-control')
+                        }
+
+
+
+                    })
+
+
+
+
+
+
 
                     $('#Paketleme_Adeti_' + row_İndex + ',#Paketleme_Maliyeti_' + row_İndex).on('keyup keypress blur change', function () {
 

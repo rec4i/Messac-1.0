@@ -118,7 +118,11 @@
 
 
 
+
+
+
                 $("#Malzeme_Select").select2({
+
                     ajax: {
                         url: '/api/Malzeme/Malzeme_Get_By_Text',
                         dataType: 'json',
@@ -148,8 +152,11 @@
                     },
                     minimumInputLength: 2
                 })
+
+                $('span[class="select2-selection select2-selection--single"]').attr('style', "border: 2px solid red !important; ")
                 $('#Malzeme_Select').change(function () {
                     Malzeme_Bilgileri_Getir($(this).find('option:selected').val())
+                    $('span[class="select2-selection select2-selection--single"]').attr('style', "")
                 })
 
 
@@ -219,36 +226,36 @@
             $('#Malzeme_Özgül_Ağırlık_İnput').trigger('mask.maskMoney');
 
             $('#Malzeme_Fiyatı_İnput').val(Gelen_Data.fiyat.toFixed(2))
-            $("#Malzeme_Fiyatı_İnput").inputmask({'alias': 'currency',"suffix": " ₺/Kg"  ,"prefix":"",rightAlign: false, allowMinus: false, digits: 2});    
+            $("#Malzeme_Fiyatı_İnput").inputmask({ 'alias': 'currency', "suffix": " ₺/Kg", "prefix": "", rightAlign: false, allowMinus: false, digits: 2 });
 
 
-           // $('#Malzeme_Fiyatı_İnput').maskMoney()
+            // $('#Malzeme_Fiyatı_İnput').maskMoney()
             //$('#Malzeme_Fiyatı_İnput').trigger('mask.maskMoney');
 
 
 
 
 
-            $("#Malzeme_Eni_İnput").inputmask({'alias': 'currency',"suffix": " mm"  ,"prefix":"",rightAlign: false, allowMinus: false, digits: 2});    
+            $("#Malzeme_Eni_İnput").inputmask({ 'alias': 'currency', "suffix": " mm", "prefix": "", rightAlign: false, allowMinus: false, digits: 2 });
 
             @* $('#Malzeme_Eni_İnput').maskMoney()
-            $('#Malzeme_Eni_İnput').trigger('mask.maskMoney'); *@
+                    $('#Malzeme_Eni_İnput').trigger('mask.maskMoney'); *@
 
 
-            $("#Malzeme_Boyu_İnput").inputmask({'alias': 'currency',"suffix": " mm"  ,"prefix":"",rightAlign: false, allowMinus: false, digits: 2});    
+                $("#Malzeme_Boyu_İnput").inputmask({ 'alias': 'currency', "suffix": " mm", "prefix": "", rightAlign: false, allowMinus: false, digits: 2 });
 
             @* $('#Malzeme_Boyu_İnput').maskMoney()
-            $('#Malzeme_Boyu_İnput').trigger('mask.maskMoney'); *@
+                    $('#Malzeme_Boyu_İnput').trigger('mask.maskMoney'); *@
 
 
-            $("#Malzeme_Genişliği_İnput").inputmask({'alias': 'currency',"suffix": " mm"  ,"prefix":"",rightAlign: false, allowMinus: false, digits: 2});    
+                $("#Malzeme_Genişliği_İnput").inputmask({ 'alias': 'currency', "suffix": " mm", "prefix": "", rightAlign: false, allowMinus: false, digits: 2 });
             //
             //$('#Malzeme_Genişliği_İnput').maskMoney()
-          //  $('#Malzeme_Genişliği_İnput').trigger('mask.maskMoney');
+            //  $('#Malzeme_Genişliği_İnput').trigger('mask.maskMoney');
 
 
 
-            $("#Malzeme_Malzeme_Birim_Fiyatı_İnput").inputmask({'alias': 'currency',"suffix": " ₺"  ,"prefix":"",rightAlign: false, allowMinus: false, digits: 2});    
+            $("#Malzeme_Malzeme_Birim_Fiyatı_İnput").inputmask({ 'alias': 'currency', "suffix": " ₺", "prefix": "", rightAlign: false, allowMinus: false, digits: 2 });
 
             //$('#Malzeme_Malzeme_Birim_Fiyatı_İnput').maskMoney()
             //$('#Malzeme_Malzeme_Birim_Fiyatı_İnput').trigger('mask.maskMoney');
@@ -364,11 +371,11 @@
 
                 if (Malzeme_Ağırlığı > 0) {
 
-                    try{
+                    try {
                         $('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Katsayı').val(Ugun_Kilo_KatSayısı_Getir(Malzeme_Ağırlığı).katSayı.toFixed(2))
 
                     }
-                    catch(ex){
+                    catch (ex) {
                         $('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Katsayı').val(0)
 
                     }

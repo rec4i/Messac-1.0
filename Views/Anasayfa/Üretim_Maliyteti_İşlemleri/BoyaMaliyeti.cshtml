@@ -133,7 +133,7 @@
                         '                                                                    placeholder="Boya Türü" value="' + Gelen_Data.boya_Text + " - " + Gelen_Data.boya_Türü.boya_Türü_Text + '" disabled>' +
                         '                                                            </div>' +
                         '                                                            <div class="col-md-2">' +
-                        '                                                                <input type="text" class="form-control"' +
+                        '                                                                <input type="text" class="form-control is-invalid"' +
                         '                                                                    placeholder="Birim Fiyatı" value="' + Gelen_Data.birim_Fiyat.toFixed(2) + '"  data-thousands="." data-decimal="," data-suffix=" ₺" id="Boya_Maliyeti_' + row_İndex + '">' +
                         '                                                            </div>' +
                         '                                                            <div class="col-md-2">' +
@@ -141,7 +141,7 @@
                         '                                                                    placeholder="Birim" id="Boya_Birimi_' + row_İndex + '" value="' + Gelen_Data.birim.birim_Kısa_ad + '" disabled>' +
                         '                                                            </div>' +
                         '                                                            <div class="col-md-2">' +
-                        '                                                                <input type="text" class="form-control"' +
+                        '                                                                <input type="text" class="form-control is-invalid"' +
                         '                                                                    placeholder="Birim Adeti"   data-thousands="" data-decimal="."  data-suffix=" ' + Gelen_Data.birim.birim_Kısa_ad + '" id="Boya_Adeti_' + row_İndex + '">' +
                         '                                                            </div>' +
                         '                                                            <div class="col-md-2">' +
@@ -182,6 +182,82 @@
                     $('#Boya_Satır_Sil_' + row_İndex).click(function () {
                         $(this).parent().parent().remove()
                     })
+
+
+                    
+                    $('#Boya_Adeti_' + row_İndex).on('keyup keypress blur change', function () {
+                        console.log($(this).val())
+                        if (
+                            $(this).val() == "0.00 " + Gelen_Data.birim.birim_Kısa_ad
+                            ||
+                            $(this).val() == 0.00
+                            ||
+                            $(this).val() == ""
+                            ||
+                            $(this).val() == undefined
+                            ||
+                            $(this).val() == "undefined"
+
+
+                        ) {
+                            $(this).attr('class', 'form-control is-invalid')
+                        }
+                        else {
+                            $(this).attr('class', 'form-control')
+                        }
+
+
+
+                    })
+
+                    console.log($('#Boya_Maliyeti_' + row_İndex).val())
+
+                    if (
+                        $('#Boya_Maliyeti_' + row_İndex).val() == "0.00 ₺"
+                        ||
+                        $('#Boya_Maliyeti_' + row_İndex).val() == 0.00
+                        ||
+                        $('#Boya_Maliyeti_' + row_İndex).val() == ""
+                        ||
+                        $('#Boya_Maliyeti_' + row_İndex).val() == undefined
+                        ||
+                        $('#Boya_Maliyeti_' + row_İndex).val() == "undefined"
+
+
+                    ) {
+                        $('#Boya_Maliyeti_' + row_İndex).attr('class', 'form-control is-invalid')
+                    }
+                    else {
+                        $('#Boya_Maliyeti_' + row_İndex).attr('class', 'form-control')
+                    }
+
+
+                    $('#Boya_Maliyeti_' + row_İndex).on('keyup keypress blur change', function () {
+
+                        if (
+                            $(this).val() == "0.00 ₺"
+                            ||
+                            $(this).val() == 0.00
+                            ||
+                            $(this).val() == ""
+                            ||
+                            $(this).val() == undefined
+                            ||
+                            $(this).val() == "undefined"
+
+
+                        ) {
+                            $(this).attr('class', 'form-control is-invalid')
+                        }
+                        else {
+                            $(this).attr('class', 'form-control')
+                        }
+
+
+
+                    })
+
+
 
                     $('#Boya_Adeti_' + row_İndex + ',#Boya_Maliyeti_' + row_İndex).on('keyup keypress blur change', function () {
 

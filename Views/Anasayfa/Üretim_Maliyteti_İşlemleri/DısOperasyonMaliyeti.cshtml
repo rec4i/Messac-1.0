@@ -134,15 +134,15 @@
                         '                                                                    placeholder="Dıs Operasyon Adı" value="' + Gelen_Data.operasyon_Adı + '" disabled>' +
                         '                                                            </div>' +
                         '                                                            <div class="col">' +
-                        '                                                                <input type="text" class="form-control"' +
+                        '                                                                <input type="text" class="form-control is-invalid"' +
                         '                                                                    placeholder="Birim Fiyatı" value="' + Gelen_Data.operasyon_Maliyeti.toFixed(2) + '"  data-thousands="." data-decimal="," data-suffix=" ₺" id="Operasyon_Maliyeti_' + row_İndex + '">' +
                         '                                                            </div>' +
                         '                                                            <div class="col">' +
-                        '                                                                <input type="text" class="form-control"' +
+                        '                                                                <input type="text" class="form-control is-invalid"' +
                         '                                                                    placeholder="Birim Adeti"   data-thousands="" data-decimal="." id="Operasyon_Adeti_' + row_İndex + '">' +
                         '                                                            </div>' +
                         '                                                            <div class="col">' +
-                        '                                                                <input type="text" class="form-control"' +
+                        '                                                                <input type="text" class="form-control "' +
                         '                                                                  data-thousands="." disabled data-decimal="," data-suffix=" ₺"   placeholder="Toplam Fiyat" id="Operasyon_Toplam_Fiyat_' + row_İndex + '">' +
                         '                                                            </div>' +
                         '                                                            <div class="col-md-1">' +
@@ -166,7 +166,7 @@
 
                     //$("#Operasyon_Adeti_" + row_İndex).inputmask({ 'alias': 'currency', "suffix": " ", "prefix": "", rightAlign: false, allowMinus: false, digits: 0 });
 
-                    $("#Operasyon_Adeti_" + row_İndex).inputmask({ 'alias': 'currency', "suffix": " "+Gelen_Data.birim.birim_Kısa_ad , "prefix": "", rightAlign: false, allowMinus: false, digits: 2 });
+                    $("#Operasyon_Adeti_" + row_İndex).inputmask({ 'alias': 'currency', "suffix": " " + Gelen_Data.birim.birim_Kısa_ad, "prefix": "", rightAlign: false, allowMinus: false, digits: 2 });
 
                     //$('#Operasyon_Adeti_' + row_İndex).maskMoney();
                     //$('#Operasyon_Adeti_' + row_İndex).trigger('mask.maskMoney');
@@ -179,6 +179,84 @@
                     $('#Dıs_Operasyon_Satır_Sil' + row_İndex).click(function () {
                         $(this).parent().parent().remove()
                     })
+
+
+
+
+                    $('#Operasyon_Adeti_' + row_İndex).on('keyup keypress blur change', function () {
+                        console.log($(this).val())
+                        if (
+                            $(this).val() == "0.00 " + Gelen_Data.birim.birim_Kısa_ad
+                            ||
+                            $(this).val() == 0.00
+                            ||
+                            $(this).val() == ""
+                            ||
+                            $(this).val() == undefined
+                            ||
+                            $(this).val() == "undefined"
+
+
+                        ) {
+                            $(this).attr('class', 'form-control is-invalid')
+                        }
+                        else {
+                            $(this).attr('class', 'form-control')
+                        }
+
+
+
+                    })
+
+                    console.log($('#Operasyon_Maliyeti_' + row_İndex).val())
+
+                    if (
+                        $('#Operasyon_Maliyeti_' + row_İndex).val() == "0.00 ₺"
+                        ||
+                        $('#Operasyon_Maliyeti_' + row_İndex).val() == 0.00
+                        ||
+                        $('#Operasyon_Maliyeti_' + row_İndex).val() == ""
+                        ||
+                        $('#Operasyon_Maliyeti_' + row_İndex).val() == undefined
+                        ||
+                        $('#Operasyon_Maliyeti_' + row_İndex).val() == "undefined"
+
+
+                    ) {
+                        $('#Operasyon_Maliyeti_' + row_İndex).attr('class', 'form-control is-invalid')
+                    }
+                    else {
+                        $('#Operasyon_Maliyeti_' + row_İndex).attr('class', 'form-control')
+                    }
+
+
+                    $('#Operasyon_Maliyeti_' + row_İndex).on('keyup keypress blur change', function () {
+
+                        if (
+                            $(this).val() == "0.00 ₺"
+                            ||
+                            $(this).val() == 0.00
+                            ||
+                            $(this).val() == ""
+                            ||
+                            $(this).val() == undefined
+                            ||
+                            $(this).val() == "undefined"
+
+
+                        ) {
+                            $(this).attr('class', 'form-control is-invalid')
+                        }
+                        else {
+                            $(this).attr('class', 'form-control')
+                        }
+
+
+
+                    })
+
+
+
 
                     $('#Operasyon_Adeti_' + row_İndex + ',#Operasyon_Maliyeti_' + row_İndex).on('keyup keypress blur change', function () {
 

@@ -133,7 +133,7 @@
                         '                                                                    placeholder="Tesviye Türü" value="' + Gelen_Data.tesviye_Türü + '" disabled>' +
                         '                                                            </div>' +
                         '                                                            <div class="col-md-2">' +
-                        '                                                                <input type="text" class="form-control"' +
+                        '                                                                <input type="text" class="form-control is-invalid"' +
                         '                                                                    placeholder="Birim Fiyatı"    id="Tesviye_Maliyeti_' + row_İndex + '">' +
                         '                                                            </div>' +
                         '                                                            <div class="col-md-2">' +
@@ -141,7 +141,7 @@
                         '                                                                    placeholder="Birim" id="Tesviye_Birimi_' + row_İndex + '" value="' + Gelen_Data.birim.birim_Kısa_ad + '" disabled>' +
                         '                                                            </div>' +
                         '                                                            <div class="col-md-2">' +
-                        '                                                                <input type="text" class="form-control"' +
+                        '                                                                <input type="text" class="form-control is-invalid"' +
                         '                                                                    placeholder="Birim Adeti"   data-thousands="" data-decimal="."  data-suffix=" ' + Gelen_Data.birim.birim_Kısa_ad + '" id="Tefsiye_Adeti_' + row_İndex + '">' +
                         '                                                            </div>' +
                         '                                                            <div class="col-md-2">' +
@@ -165,7 +165,7 @@
                     $("#Tesviye_Maliyeti_" + row_İndex).inputmask({ 'alias': 'currency', "suffix": " ₺", "prefix": "", rightAlign: false, allowMinus: false, digits: 2 });
                     $("#Tesviye_Maliyeti_" + row_İndex).val(Gelen_Data.maliyet.toFixed(2))
 
-//Gelen_Data.maliyet.toFixed(3)
+                    //Gelen_Data.maliyet.toFixed(3)
                     //$('#Tesviye_Maliyeti_' + row_İndex).maskMoney();
                     //$('#Tesviye_Maliyeti_' + row_İndex).trigger('mask.maskMoney');
 
@@ -184,6 +184,90 @@
                     $('#Tesviye_Satır_Sil_' + row_İndex).click(function () {
                         $(this).parent().parent().remove()
                     })
+
+
+
+
+
+
+
+                    $('#Tefsiye_Adeti_' + row_İndex).on('keyup keypress blur change', function () {
+
+                        if (
+                            $(this).val() == "0.00 " + Gelen_Data.birim.birim_Kısa_ad
+                            ||
+                            $(this).val() == 0.00
+                            ||
+                            $(this).val() == ""
+                            ||
+                            $(this).val() == undefined
+                            ||
+                            $(this).val() == "undefined"
+
+
+                        ) {
+                            $(this).attr('class', 'form-control is-invalid')
+                        }
+                        else {
+                            $(this).attr('class', 'form-control')
+                        }
+
+
+
+                    })
+
+                    console.log($('#Kaynak_Birim_Fiyat_' + row_İndex).val())
+
+                    if (
+                        $('#Tesviye_Maliyeti_' + row_İndex).val() == "0.00 ₺"
+                        ||
+                        $('#Tesviye_Maliyeti_' + row_İndex).val() == 0.00
+                        ||
+                        $('#Tesviye_Maliyeti_' + row_İndex).val() == ""
+                        ||
+                        $('#Tesviye_Maliyeti_' + row_İndex).val() == undefined
+                        ||
+                        $('#Tesviye_Maliyeti_' + row_İndex).val() == "undefined"
+
+
+                    ) {
+                        $('#Tesviye_Maliyeti_' + row_İndex).attr('class', 'form-control is-invalid')
+                    }
+                    else {
+                        $('#Tesviye_Maliyeti_' + row_İndex).attr('class', 'form-control')
+                    }
+
+
+                    $('#Tesviye_Maliyeti_' + row_İndex).on('keyup keypress blur change', function () {
+
+                        if (
+                            $(this).val() == "0.00 ₺"
+                            ||
+                            $(this).val() == 0.00
+                            ||
+                            $(this).val() == ""
+                            ||
+                            $(this).val() == undefined
+                            ||
+                            $(this).val() == "undefined"
+
+
+                        ) {
+                            $(this).attr('class', 'form-control is-invalid')
+                        }
+                        else {
+                            $(this).attr('class', 'form-control')
+                        }
+
+
+
+                    })
+
+
+
+
+
+
 
                     $('#Tefsiye_Adeti_' + row_İndex + ',#Tesviye_Maliyeti_' + row_İndex).on('keyup keypress blur change', function () {
 

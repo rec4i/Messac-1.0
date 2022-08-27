@@ -28,7 +28,6 @@
                     '                                            <select son_eklenen_satır="-1" id="Kaynak_Select"' +
                     '                                                style="width: 100% ; padding-bottom: 25px;"></select>' +
                     '                                        </div>' +
-
                     '                                    </div>' +
                     '                                    <div class="row" style="padding-top: 25px;">' +
                     '                                        <div class="col-md-12">' +
@@ -134,11 +133,11 @@
                         '                                                                    placeholder="Birim" id="Kaynak_Birim_' + row_İndex + '" value="' + Gelen_Data.birim.birim_Kısa_ad + '" disabled>' +
                         '                                                            </div>' +
                         '                                                            <div class="col-md-2">' +
-                        '                                                                <input type="text" class="form-control"' +
+                        '                                                                <input type="text" class="form-control is-invalid"' +
                         '                                                                    placeholder="Birim Fiyatı"  id="Kaynak_Birim_Fiyat_' + row_İndex + '">' +
                         '                                                            </div>' +
                         '                                                            <div class="col-md-2">' +
-                        '                                                                <input type="text" class="form-control"' +
+                        '                                                                <input type="text" class="form-control is-invalid"' +
                         '                                                                    placeholder="Birim Adeti"   data-thousands="" data-decimal="." data-suffix=" ' + Gelen_Data.birim.birim_Kısa_ad + '" id="Kaynak_Birim_Adeti_' + row_İndex + '">' +
                         '                                                            </div>' +
                         '                                                            <div class="col-md-2">' +
@@ -182,6 +181,83 @@
                     })
 
 
+
+
+
+                    $('#Kaynak_Birim_Adeti_' + row_İndex).on('keyup keypress blur change', function () {
+
+                        if (
+                            $(this).val() == "0.00 " + Gelen_Data.birim.birim_Kısa_ad
+                            ||
+                            $(this).val() == 0.00
+                            ||
+                            $(this).val() == ""
+                            ||
+                            $(this).val() == undefined
+                            ||
+                            $(this).val() == "undefined"
+
+
+                        ) {
+                            $(this).attr('class', 'form-control is-invalid')
+                        }
+                        else {
+                            $(this).attr('class', 'form-control')
+                        }
+
+
+
+                    })
+
+                    console.log($('#Kaynak_Birim_Fiyat_' + row_İndex).val())
+
+                    if (
+                        $('#Kaynak_Birim_Fiyat_' + row_İndex).val() == "0.00 ₺"
+                        ||
+                        $('#Kaynak_Birim_Fiyat_' + row_İndex).val() == 0.00
+                        ||
+                        $('#Kaynak_Birim_Fiyat_' + row_İndex).val() == ""
+                        ||
+                        $('#Kaynak_Birim_Fiyat_' + row_İndex).val() == undefined
+                        ||
+                        $('#Kaynak_Birim_Fiyat_' + row_İndex).val() == "undefined"
+
+
+                    ) {
+                        $('#Kaynak_Birim_Fiyat_' + row_İndex).attr('class', 'form-control is-invalid')
+                    }
+                    else {
+                        $('#Kaynak_Birim_Fiyat_' + row_İndex).attr('class', 'form-control')
+                    }
+
+
+                    $('#Kaynak_Birim_Fiyat_' + row_İndex).on('keyup keypress blur change', function () {
+
+                        if (
+                            $(this).val() == "0.00 ₺"
+                            ||
+                            $(this).val() == 0.00
+                            ||
+                            $(this).val() == ""
+                            ||
+                            $(this).val() == undefined
+                            ||
+                            $(this).val() == "undefined"
+
+
+                        ) {
+                            $(this).attr('class', 'form-control is-invalid')
+                        }
+                        else {
+                            $(this).attr('class', 'form-control')
+                        }
+
+
+
+                    })
+
+
+                    //Kaynak_Birim_Fiyat_
 
                     $('#Kaynak_Birim_Adeti_' + row_İndex + ',#Kaynak_Birim_Fiyat_' + row_İndex).on('keyup keypress blur change', function () {
 

@@ -31,12 +31,12 @@
                     '                <div class="row">' +
                     '                    <div class="col-md-6">' +
                     '                        <label for="">Parça Adeti :</label>' +
-                    '                        <input type="text" class="form-control" id="Kesim_Hesabı_Malzeme_Adeti_İnput" data-thousands=""' +
+                    '                        <input type="text" class="form-control is-invalid" id="Kesim_Hesabı_Malzeme_Adeti_İnput" data-thousands=""' +
                     '                            placeholder="Malzeme Adeti" data-suffix="" data-decimal=",">' +
                     '                    </div>' +
                     '                    <div class="col-md-6">' +
                     '                        <label for="">Kesim Verimliliği Katsayısı :</label>' +
-                    '                        <input type="text" class="form-control" id="Kesim_Hesabı_Verimlilik_İnput" data-thousands=""' +
+                    '                        <input type="text" class="form-control is-invalid" id="Kesim_Hesabı_Verimlilik_İnput" data-thousands=""' +
                     '                            placeholder="Kesim Verimliliği"  data-suffix="" data-decimal=",">' +
                     '                    </div>' +
                     '                </div>' +
@@ -46,7 +46,7 @@
                     '                    </div>' +
                     '                    <div class="col-md-6">' +
                     '                        <label  for="">Kesim Süresi (hh:mm:ss)</label>' +
-                    '                        <input type="text" id="Kesim_Süresi_Saat_Dakika" class="form-control">' +
+                    '                        <input type="text" id="Kesim_Süresi_Saat_Dakika" class="form-control is-invalid">' +
                     '                    </div>' +
                     '                </div>' +
                     '                <div class="row">' +
@@ -64,7 +64,7 @@
                     '                    </div>' +
                     '                    <div class="col-md-3">' +
                     '                        <label for="">Kesim Fiyatı</label>' +
-                    '                        <input id="Malzeme_Kesim_Fiyatı_İnput" data-suffix=" ₺" class="form-control form-control"' +
+                    '                        <input id="Malzeme_Kesim_Fiyatı_İnput" data-suffix=" ₺" class="form-control form-control is-invalid"' +
                     '                            type="text" placeholder="Kesim Fiyatı">' +
                     '                    </div>' +
                     '                </div>' +
@@ -109,12 +109,12 @@
                 //Malzeme_Fiyatı_İnput
                 //$('#Malzeme_Kesim_Fiyatı_İnput').maskMoney()
                 $("#Malzeme_Kesim_Fiyatı_İnput").inputmask({ 'alias': 'currency', "suffix": " ₺", "prefix": "", rightAlign: false, allowMinus: false, digits: 2 });
-                
+
 
                 //$('#Malzeme_Kesim_Fiyatı_İnput').trigger('mask.maskMoney');
                 //Kesim_Hesabı_Adet_İnput
                 //$('#Kesim_Hesabı_Adet_İnput').maskMoney()
-               // $('#Kesim_Hesabı_Adet_İnput').trigger('mask.maskMoney');
+                // $('#Kesim_Hesabı_Adet_İnput').trigger('mask.maskMoney');
 
 
 
@@ -122,10 +122,10 @@
                 $('#Kesim_Hesabı_Fire_Katsayısı_İnput').maskMoney()
                 $('#Kesim_Hesabı_Fire_Katsayısı_İnput').trigger('mask.maskMoney');
                 //Kesim_Hesabı_Verimlilik_İnput
-               // $("#Kesim_Hesabı_Verimlilik_İnput").val(1.25)
+                // $("#Kesim_Hesabı_Verimlilik_İnput").val(1.25)
                 $("#Kesim_Hesabı_Verimlilik_İnput").inputmask({ 'alias': 'currency', "suffix": "", "prefix": "", rightAlign: false, allowMinus: false, digits: 2 });
 
-               // $('#Kesim_Hesabı_Verimlilik_İnput').maskMoney()
+                // $('#Kesim_Hesabı_Verimlilik_İnput').maskMoney()
                 //$('#Kesim_Hesabı_Verimlilik_İnput').trigger('mask.maskMoney');
                 //Kesim_Hesabı_Malzeme_Adeti_İnput
                 $('#Kesim_Hesabı_Malzeme_Adeti_İnput').maskMoney({
@@ -192,8 +192,128 @@
                     $('#Malzeme_Kesim_Süresi').val(convertDurationtoSeconds($(this).val()))
 
                 })
+
+                $('#Kesim_Hesabı_Malzeme_Adeti_İnput').on('keyup keypress blur change', function () {
+
+                    if (
+
+                        $(this).val() == "0"
+                        ||
+                        $(this).val() == ""
+                        ||
+                        $(this).val() == undefined
+                        ||
+                        $(this).val() == "undefined"
+
+
+                    ) {
+                        $(this).attr('class', 'form-control is-invalid')
+                    }
+                    else {
+                        $(this).attr('class', 'form-control')
+                    }
+
+
+
+                })
+
+
+                $('#Kesim_Hesabı_Verimlilik_İnput').on('keyup keypress blur change', function () {
+
+                    if (
+                        $(this).val() == "0.00"
+                        ||
+                        $(this).val() == 0.00
+                        ||
+                        $(this).val() == ""
+                        ||
+                        $(this).val() == undefined
+                        ||
+                        $(this).val() == "undefined"
+
+
+                    ) {
+                        $(this).attr('class', 'form-control is-invalid')
+                    }
+                    else {
+                        $(this).attr('class', 'form-control')
+                    }
+
+
+
+                })
+
+
+                $('#Kesim_Süresi_Saat_Dakika').on('keyup keypress blur change', function () {
+
+                    if (
+                        convertDurationtoSeconds($(this).val()) == null
+                        ||
+                        convertDurationtoSeconds($(this).val()) == NaN
+                        ||
+                        $(this).val() == "hh:mm:ss"
+                        ||
+                        $(this).val() == ""
+                        ||
+                        $(this).val() == undefined
+                        ||
+                        $(this).val() == "undefined"
+
+
+                    ) {
+                        $(this).attr('class', 'form-control is-invalid')
+                    }
+                    else {
+                        $(this).attr('class', 'form-control')
+                    }
+
+
+
+                })
+
+
+                $('#Malzeme_Kesim_Fiyatı_İnput').on('keyup keypress blur change', function () {
+
+                    if (
+                        $(this).val() == "0.00 ₺"
+                        ||
+                        $(this).val() == 0.00
+                        ||
+                        $(this).val() == ""
+                        ||
+                        $(this).val() == undefined
+                        ||
+                        $(this).val() == "undefined"
+
+
+                    ) {
+                        $(this).attr('class', 'form-control is-invalid')
+                    }
+                    else {
+                        $(this).attr('class', 'form-control')
+                    }
+
+
+
+                })
+
+
+
+                //Malzeme_Kesim_Fiyatı_İnput
+
+
+
+
+
+
                 $('#Kesim_Hesabı_Malzeme_Adeti_İnput,#Kesim_Hesabı_Verimlilik_İnput,#Kesim_Süresi_Saat_Dakika').on('keyup keypress blur change', function () {
-                    
+
+
+
+
+
+
+
 
                     var Kesim_Süresi = Bir_Parçanın_Kesim_Suresini_Hesapla(
                         $('#Kesim_Hesabı_Malzeme_Adeti_İnput').val()

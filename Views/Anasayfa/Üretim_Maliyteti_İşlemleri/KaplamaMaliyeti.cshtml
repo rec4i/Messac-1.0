@@ -125,11 +125,11 @@
                         '                                                                    placeholder="Birim" id="Kaplama_Birim' + row_İndex + '" value="' + Gelen_Data.birimler.birim_Kısa_ad + '" disabled>' +
                         '                                                            </div>' +
                         '                                                            <div class="col-md-2">' +
-                        '                                                                <input type="text" class="form-control"' +
+                        '                                                                <input type="text" class="form-control is-invalid"' +
                         '                                                                    placeholder="Birim Fiyatı" value="' + Gelen_Data.birim_Maliyet.toFixed(2) + '"  data-thousands="." data-decimal="," data-suffix=" ₺" id="Kaplama_Birim_Fiyat_' + row_İndex + '">' +
                         '                                                            </div>' +
                         '                                                            <div class="col-md-2">' +
-                        '                                                                <input type="text" class="form-control"' +
+                        '                                                                <input type="text" class="form-control is-invalid"' +
                         '                                                                    placeholder="Birim Adeti"   data-thousands="" data-decimal="." data-suffix=" ' + Gelen_Data.birimler.birim_Kısa_ad + '" id="Kaplama_Birim_Adeti_' + row_İndex + '">' +
                         '                                                            </div>' +
                         '                                                            <div class="col-md-2">' +
@@ -175,6 +175,82 @@
                     $('#Kaplama_Satırı_Sil' + row_İndex).click(function () {
                         $(this).parent().parent().remove()
                     })
+
+
+
+                    $('#Kaplama_Birim_Adeti_' + row_İndex).on('keyup keypress blur change', function () {
+                        console.log($(this).val())
+                        if (
+                            $(this).val() == "0.00 " + Gelen_Data.birimler.birim_Kısa_ad
+                            ||
+                            $(this).val() == 0.00
+                            ||
+                            $(this).val() == ""
+                            ||
+                            $(this).val() == undefined
+                            ||
+                            $(this).val() == "undefined"
+
+
+                        ) {
+                            $(this).attr('class', 'form-control is-invalid')
+                        }
+                        else {
+                            $(this).attr('class', 'form-control')
+                        }
+
+
+
+                    })
+
+                    console.log($('#Kaplama_Birim_Fiyat_' + row_İndex).val())
+
+                    if (
+                        $('#Kaplama_Birim_Fiyat_' + row_İndex).val() == "0.00 ₺"
+                        ||
+                        $('#Kaplama_Birim_Fiyat_' + row_İndex).val() == 0.00
+                        ||
+                        $('#Kaplama_Birim_Fiyat_' + row_İndex).val() == ""
+                        ||
+                        $('#Kaplama_Birim_Fiyat_' + row_İndex).val() == undefined
+                        ||
+                        $('#Kaplama_Birim_Fiyat_' + row_İndex).val() == "undefined"
+
+
+                    ) {
+                        $('#Kaplama_Birim_Fiyat_' + row_İndex).attr('class', 'form-control is-invalid')
+                    }
+                    else {
+                        $('#Kaplama_Birim_Fiyat_' + row_İndex).attr('class', 'form-control')
+                    }
+
+
+                    $('#Kaplama_Birim_Fiyat_' + row_İndex).on('keyup keypress blur change', function () {
+
+                        if (
+                            $(this).val() == "0.00 ₺"
+                            ||
+                            $(this).val() == 0.00
+                            ||
+                            $(this).val() == ""
+                            ||
+                            $(this).val() == undefined
+                            ||
+                            $(this).val() == "undefined"
+
+
+                        ) {
+                            $(this).attr('class', 'form-control is-invalid')
+                        }
+                        else {
+                            $(this).attr('class', 'form-control')
+                        }
+
+
+
+                    })
+
+
 
 
                     $('#Kaplama_Birim_Adeti_' + row_İndex + ',#Kaplama_Birim_Fiyat_' + row_İndex).on('keyup keypress blur change', function () {
