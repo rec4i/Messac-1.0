@@ -71,7 +71,7 @@
                             return {
                                 results: $.map(data, function (item) {
                                     return {
-                                        text: item.boya_Text+' - ' +item.boya_Türü.boya_Türü_Text,
+                                        text: item.boya_Text + ' - ' + item.boya_Türü.boya_Türü_Text,
                                         id: item.id
                                     }
                                 })
@@ -130,7 +130,7 @@
                         ' <div class="row" style="padding-top: 25px;" name="Boya_Satır_Row" row_Id="' + row_İndex + '" >' +
                         '                                                            <div class="col-md-3">' +
                         '                                                                <input type="text" class="form-control" data_Id="' + Gelen_Data.id + '" id="Boya_Türü_' + row_İndex + '"' +
-                        '                                                                    placeholder="Boya Türü" value="' + Gelen_Data.boya_Text +" - " +Gelen_Data.boya_Türü.boya_Türü_Text+ '" disabled>' +
+                        '                                                                    placeholder="Boya Türü" value="' + Gelen_Data.boya_Text + " - " + Gelen_Data.boya_Türü.boya_Türü_Text + '" disabled>' +
                         '                                                            </div>' +
                         '                                                            <div class="col-md-2">' +
                         '                                                                <input type="text" class="form-control"' +
@@ -159,11 +159,20 @@
                         '';
                     $('#Boya_Div').append(Kaynak_Satır)
 
-                    $('#Boya_Maliyeti_' + row_İndex).maskMoney();
-                    $('#Boya_Maliyeti_' + row_İndex).trigger('mask.maskMoney');
 
-                    $('#Boya_Adeti_' + row_İndex).maskMoney();
-                    $('#Boya_Adeti_' + row_İndex).trigger('mask.maskMoney');
+
+                    $("#Boya_Maliyeti_" + row_İndex).inputmask({ 'alias': 'currency', "suffix": " ₺", "prefix": "", rightAlign: false, allowMinus: false, digits: 2 });
+
+                    //   $('#Boya_Maliyeti_' + row_İndex).maskMoney();
+                    // $('#Boya_Maliyeti_' + row_İndex).trigger('mask.maskMoney');
+
+
+
+                    $("#Boya_Adeti_" + row_İndex).inputmask({ 'alias': 'currency', "suffix": " " + Gelen_Data.birim.birim_Kısa_ad, "prefix": "", rightAlign: false, allowMinus: false, digits: 2 });
+
+
+                    //$('#Boya_Adeti_' + row_İndex).maskMoney();
+                    //$('#Boya_Adeti_' + row_İndex).trigger('mask.maskMoney');
 
 
                     $('#Boya_Toplam_Fiyat' + row_İndex).maskMoney();

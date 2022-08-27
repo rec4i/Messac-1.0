@@ -37,7 +37,7 @@
                     '                    <div class="col-md-6">' +
                     '                        <label for="">Kesim Verimliliği Katsayısı :</label>' +
                     '                        <input type="text" class="form-control" id="Kesim_Hesabı_Verimlilik_İnput" data-thousands=""' +
-                    '                            placeholder="Kesim Verimliliği" value="1.25" data-suffix="" data-decimal=",">' +
+                    '                            placeholder="Kesim Verimliliği"  data-suffix="" data-decimal=",">' +
                     '                    </div>' +
                     '                </div>' +
                     '                <div class="row">' +
@@ -45,16 +45,20 @@
 
                     '                    </div>' +
                     '                    <div class="col-md-6">' +
-                    '                        <label for="">Kesim Süresi (hh:mm:ss)</label>' +
+                    '                        <label  for="">Kesim Süresi (hh:mm:ss)</label>' +
                     '                        <input type="text" id="Kesim_Süresi_Saat_Dakika" class="form-control">' +
                     '                    </div>' +
                     '                </div>' +
                     '                <div class="row">' +
-                    '                    <div class="col-md-6">' +
+                    '                    <div class="col-md-4">' +
 
                     '                    </div>' +
+                    '                    <div class="col-md-2">' +
+                    '                        <label for="">Süre Hesap Şekili</label>' +
+                    '                        <select class="form-control" id="Sure_Hesap_Sekli"></select>' +
+                    '                    </div>' +
                     '                    <div class="col-md-3">' +
-                    '                        <label for="">Malzeme Kesim Süresi(sn):</label>' +
+                    '                        <label id="KesimSuresiLabel" for="">Malzeme Kesim Süresi(sn):</label>' +
                     '                        <input id="Malzeme_Kesim_Süresi" data-thousands="" data-decimal="." data-suffix=" sn"' +
                     '                            class="form-control" disabled type="text" placeholder="Malzeme Kesim Süresi(sn)">' +
                     '                    </div>' +
@@ -84,17 +88,33 @@
 
                 var $select = $('#Kesim_Select')
 
+                $('#Sure_Hesap_Sekli').append('<option value="sn">Saniye</option>');
+                $('#Sure_Hesap_Sekli').append('<option value="dk">Dakika</option>');
+
+                $('#Sure_Hesap_Sekli').change(function () {
+                    $("#Malzeme_Kesim_Süresi").inputmask({ 'alias': 'currency', "suffix": " " + $(this).find(':selected').attr('value'), "prefix": "", rightAlign: false, allowMinus: false, digits: 2 });
+                    $('#KesimSuresiLabel').html('Malzeme Kesim Süresi(' + $(this).find(':selected').attr('value') + '):')
+                    $('#Kesim_Hesabı_Malzeme_Adeti_İnput').trigger('blur')
+                })
+
 
 
                 //Malzeme_Kesim_Süresi
-                $('#Malzeme_Kesim_Süresi').maskMoney()
-                $('#Malzeme_Kesim_Süresi').trigger('mask.maskMoney');
+                $("#Malzeme_Kesim_Süresi").inputmask({ 'alias': 'currency', "suffix": " sn", "prefix": "", rightAlign: false, allowMinus: false, digits: 2 });
+
+                //$('#Malzeme_Kesim_Süresi').maskMoney()
+                //$('#Malzeme_Kesim_Süresi').trigger('mask.maskMoney');
+
+
                 //Malzeme_Fiyatı_İnput
-                $('#Malzeme_Kesim_Fiyatı_İnput').maskMoney()
-                $('#Malzeme_Kesim_Fiyatı_İnput').trigger('mask.maskMoney');
+                //$('#Malzeme_Kesim_Fiyatı_İnput').maskMoney()
+                $("#Malzeme_Kesim_Fiyatı_İnput").inputmask({ 'alias': 'currency', "suffix": " ₺", "prefix": "", rightAlign: false, allowMinus: false, digits: 2 });
+                
+
+                //$('#Malzeme_Kesim_Fiyatı_İnput').trigger('mask.maskMoney');
                 //Kesim_Hesabı_Adet_İnput
-                $('#Kesim_Hesabı_Adet_İnput').maskMoney()
-                $('#Kesim_Hesabı_Adet_İnput').trigger('mask.maskMoney');
+                //$('#Kesim_Hesabı_Adet_İnput').maskMoney()
+               // $('#Kesim_Hesabı_Adet_İnput').trigger('mask.maskMoney');
 
 
 
@@ -102,22 +122,24 @@
                 $('#Kesim_Hesabı_Fire_Katsayısı_İnput').maskMoney()
                 $('#Kesim_Hesabı_Fire_Katsayısı_İnput').trigger('mask.maskMoney');
                 //Kesim_Hesabı_Verimlilik_İnput
-                $('#Kesim_Hesabı_Verimlilik_İnput').maskMoney()
-                $('#Kesim_Hesabı_Verimlilik_İnput').trigger('mask.maskMoney');
+               // $("#Kesim_Hesabı_Verimlilik_İnput").val(1.25)
+                $("#Kesim_Hesabı_Verimlilik_İnput").inputmask({ 'alias': 'currency', "suffix": "", "prefix": "", rightAlign: false, allowMinus: false, digits: 2 });
+
+               // $('#Kesim_Hesabı_Verimlilik_İnput').maskMoney()
+                //$('#Kesim_Hesabı_Verimlilik_İnput').trigger('mask.maskMoney');
                 //Kesim_Hesabı_Malzeme_Adeti_İnput
                 $('#Kesim_Hesabı_Malzeme_Adeti_İnput').maskMoney({
                     precision: 0
                 })
                 $('#Kesim_Hesabı_Malzeme_Adeti_İnput').trigger('mask.maskMoney');
 
-                console.log("Dolduruluyor");
                 $('input[id=Kesim_Süresi_Saat_Dakika]').inputmask("hh:mm:ss", {
                     placeholder: "hh:mm:ss",
                     insertMode: false,
                     showMaskOnHover: false,
                     hourFormat: "24"
                 });
-                console.log("Doldurulmuş");
+
                 $('#Kesim_Hesabı_Fire_Dahil_Ağırlık_İnput').maskMoney({
                     precision: 4
                 })
@@ -165,8 +187,14 @@
                 });
 
 
+                $('#Kesim_Süresi_Saat_Dakika').on('keyup keypress blur change', function () {
+                    console.log(convertDurationtoSeconds($(this).val()))
+                    $('#Malzeme_Kesim_Süresi').val(convertDurationtoSeconds($(this).val()))
 
+                })
                 $('#Kesim_Hesabı_Malzeme_Adeti_İnput,#Kesim_Hesabı_Verimlilik_İnput,#Kesim_Süresi_Saat_Dakika').on('keyup keypress blur change', function () {
+                    
+
                     var Kesim_Süresi = Bir_Parçanın_Kesim_Suresini_Hesapla(
                         $('#Kesim_Hesabı_Malzeme_Adeti_İnput').val()
                         , $('#Kesim_Hesabı_Verimlilik_İnput').maskMoney('unmasked')[0].toFixed(2)
@@ -174,7 +202,7 @@
                     )
                     if (Kesim_Süresi != NaN && Kesim_Süresi != null) {
                         $('#Malzeme_Kesim_Süresi').val(Kesim_Süresi.toFixed(2))
-                        $('#Malzeme_Kesim_Süresi').trigger('mask.maskMoney')
+                        // $('#Malzeme_Kesim_Süresi').trigger('mask.maskMoney')
                     }
 
                     $('#Malzeme_Kesim_Fiyatı_İnput').trigger('blur')
@@ -183,22 +211,12 @@
 
                 })
 
-
-
                 $('#Kesim_Select').change(function () {
 
-
                     Kesim_Türü_Select_Doldu($select, $('#Kesim_Select').find(':selected').attr('value'))
-
                 })
 
-
-
                 Kesim_Türü_Select_Doldu($select, $('#Malzeme_Kesim_Select').find(':selected').attr('value'))
-
-
-
-
             }
             else {
 
@@ -213,7 +231,7 @@
         })
         //        $('input[id=Kesim_Süresi_Saat_Dakika]').val()
 
-    
+
 
     })
     function Uygun_Kesimi_Getir(Malzeme_Kalınlığı, Kesim_Türü, $Kesim_Maliyet_İnput) {
@@ -270,12 +288,24 @@
         }
 
 
+
     }
 
     function convertDurationtoSeconds(duration) {
         const [hours, minutes, seconds] = duration.split(':');
-        return Number(hours) * 60 * 60 + Number(minutes) * 60 + Number(seconds);
+        console.log($('#Sure_Hesap_Sekli').find(':selected').attr('value'))
+        if ($('#Sure_Hesap_Sekli').find(':selected').attr('value') == "sn") {
+            return Number(hours) * 60 * 60 + Number(minutes) * 60 + Number(seconds);
+        }
+        if ($('#Sure_Hesap_Sekli').find(':selected').attr('value') == "dk") {
+            return (Number(hours) * 60 * 60 + Number(minutes) * 60 + Number(seconds)) / 60;
+        }
+        else {
+            return Number(hours) * 60 * 60 + Number(minutes) * 60 + Number(seconds);
+        }
+        //return Number(hours) * 60 * 60 + Number(minutes) * 60 + Number(seconds);
     };
+
     function Kesim_Maliyti_Hesapla(Süre, Fiyat) {
 
         return parseFloat(Süre) * parseFloat(Fiyat)

@@ -159,11 +159,18 @@
                         '';
                     $('#Paketleme_Div').append(Kaynak_Satır)
 
-                    $('#Paketleme_Maliyeti_' + row_İndex).maskMoney();
-                    $('#Paketleme_Maliyeti_' + row_İndex).trigger('mask.maskMoney');
 
-                    $('#Paketleme_Adeti_' + row_İndex).maskMoney();
-                    $('#Paketleme_Adeti_' + row_İndex).trigger('mask.maskMoney');
+
+                    $("#Paketleme_Maliyeti_" + row_İndex).inputmask({ 'alias': 'currency', "suffix": " ₺", "prefix": "", rightAlign: false, allowMinus: false, digits: 2 });
+
+                    //   $('#Paketleme_Maliyeti_' + row_İndex).maskMoney();
+                    // $('#Paketleme_Maliyeti_' + row_İndex).trigger('mask.maskMoney');
+
+                    $("#Paketleme_Adeti_" + row_İndex).inputmask({ 'alias': 'currency', "suffix": " "+Gelen_Data.birim.birim_Kısa_ad , "prefix": "", rightAlign: false, allowMinus: false, digits: 2 });
+
+
+                    //$('#Paketleme_Adeti_' + row_İndex).maskMoney();
+                    //$('#Paketleme_Adeti_' + row_İndex).trigger('mask.maskMoney');
 
 
                     $('#Paketleme_Toplam_Fiyat' + row_İndex).maskMoney();

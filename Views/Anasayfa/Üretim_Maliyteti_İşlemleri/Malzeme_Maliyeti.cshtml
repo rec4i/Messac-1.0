@@ -219,20 +219,39 @@
             $('#Malzeme_Özgül_Ağırlık_İnput').trigger('mask.maskMoney');
 
             $('#Malzeme_Fiyatı_İnput').val(Gelen_Data.fiyat.toFixed(2))
-            $('#Malzeme_Fiyatı_İnput').maskMoney()
-            $('#Malzeme_Fiyatı_İnput').trigger('mask.maskMoney');
+            $("#Malzeme_Fiyatı_İnput").inputmask({'alias': 'currency',"suffix": " ₺/Kg"  ,"prefix":"",rightAlign: false, allowMinus: false, digits: 2});    
 
-            $('#Malzeme_Eni_İnput').maskMoney()
-            $('#Malzeme_Eni_İnput').trigger('mask.maskMoney');
 
-            $('#Malzeme_Boyu_İnput').maskMoney()
-            $('#Malzeme_Boyu_İnput').trigger('mask.maskMoney');
+           // $('#Malzeme_Fiyatı_İnput').maskMoney()
+            //$('#Malzeme_Fiyatı_İnput').trigger('mask.maskMoney');
 
-            $('#Malzeme_Genişliği_İnput').maskMoney()
-            $('#Malzeme_Genişliği_İnput').trigger('mask.maskMoney');
 
-            $('#Malzeme_Malzeme_Birim_Fiyatı_İnput').maskMoney()
-            $('#Malzeme_Malzeme_Birim_Fiyatı_İnput').trigger('mask.maskMoney');
+
+
+
+            $("#Malzeme_Eni_İnput").inputmask({'alias': 'currency',"suffix": " mm"  ,"prefix":"",rightAlign: false, allowMinus: false, digits: 2});    
+
+            @* $('#Malzeme_Eni_İnput').maskMoney()
+            $('#Malzeme_Eni_İnput').trigger('mask.maskMoney'); *@
+
+
+            $("#Malzeme_Boyu_İnput").inputmask({'alias': 'currency',"suffix": " mm"  ,"prefix":"",rightAlign: false, allowMinus: false, digits: 2});    
+
+            @* $('#Malzeme_Boyu_İnput').maskMoney()
+            $('#Malzeme_Boyu_İnput').trigger('mask.maskMoney'); *@
+
+
+            $("#Malzeme_Genişliği_İnput").inputmask({'alias': 'currency',"suffix": " mm"  ,"prefix":"",rightAlign: false, allowMinus: false, digits: 2});    
+            //
+            //$('#Malzeme_Genişliği_İnput').maskMoney()
+          //  $('#Malzeme_Genişliği_İnput').trigger('mask.maskMoney');
+
+
+
+            $("#Malzeme_Malzeme_Birim_Fiyatı_İnput").inputmask({'alias': 'currency',"suffix": " ₺"  ,"prefix":"",rightAlign: false, allowMinus: false, digits: 2});    
+
+            //$('#Malzeme_Malzeme_Birim_Fiyatı_İnput').maskMoney()
+            //$('#Malzeme_Malzeme_Birim_Fiyatı_İnput').trigger('mask.maskMoney');
 
 
 

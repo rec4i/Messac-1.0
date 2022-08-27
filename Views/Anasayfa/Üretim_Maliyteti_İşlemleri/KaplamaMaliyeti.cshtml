@@ -24,7 +24,7 @@
                     '                                            <select id="Kaplama_Select"' +
                     '                                       son_eklenen_satır="-1"         style="width: 100% ; padding-bottom: 25px;"></select>' +
                     '                                        </div>' +
-               
+
                     '                                    </div>' +
                     '                                    <div class="row" style="padding-top: 25px;">' +
                     '                                        <div class="col-md-12">' +
@@ -118,7 +118,7 @@
                         ' <div class="row" name="Kaplama_Row" style="padding-top: 25px;" row_Id="' + row_İndex + '" >' +
                         '                                                            <div class="col-md-3">' +
                         '                                                                <input type="text" class="form-control" id="Kaplama_Text_' + row_İndex + '"' +
-                        '                                                                    placeholder="Kaynak Türü" Data_Id="'+Gelen_Data.id+'" value="' + Gelen_Data.kapmala_Text + '" disabled>' +
+                        '                                                                    placeholder="Kaynak Türü" Data_Id="' + Gelen_Data.id + '" value="' + Gelen_Data.kapmala_Text + '" disabled>' +
                         '                                                            </div>' +
                         '                                                            <div class="col-md-2">' +
                         '                                                                <input type="text" class="form-control"' +
@@ -147,16 +147,24 @@
                         '';
                     $('#Kaplamalar').append(Kaynak_Satır)
 
-                  
 
 
 
-                    $('#Kaplama_Birim_Fiyat_' + row_İndex).maskMoney();
-                    $('#Kaplama_Birim_Fiyat_' + row_İndex).trigger('mask.maskMoney');
+                    $("#Kaplama_Birim_Fiyat_" + row_İndex).inputmask({ 'alias': 'currency', "suffix": " ₺", "prefix": "", rightAlign: false, allowMinus: false, digits: 2 });
+
+                    //$('#Kaplama_Birim_Fiyat_' + row_İndex).maskMoney();
+                    //$('#Kaplama_Birim_Fiyat_' + row_İndex).trigger('mask.maskMoney');
 
 
-                    $('#Kaplama_Birim_Adeti_' + row_İndex).maskMoney();
-                    $('#Kaplama_Birim_Adeti_' + row_İndex).trigger('mask.maskMoney');
+
+                    $("#Kaplama_Birim_Adeti_" + row_İndex).inputmask({ 'alias': 'currency', "suffix": " " + Gelen_Data.birimler.birim_Kısa_ad, "prefix": "", rightAlign: false, allowMinus: false, digits: 2 });
+
+
+                    //    $('#Kaplama_Birim_Adeti_' + row_İndex).maskMoney();
+                    //  $('#Kaplama_Birim_Adeti_' + row_İndex).trigger('mask.maskMoney');
+
+
+
 
                     $('#Kaplama_Toplam_Fİyat_' + row_İndex).maskMoney();
                     $('#Kaplama_Toplam_Fİyat_' + row_İndex).trigger('mask.maskMoney');
@@ -207,4 +215,3 @@
 
     })
 </script>
-

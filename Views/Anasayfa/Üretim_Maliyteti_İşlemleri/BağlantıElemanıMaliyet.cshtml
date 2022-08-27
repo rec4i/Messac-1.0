@@ -31,7 +31,7 @@
                     '                                            <div class="card">' +
                     '                                                <div class="card-body">' +
                     '                                                    <div id="Bağlantı_Elemanları">' +
-                    '                                                      ' +
+                    '                                                      ElemanAdı - ElemanMaliyeti - İşçilikMaliyeti - ElemanAdeti - Toplam Maliyet' +
                     '                                                    </div>' +
                     '                                                </div>' +
                     '                                            </div>' +
@@ -151,16 +151,29 @@
                         '';
                     $('#Bağlantı_Elemanları').append(Kaynak_Satır)
 
-                    $('#Bağlantı_Elemanı_Birim_Fiyatı_' + row_İndex).maskMoney()
-                    $('#Bağlantı_Elemanı_Birim_Fiyatı_' + row_İndex).trigger('mask.maskMoney')
 
 
-                    $('#Bağlantı_Elemanı_Birim_Adeti' + row_İndex).maskMoney()
-                    $('#Bağlantı_Elemanı_Birim_Adeti' + row_İndex).trigger('mask.maskMoney')
+                    $("#Bağlantı_Elemanı_Birim_Fiyatı_" + row_İndex).inputmask({ 'alias': 'currency', "suffix": " ₺", "prefix": "", rightAlign: false, allowMinus: false, digits: 2 });
 
 
-                    $('#Bağlantı_Elemanı_İşçilik_Maliyeti_' + row_İndex).maskMoney()
-                    $('#Bağlantı_Elemanı_İşçilik_Maliyeti_' + row_İndex).trigger('mask.maskMoney')
+                    //$('#Bağlantı_Elemanı_Birim_Fiyatı_' + row_İndex).maskMoney()
+                    //$('#Bağlantı_Elemanı_Birim_Fiyatı_' + row_İndex).trigger('mask.maskMoney')
+
+
+                    $("#Bağlantı_Elemanı_Birim_Adeti" + row_İndex).inputmask({ 'alias': 'currency', "suffix": " ", "prefix": "", rightAlign: false, allowMinus: false, digits: 0 });
+
+
+                    //$('#Bağlantı_Elemanı_Birim_Adeti' + row_İndex).maskMoney()
+                   // $('#Bağlantı_Elemanı_Birim_Adeti' + row_İndex).trigger('mask.maskMoney')
+
+
+
+                    $("#Bağlantı_Elemanı_İşçilik_Maliyeti_" + row_İndex).inputmask({ 'alias': 'currency', "suffix": " ₺", "prefix": "", rightAlign: false, allowMinus: false, digits: 2 });
+
+//
+
+                   // $('#Bağlantı_Elemanı_İşçilik_Maliyeti_' + row_İndex).maskMoney()
+                    //$('#Bağlantı_Elemanı_İşçilik_Maliyeti_' + row_İndex).trigger('mask.maskMoney')
 
                     //Bağlantı_Elemanı_İşçilik_Maliyeti_
 

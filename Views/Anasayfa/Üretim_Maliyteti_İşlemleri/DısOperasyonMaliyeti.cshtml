@@ -130,7 +130,7 @@
                     var Kaynak_Satır = '' +
                         ' <div class="row" style="padding-top: 25px;" name="Dıs_Operasyon_Row_Satır" row_Id="' + row_İndex + '" >' +
                         '                                                            <div class="col">' +
-                        '                                                                <input type="text" class="form-control" data_Id="'+Gelen_Data.id+'" id="Operasyon_Adı_' + row_İndex + '"' +
+                        '                                                                <input type="text" class="form-control" data_Id="' + Gelen_Data.id + '" id="Operasyon_Adı_' + row_İndex + '"' +
                         '                                                                    placeholder="Dıs Operasyon Adı" value="' + Gelen_Data.operasyon_Adı + '" disabled>' +
                         '                                                            </div>' +
                         '                                                            <div class="col">' +
@@ -156,11 +156,20 @@
                         '';
                     $('#Dıs_Operasyonlar').append(Kaynak_Satır)
 
-                    $('#Operasyon_Maliyeti_' + row_İndex).maskMoney();
-                    $('#Operasyon_Maliyeti_' + row_İndex).trigger('mask.maskMoney');
 
-                    $('#Operasyon_Adeti_' + row_İndex).maskMoney();
-                    $('#Operasyon_Adeti_' + row_İndex).trigger('mask.maskMoney');
+
+                    $("#Operasyon_Maliyeti_" + row_İndex).inputmask({ 'alias': 'currency', "suffix": " ₺", "prefix": "", rightAlign: false, allowMinus: false, digits: 2 });
+
+                    // $('#Operasyon_Maliyeti_' + row_İndex).maskMoney();
+                    //$('#Operasyon_Maliyeti_' + row_İndex).trigger('mask.maskMoney');
+
+
+                    //$("#Operasyon_Adeti_" + row_İndex).inputmask({ 'alias': 'currency', "suffix": " ", "prefix": "", rightAlign: false, allowMinus: false, digits: 0 });
+
+                    $("#Operasyon_Adeti_" + row_İndex).inputmask({ 'alias': 'currency', "suffix": " "+Gelen_Data.birim.birim_Kısa_ad , "prefix": "", rightAlign: false, allowMinus: false, digits: 2 });
+
+                    //$('#Operasyon_Adeti_' + row_İndex).maskMoney();
+                    //$('#Operasyon_Adeti_' + row_İndex).trigger('mask.maskMoney');
 
 
                     $('#Operasyon_Toplam_Fiyat_' + row_İndex).maskMoney();

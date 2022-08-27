@@ -134,7 +134,7 @@
                         '                                                            </div>' +
                         '                                                            <div class="col-md-2">' +
                         '                                                                <input type="text" class="form-control"' +
-                        '                                                                    placeholder="Birim Fiyatı" value="' + Gelen_Data.maliyet.toFixed(2) + '"  data-thousands="." data-decimal="," data-suffix=" ₺" id="Tesviye_Maliyeti_' + row_İndex + '">' +
+                        '                                                                    placeholder="Birim Fiyatı"    id="Tesviye_Maliyeti_' + row_İndex + '">' +
                         '                                                            </div>' +
                         '                                                            <div class="col-md-2">' +
                         '                                                                <input type="text" class="form-control"' +
@@ -159,15 +159,26 @@
                         '';
                     $('#Tesviye_Div').append(Kaynak_Satır)
 
-                    $('#Tesviye_Maliyeti_' + row_İndex).maskMoney();
-                    $('#Tesviye_Maliyeti_' + row_İndex).trigger('mask.maskMoney');
-
-                    $('#Tefsiye_Adeti_' + row_İndex).maskMoney();
-                    $('#Tefsiye_Adeti_' + row_İndex).trigger('mask.maskMoney');
+                    //clean 
 
 
-                    $('#Tesviye_Toplam_Fiyat' + row_İndex).maskMoney();
-                    $('#Tesviye_Toplam_Fiyat' + row_İndex).trigger('mask.maskMoney');
+                    $("#Tesviye_Maliyeti_" + row_İndex).inputmask({ 'alias': 'currency', "suffix": " ₺", "prefix": "", rightAlign: false, allowMinus: false, digits: 2 });
+                    $("#Tesviye_Maliyeti_" + row_İndex).val(Gelen_Data.maliyet.toFixed(2))
+
+//Gelen_Data.maliyet.toFixed(3)
+                    //$('#Tesviye_Maliyeti_' + row_İndex).maskMoney();
+                    //$('#Tesviye_Maliyeti_' + row_İndex).trigger('mask.maskMoney');
+
+                    $("#Tefsiye_Adeti_" + row_İndex).inputmask({ 'alias': 'currency', "suffix": " " + Gelen_Data.birim.birim_Kısa_ad, "prefix": "", rightAlign: false, allowMinus: false, digits: 2 });
+
+
+                    //$('#Tefsiye_Adeti_' + row_İndex).maskMoney();
+                    //$('#Tefsiye_Adeti_' + row_İndex).trigger('mask.maskMoney');
+
+                    $("#Tesviye_Toplam_Fiyat" + row_İndex).inputmask({ 'alias': 'currency', "suffix": " ₺", "prefix": "", rightAlign: false, allowMinus: false, digits: 2 });
+
+                    //$('#Tesviye_Toplam_Fiyat' + row_İndex).maskMoney();
+                    //$('#Tesviye_Toplam_Fiyat' + row_İndex).trigger('mask.maskMoney');
                     //Kaynak_Birim_Adeti_
                     //Kaynak_Toplam_Fiyat_
                     $('#Tesviye_Satır_Sil_' + row_İndex).click(function () {

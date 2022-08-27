@@ -213,9 +213,16 @@
             $('#Büküm_Hesabı_Malzeme_Ağırlığı_İnput').val(0)
         }
 
-        $('#Büküm_Hesabı_Malzeme_Ağırlığı_İnput').maskMoney({
+
+
+        $("#Büküm_Hesabı_Malzeme_Ağırlığı_İnput").inputmask({'alias': 'currency',"suffix": " kg"  ,"prefix":"",rightAlign: false, allowMinus: false, digits: 4});    
+
+        @* $('#Büküm_Hesabı_Malzeme_Ağırlığı_İnput').maskMoney({
             precision: 4
-        })
+        }) *@
+
+
+
         $('#Büküm_Hesabı_Malzeme_Ağırlığı_İnput').trigger('mask.maskMoney');
         //Ugun_Kilo_KatSayısı_Getir(Malzeme_Ağırlığı).katSayı.toFixed(2)
 
@@ -228,11 +235,13 @@
             $('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Katsayı').val(0)
         }
 
-
+        //Refence İnputelere değer atanıyor
+        //$("#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Katsayı").inputmask({'alias': 'currency',"prefix": "" , allowMinus: false, digits: 2, max: 999.99});
+        
 
        // $('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Katsayı').maskMoney()
 
-        $("#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Katsayı").inputmask({'alias': 'currency',"prefix": "" , allowMinus: false, digits: 4, max: 999.99});
+        $("#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Katsayı").inputmask({'alias': 'currency',"prefix": "" , allowMinus: false, rightAlign: false, digits: 2});    
 
         //$('#Büküm_Hesabı_Malzeme_Ağırlık_Hesabı_Katsayı').trigger('mask.maskMoney');
 

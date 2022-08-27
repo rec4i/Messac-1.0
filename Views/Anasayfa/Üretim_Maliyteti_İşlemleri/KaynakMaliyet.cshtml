@@ -48,7 +48,7 @@
                     '';
                 $('#Kaynak_Sırası').append(variable)
 
-                $('#Kaynak_Dosya_Ekle').click(function(){
+                $('#Kaynak_Dosya_Ekle').click(function () {
                     $('#Upload_File_Modal').modal('show')
                 })
 
@@ -135,7 +135,7 @@
                         '                                                            </div>' +
                         '                                                            <div class="col-md-2">' +
                         '                                                                <input type="text" class="form-control"' +
-                        '                                                                    placeholder="Birim Fiyatı" value="' + Gelen_Data.maliyet.toFixed(2) + '"  data-thousands="." data-decimal="," data-suffix=" ₺" id="Kaynak_Birim_Fiyat_' + row_İndex + '">' +
+                        '                                                                    placeholder="Birim Fiyatı"  id="Kaynak_Birim_Fiyat_' + row_İndex + '">' +
                         '                                                            </div>' +
                         '                                                            <div class="col-md-2">' +
                         '                                                                <input type="text" class="form-control"' +
@@ -156,15 +156,25 @@
                         '';
                     $('#Kaynaklar').append(Kaynak_Satır)
 
-                    $('#Kaynak_Birim_Fiyat_' + row_İndex).maskMoney();
-                    $('#Kaynak_Birim_Fiyat_' + row_İndex).trigger('mask.maskMoney');
+                    console.log(Gelen_Data.maliyet)
+                    $("#Kaynak_Birim_Fiyat_" + row_İndex).inputmask({ 'alias': 'currency', "suffix": " ₺", "prefix": "", rightAlign: false, allowMinus: false, digits: 2, value: Gelen_Data.maliyet.toFixed(2) });
+                    $("#Kaynak_Birim_Fiyat_" + row_İndex).val(Gelen_Data.maliyet.toFixed(4))
 
-                    $('#Kaynak_Toplam_Fiyat_' + row_İndex).maskMoney();
-                    $('#Kaynak_Toplam_Fiyat_' + row_İndex).trigger('mask.maskMoney');
+                    //$('#Kaynak_Birim_Fiyat_' + row_İndex).maskMoney();
+                    //$('#Kaynak_Birim_Fiyat_' + row_İndex).trigger('mask.maskMoney');
 
 
-                    $('#Kaynak_Birim_Adeti_' + row_İndex).maskMoney();
-                    $('#Kaynak_Birim_Adeti_' + row_İndex).trigger('mask.maskMoney');
+                    $("#Kaynak_Toplam_Fiyat_" + row_İndex).inputmask({ 'alias': 'currency', "suffix": " " + Gelen_Data.birim.birim_Kısa_ad, "prefix": "", rightAlign: false, allowMinus: false, digits: 2 });
+
+                    // $('#Kaynak_Toplam_Fiyat_' + row_İndex).maskMoney();
+                    //$('#Kaynak_Toplam_Fiyat_' + row_İndex).trigger('mask.maskMoney');
+
+
+                    $("#Kaynak_Birim_Adeti_" + row_İndex).inputmask({ 'alias': 'currency', "suffix": " " + Gelen_Data.birim.birim_Kısa_ad, "prefix": "", rightAlign: false, allowMinus: false, digits: 2 });
+
+
+                    //   $('#Kaynak_Birim_Adeti_' + row_İndex).maskMoney();
+                    // $('#Kaynak_Birim_Adeti_' + row_İndex).trigger('mask.maskMoney');
                     //Kaynak_Birim_Adeti_
                     //Kaynak_Toplam_Fiyat_
                     $('#Kaynak_Satır_Sil_' + row_İndex).click(function () {
